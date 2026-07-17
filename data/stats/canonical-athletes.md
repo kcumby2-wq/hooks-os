@@ -39,6 +39,10 @@
 - `_management-clients/` (adult athletes) — need `consent_public_stats: true` to generate a card. If false or missing → card lands in `output/cards/YYYY-WW/_pending-consent/`.
 - `_training-clients/` (minors by default) — need **both** `consent_public_stats: true` **and** `guardian_signed_release_on_file: true`. If either is missing → no card generates at all, flagged in the weekly brief.
 
+### Standing default policy (Kyron, 2026-07-17)
+
+**Varsity HS, college, and NFL athletes → `consent_public_stats: true` by default.** Their competition is already public record. Individual overrides get flagged per-athlete when needed. The minor + guardian rule above is unchanged — that gate does not move regardless of playing level.
+
 ---
 
 ## Athletes (populate below — one YAML entry per athlete)

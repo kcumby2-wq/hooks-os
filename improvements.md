@@ -107,4 +107,51 @@ TOJ Campaign × hooks-os federation integration. The stat-card motion is the mos
 
 ---
 
+## 2026-07-17 — v1.1 patch: Kyron's answers to the 6 open questions
+
+**Feedback verbatim:**
+> "1. Sunday night 2. I will upload headshots when I get them 3. All Varsity, college, & NFL players 4. Auto trigger 5. Yes i will give you pictures to use. 6. I don't know what you mean."
+
+**What changed:**
+
+1. **Cadence — Sunday night locked.** Documented in `skills/weekly-stats-cards/SKILL.md` §Cadence. No code change; the default was already Sunday.
+
+2. **Headshots — portrait slot added, gracefully absent.**
+   - Convention: `assets/portraits/{athlete_id}.{jpg,png,webp}`.
+   - `build-cards.mjs` detects presence at build time via `loadPortrait()` — if the file exists, it embeds as a base64 data URI in a circular gold-bordered crop; if missing, it renders a gold-tinted radial placeholder that reads as intentional design (no "broken image" defect).
+   - Both athlete cards (IG + Twitter) got laid out with a portrait slot alongside the name/school block.
+   - The weekly brief now shows portrait status per card: `✓ on file` vs `⚠ placeholder (upload to assets/portraits/…)`.
+
+3. **Consent policy default — Varsity + College + NFL → `consent_public_stats: true`.**
+   - Standing default documented in `data/stats/canonical-athletes.md`.
+   - Minor + guardian rule unchanged — still needs both `consent_public_stats: true` AND `guardian_signed_release_on_file: true`.
+   - Kyron still populates the canonical file with the actual roster; the default is a policy, not a bypass of data entry.
+
+4. **Offer-add cards auto-trigger.** Two detection paths, both diff-based:
+   - **First-appearance** — athlete's `athlete_id` did not appear in the last 4 weekly stat files → offer-add card auto-generates.
+   - **Status change** — athlete's `status` flipped to `committed` or `signed` this week → offer-add card auto-generates with a "COMMITTED · [school]" or "SIGNED" headline.
+   - Cards land in `output/cards/YYYY-WW/_offer-add/` with `[trigger]-[athlete_id]-ig.png` naming so they filter fast.
+   - Still never publishes — auto-trigger is about detection, not distribution.
+   - New helpers: `loadPriorHistory()` (reads last 4 weeks' canonical files), `detectOfferAddTrigger()`, `renderOfferAddCard()`, `buildOfferAddHTML()`.
+
+5. **Multi-channel drafts expanded to 4 surfaces per card.** Twitter + IG (v1) + **LinkedIn + Threads** (v1.1). New draft functions: `draftLinkedIn()` (professional register, includes position + class year, no hashtags, longer form), `draftThreads()` (conversational, first-person as Margin, 1-2 short lines). All 4 drafts render per-card in the approval brief with per-surface approval checkboxes.
+
+6. **Roster-pulse retirement — nothing to do on my end.**
+   - The brief referenced `agents/hooks/roles/roster-pulse.js` in a `tojcampaign` repo.
+   - Searched the repos I have visibility to (`fbtrainer-tojcampaign`, `smallbusiness-tojcampaign`, `hooks-os`). No `agents/hooks/` directory exists. No `roster-pulse.js` file exists.
+   - If that file lives in a repo outside my visibility, Kyron can point me at it and I'll evaluate whether it overlaps with `athlete-brand-pipeline` + `weekly-stats-cards`. Until then, nothing to delete.
+
+**Files touched:**
+
+- `skills/weekly-stats-cards/SKILL.md` — cadence lock, consent policy default, multi-channel drafts, offer-add auto-trigger, headshots
+- `data/stats/canonical-athletes.md` — standing default policy note
+- `scripts/build-cards.mjs` — portrait loading, offer-add auto-trigger, prior-history reader, offer-add template, LinkedIn + Threads drafts, updated brief header + card blocks + offer-add section
+- `improvements.md` — this entry
+
+**Open question rolled forward:**
+
+- What triggers should NOT count as offer-adds? First-appearance + status-flip covers the two obvious cases. If Margin wants milestone stats (first 100-yd game, first career TD) to also auto-trigger, that lands in v1.2.
+
+---
+
 *Future entries follow the standard shape: feedback verbatim → what changed → which file the rule lives in.*

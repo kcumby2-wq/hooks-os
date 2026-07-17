@@ -61,10 +61,16 @@ const canonicalById = new Map(canonical.map((a) => [a.id, a]));
 // ─── prepare output dirs ────────────────────────────────────────────────────
 const cardsDir = path.join(REPO_ROOT, 'output/cards', weekKey);
 const pendingDir = path.join(cardsDir, '_pending-consent');
+const offerAddDir = path.join(cardsDir, '_offer-add');
 const reportsDir = path.join(REPO_ROOT, 'output/reports');
+const portraitsDir = path.join(REPO_ROOT, 'assets/portraits');
 fs.mkdirSync(cardsDir, { recursive: true });
 fs.mkdirSync(pendingDir, { recursive: true });
+fs.mkdirSync(offerAddDir, { recursive: true });
 fs.mkdirSync(reportsDir, { recursive: true });
+
+// ─── offer-add auto-trigger: read the last 4 weeks' athlete ids + statuses ──
+const priorHistory = loadPriorHistory({ REPO_ROOT, season, week, lookback: 4 });
 
 // ─── consent gate + row prep ────────────────────────────────────────────────
 const brief = { generated: [], pendingConsent: [], blockedMinors: [] };
@@ -103,6 +109,15 @@ for (const item of brief.pendingConsent) {
   await renderAthleteCards(context, item, pendingDir);
 }
 
+// ─── offer-add auto-trigger ─────────────────────────────────────────────────
+brief.offerAdds = [];
+for (const g of brief.generated) {
+  const trigger = detectOfferAddTrigger(g, priorHistory);
+  if (!trigger) continue;
+  brief.offerAdds.push({ ...g, trigger });
+  await renderOfferAddCard(context, g, trigger, offerAddDir);
+}
+
 // ─── leaderboard ────────────────────────────────────────────────────────────
 const leaderboard = brief.generated
   .map((g) => ({ ...g, heroValue: heroValue(g.row) }))
@@ -120,6 +135,7 @@ fs.writeFileSync(briefPath, renderBrief({ weekKey, season, week, brief, leaderbo
 
 console.log(`✓ Cards → ${path.relative(REPO_ROOT, cardsDir)}`);
 if (brief.pendingConsent.length) console.log(`  ⚠ ${brief.pendingConsent.length} in _pending-consent/`);
+if (brief.offerAdds.length) console.log(`  ★ ${brief.offerAdds.length} in _offer-add/ (auto-triggered)`);
 if (brief.blockedMinors.length) console.log(`  ✗ ${brief.blockedMinors.length} blocked (minors, missing consent) — see brief`);
 console.log(`✓ Brief → ${path.relative(REPO_ROOT, briefPath)}`);
 console.log('\nApproval flow: Kyron reads the brief → approves cards → hands to Subject Media or posts himself.');
@@ -130,11 +146,72 @@ console.log('\nApproval flow: Kyron reads the brief → approves cards → hands
 
 async function renderAthleteCards(context, item, outDir) {
   const { row, athlete } = item;
-  const igHTML = buildAthleteHTML({ row, athlete, layout: 'ig' });
-  const twHTML = buildAthleteHTML({ row, athlete, layout: 'twitter' });
+  const portrait = loadPortrait(row.athlete_id);
+  const igHTML = buildAthleteHTML({ row, athlete, portrait, layout: 'ig' });
+  const twHTML = buildAthleteHTML({ row, athlete, portrait, layout: 'twitter' });
 
   await renderTo(context, igHTML, 1080, 1350, path.join(outDir, `${row.athlete_id}-ig.png`));
   await renderTo(context, twHTML, 1200, 675, path.join(outDir, `${row.athlete_id}-twitter.png`));
+}
+
+async function renderOfferAddCard(context, item, trigger, outDir) {
+  const { row, athlete } = item;
+  const portrait = loadPortrait(row.athlete_id);
+  const html = buildOfferAddHTML({ row, athlete, portrait, trigger });
+  const filename = `${trigger.tag}-${row.athlete_id}-ig.png`;
+  await renderTo(context, html, 1080, 1350, path.join(outDir, filename));
+}
+
+function loadPortrait(athleteId) {
+  const exts = ['.jpg', '.jpeg', '.png', '.webp'];
+  for (const ext of exts) {
+    const p = path.join(portraitsDir, `${athleteId}${ext}`);
+    if (fs.existsSync(p)) {
+      const mime = ext === '.jpg' || ext === '.jpeg' ? 'image/jpeg' : ext === '.png' ? 'image/png' : 'image/webp';
+      const b64 = fs.readFileSync(p).toString('base64');
+      return { dataUri: `data:${mime};base64,${b64}`, present: true };
+    }
+  }
+  return { dataUri: null, present: false };
+}
+
+function loadPriorHistory({ REPO_ROOT, season, week, lookback }) {
+  // Returns a Map: athlete_id → { last_seen_week: N, last_status: 'active' | ..., appearances: N }
+  const history = new Map();
+  const w = parseInt(week, 10);
+  for (let i = 1; i <= lookback; i++) {
+    const priorWeek = String(w - i).padStart(2, '0');
+    const priorPath = path.join(REPO_ROOT, 'data/stats', `${season}-W${priorWeek}.md`);
+    if (!fs.existsSync(priorPath)) continue;
+    const md = fs.readFileSync(priorPath, 'utf8');
+    const rows = parseStatFile(md).rows;
+    for (const r of rows) {
+      const cur = history.get(r.athlete_id) || { appearances: 0, last_seen_week: null };
+      cur.appearances += 1;
+      if (cur.last_seen_week === null) cur.last_seen_week = w - i;
+      history.set(r.athlete_id, cur);
+    }
+  }
+  return history;
+}
+
+function detectOfferAddTrigger(item, priorHistory) {
+  const { row, athlete } = item;
+  const prior = priorHistory.get(row.athlete_id);
+  // First-appearance: no history in the last 4 weeks.
+  if (!prior || prior.appearances === 0) {
+    return { tag: 'first-appearance', headline: 'NEW ON THE BOARD', sub: 'First game we\'re tracking' };
+  }
+  // Status change: committed / signed.
+  if (athlete.status === 'committed' || athlete.status === 'signed') {
+    const priorStatus = prior.last_status || 'active';
+    if (priorStatus !== athlete.status) {
+      const verb = athlete.status === 'committed' ? 'COMMITTED' : 'SIGNED';
+      const dest = athlete.committed_to ? ` · ${athlete.committed_to}` : '';
+      return { tag: `${athlete.status}`, headline: verb + dest, sub: 'Trail marker' };
+    }
+  }
+  return null;
 }
 
 async function renderLeaderboard(context, rows, outDir, week, season) {
@@ -224,22 +301,29 @@ function loadFontsCss() {
   return decl.join('\n');
 }
 
-function buildAthleteHTML({ row, athlete, layout }) {
+function buildAthleteHTML({ row, athlete, portrait, layout }) {
   const hero = heroStat(row);
   const isTw = layout === 'twitter';
   const w = isTw ? 1200 : 1080;
   const h = isTw ? 675 : 1350;
+  const portraitSize = isTw ? 140 : 200;
+  const portraitBlock = portrait && portrait.present
+    ? `<img class="portrait" src="${portrait.dataUri}" alt="" />`
+    : `<div class="portrait portrait--placeholder" aria-hidden="true"></div>`;
 
   return `<!doctype html><html><head><style>
 ${baseCss()}
 .card { width: ${w}px; height: ${h}px; padding: ${isTw ? '48px 60px' : '80px 72px'}; display: flex; flex-direction: column; justify-content: space-between; }
 .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: ${isTw ? '14px' : '18px'}; letter-spacing: 0.24em; color: var(--gold); text-transform: uppercase; font-weight: 700; }
-.hero { display: flex; flex-direction: column; align-items: ${isTw ? 'flex-start' : 'center'}; text-align: ${isTw ? 'left' : 'center'}; margin: ${isTw ? '32px 0' : '40px 0'}; }
-.hero .num { font-family: 'Anton', sans-serif; font-size: ${isTw ? '320px' : '420px'}; line-height: 0.9; color: var(--gold); letter-spacing: -0.03em; }
-.hero .label { font-family: 'JetBrains Mono', monospace; font-size: ${isTw ? '22px' : '28px'}; letter-spacing: 0.28em; color: var(--cream); text-transform: uppercase; margin-top: 12px; font-weight: 700; }
-.name { font-family: 'Fraunces', serif; font-size: ${isTw ? '48px' : '64px'}; color: var(--cream); line-height: 1.05; }
-.school { font-family: 'Manrope', sans-serif; font-size: ${isTw ? '22px' : '28px'}; color: rgba(245, 241, 232, 0.75); margin-top: 8px; }
-.line { font-family: 'JetBrains Mono', monospace; font-size: ${isTw ? '18px' : '22px'}; letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; margin-top: 16px; font-weight: 700; }
+.top { display: flex; align-items: center; gap: ${isTw ? '24px' : '32px'}; margin-top: ${isTw ? '20px' : '32px'}; }
+.portrait { width: ${portraitSize}px; height: ${portraitSize}px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); box-shadow: 0 4px 24px rgba(228, 178, 60, 0.25); flex-shrink: 0; }
+.portrait--placeholder { background: radial-gradient(ellipse at center, rgba(228, 178, 60, 0.35), rgba(228, 178, 60, 0.08) 60%, transparent 80%); border: 3px solid rgba(228, 178, 60, 0.5); }
+.top-text .name { font-family: 'Fraunces', serif; font-size: ${isTw ? '44px' : '58px'}; color: var(--cream); line-height: 1.02; }
+.top-text .school { font-family: 'Manrope', sans-serif; font-size: ${isTw ? '20px' : '24px'}; color: rgba(245, 241, 232, 0.75); margin-top: 6px; }
+.hero { display: flex; flex-direction: column; align-items: ${isTw ? 'flex-start' : 'center'}; text-align: ${isTw ? 'left' : 'center'}; margin: ${isTw ? '20px 0' : '32px 0'}; }
+.hero .num { font-family: 'Anton', sans-serif; font-size: ${isTw ? '280px' : '380px'}; line-height: 0.9; color: var(--gold); letter-spacing: -0.03em; }
+.hero .label { font-family: 'JetBrains Mono', monospace; font-size: ${isTw ? '22px' : '28px'}; letter-spacing: 0.28em; color: var(--cream); text-transform: uppercase; margin-top: 8px; font-weight: 700; }
+.line { font-family: 'JetBrains Mono', monospace; font-size: ${isTw ? '18px' : '22px'}; letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; margin-top: ${isTw ? '8px' : '16px'}; font-weight: 700; text-align: ${isTw ? 'left' : 'center'}; }
 .footer { display: flex; justify-content: space-between; align-items: flex-end; }
 .brand { font-family: 'Anton', sans-serif; font-size: ${isTw ? '20px' : '24px'}; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; }
 .week { font-family: 'JetBrains Mono', monospace; font-size: ${isTw ? '14px' : '18px'}; color: rgba(245, 241, 232, 0.6); letter-spacing: 0.22em; font-weight: 700; }
@@ -247,10 +331,53 @@ ${baseCss()}
 <div class="card">
   <div>
     <div class="eyebrow">Week ${parseInt(week, 10)} · ${season}</div>
+    <div class="top">
+      ${portraitBlock}
+      <div class="top-text">
+        <div class="name">${escapeHtml(athlete.canonical_name)}</div>
+        <div class="school">${escapeHtml(athlete.school || row.school_canonical || '')}</div>
+      </div>
+    </div>
     <div class="hero">
       <div class="num">${hero.value}</div>
       <div class="label">${hero.label}</div>
     </div>
+    <div class="line">${statLine(row)}</div>
+  </div>
+  <div class="footer">
+    <div class="brand">Coached by Hooks</div>
+    <div class="week">W${week}</div>
+  </div>
+</div></body></html>`;
+}
+
+function buildOfferAddHTML({ row, athlete, portrait, trigger }) {
+  const hero = heroStat(row);
+  const portraitBlock = portrait && portrait.present
+    ? `<img class="portrait" src="${portrait.dataUri}" alt="" />`
+    : `<div class="portrait portrait--placeholder" aria-hidden="true"></div>`;
+  return `<!doctype html><html><head><style>
+${baseCss()}
+.card { width: 1080px; height: 1350px; padding: 80px 72px; display: flex; flex-direction: column; justify-content: space-between; background: linear-gradient(180deg, var(--navy), #0a1a34); }
+.stamp { display: inline-block; padding: 10px 18px; border: 2px solid var(--gold); font-family: 'JetBrains Mono', monospace; font-size: 16px; letter-spacing: 0.28em; color: var(--gold); text-transform: uppercase; font-weight: 700; }
+.headline { font-family: 'Anton', sans-serif; font-size: 88px; color: var(--cream); text-transform: uppercase; letter-spacing: -0.02em; line-height: 0.95; margin-top: 22px; }
+.sub { font-family: 'Fraunces', serif; font-style: italic; font-size: 30px; color: var(--gold); margin-top: 12px; }
+.portrait-wrap { display: flex; justify-content: center; margin: 40px 0; }
+.portrait { width: 260px; height: 260px; border-radius: 50%; object-fit: cover; border: 4px solid var(--gold); box-shadow: 0 6px 32px rgba(228, 178, 60, 0.28); }
+.portrait--placeholder { background: radial-gradient(ellipse at center, rgba(228, 178, 60, 0.35), rgba(228, 178, 60, 0.08) 60%, transparent 80%); border: 4px solid rgba(228, 178, 60, 0.5); }
+.name { font-family: 'Fraunces', serif; font-size: 68px; color: var(--cream); text-align: center; line-height: 1.02; }
+.school { font-family: 'Manrope', sans-serif; font-size: 24px; color: rgba(245, 241, 232, 0.75); text-align: center; margin-top: 8px; }
+.line { font-family: 'JetBrains Mono', monospace; font-size: 20px; letter-spacing: 0.16em; color: var(--gold); text-transform: uppercase; margin-top: 32px; text-align: center; font-weight: 700; }
+.footer { display: flex; justify-content: space-between; align-items: flex-end; }
+.brand { font-family: 'Anton', sans-serif; font-size: 24px; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; }
+.week { font-family: 'JetBrains Mono', monospace; font-size: 18px; color: rgba(245, 241, 232, 0.6); letter-spacing: 0.22em; font-weight: 700; }
+</style></head><body>
+<div class="card">
+  <div>
+    <div class="stamp">${escapeHtml(trigger.tag.replace(/-/g, ' '))}</div>
+    <div class="headline">${escapeHtml(trigger.headline)}</div>
+    <div class="sub">${escapeHtml(trigger.sub)}</div>
+    <div class="portrait-wrap">${portraitBlock}</div>
     <div class="name">${escapeHtml(athlete.canonical_name)}</div>
     <div class="school">${escapeHtml(athlete.school || row.school_canonical || '')}</div>
     <div class="line">${statLine(row)}</div>
@@ -312,6 +439,7 @@ function renderBrief({ weekKey, season, week, brief, leaderboard, topN }) {
 
 **Generated:** ${today}
 **Cards ready for approval:** ${generatedCount}
+**Offer-add auto-triggered:** ${brief.offerAdds ? brief.offerAdds.length : 0}
 **Pending consent (adults, held):** ${brief.pendingConsent.length}
 **Blocked (minors, consent missing):** ${brief.blockedMinors.length}
 **Leaderboard:** Top ${leaderboard.length} of ${generatedCount}
@@ -330,23 +458,35 @@ Approval flow:
 
   for (const g of brief.generated) {
     const hero = heroStat(g.row);
+    const portrait = loadPortrait(g.row.athlete_id);
     const tweetDraft = draftTweet(g);
     const igDraft = draftIg(g);
+    const liDraft = draftLinkedIn(g);
+    const thDraft = draftThreads(g);
     out += `### ${g.athlete.canonical_name} — ${g.athlete.school}
 
 - **Cards:** \`${g.row.athlete_id}-ig.png\` · \`${g.row.athlete_id}-twitter.png\`
+- **Portrait:** ${portrait.present ? '✓ on file' : '⚠ placeholder (upload to `assets/portraits/' + g.row.athlete_id + '.jpg`)'}
 - **Hero stat:** ${hero.value} ${hero.label}
 - **Line:** ${statLine(g.row)}
 - **Class:** ${g.athlete.class_year || 'n/a'} · **Position:** ${g.athlete.position || 'n/a'} · **Status:** ${g.athlete.status || 'n/a'}
 
-**Tweet draft (Margin's voice — coach register):**
+**Twitter draft:**
 > ${tweetDraft}
 
 **IG caption draft:**
 > ${igDraft}
 
+**LinkedIn draft:**
+> ${liDraft.replace(/\n/g, '\n> ')}
+
+**Threads draft:**
+> ${thDraft.replace(/\n/g, '\n> ')}
+
 - [ ] Approve · Twitter
 - [ ] Approve · IG
+- [ ] Approve · LinkedIn
+- [ ] Approve · Threads
 
 ---
 
@@ -398,17 +538,32 @@ Cards for these athletes rendered into \`_pending-consent/\` because \`consent_p
     out += `\n---\n\n`;
   }
 
-  out += `## Offer-add opportunities
+  out += `## ★ Offer-add cards (auto-triggered)
 
-Offer-add cards are manual-flag only for v1. Add athlete IDs below with the offer context and re-run:
+Auto-generated when an athlete is new to the board (no appearance in the last 4 weeks) OR their status flipped to \`committed\` / \`signed\` this week. Rendered into \`_offer-add/\` — approve individually before Kyron/Margin ships.
 
-\`\`\`
-node scripts/build-cards.mjs --season ${season} --week ${parseInt(week, 10)} --athlete <id>
-\`\`\`
+`;
+  if (brief.offerAdds.length === 0) {
+    out += `_None triggered this week._\n\n---\n\n`;
+  } else {
+    for (const o of brief.offerAdds) {
+      out += `### ${o.trigger.headline} · ${o.athlete.canonical_name}
 
-(v1: none auto-flagged.)
+- **Card:** \`${o.trigger.tag}-${o.row.athlete_id}-ig.png\`
+- **Trigger:** ${o.trigger.tag}
+- **School:** ${o.athlete.school}
+- **Line:** ${statLine(o.row)}
+
+**Twitter draft:**
+> ${o.trigger.headline} — ${o.athlete.canonical_name}. ${o.athlete.school_short || o.athlete.school}. #CoachedByHooks
+
+- [ ] Approve · Offer-add
 
 ---
+
+`;
+    }
+  }
 
 ## Post-approval next step
 
@@ -428,6 +583,19 @@ function draftIg(g) {
   const hero = heroStat(g.row);
   const line = statLine(g.row);
   return `${g.athlete.canonical_name} — ${hero.value} ${hero.label} kind of night.\n\n${line}. ${g.athlete.school}. Week ${parseInt(week, 10)}.\n\nWork keeps talking.\n\n#CoachedByHooks · #SkysTheLimitWR`;
+}
+
+function draftLinkedIn(g) {
+  const line = statLine(g.row);
+  const pos = g.athlete.position ? `${g.athlete.position} · ` : '';
+  const cls = g.athlete.class_year ? `Class of ${g.athlete.class_year} · ` : '';
+  return `${g.athlete.canonical_name} — ${g.athlete.school}\n\n${pos}${cls}Week ${parseInt(week, 10)} line: ${line}.\n\nThe reps show up in the tape. The tape shows up on Sundays.`;
+}
+
+function draftThreads(g) {
+  const hero = heroStat(g.row);
+  const line = statLine(g.row);
+  return `${g.athlete.canonical_name} put ${hero.value} ${hero.label} on the sheet this week.\n\n${line}. That's the work.`;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════

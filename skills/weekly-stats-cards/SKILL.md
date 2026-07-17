@@ -173,9 +173,57 @@ Editorial pieces, narrative assets, highlight edits, photo shoots, feature reels
 
 ## Cadence
 
-- **Default:** Sunday nights, after weekend game data lands.
-- **On-demand:** Any day a raw paste is dropped at `data/inbound-stats/YYYY-WW-raw.txt`.
+- **Sunday nights** — locked. Kyron confirmed 2026-07-17. Weekend games materialize, Sunday-night ingest builds the pack, Monday-morning read + distribution.
+- **On-demand** — any day a raw paste is dropped at `data/inbound-stats/YYYY-WW-raw.txt`.
 - **Never:** Cards do not backfill retroactively without Kyron's flag. If Margin missed a Sunday, the following Sunday's card can include a "last-week catch-up" section — but the brief calls it out explicitly so it doesn't read as fresh.
+
+---
+
+## Consent Policy Defaults (v1.1)
+
+Kyron confirmed 2026-07-17: **Varsity, College, and NFL athletes default to `consent_public_stats: true`** in `data/stats/canonical-athletes.md`. This reflects the standing understanding — public game footage + public stats + public-record recognition is the medium these athletes already compete in. Individual overrides (an athlete asks to be held back from a specific card) get flagged per-athlete.
+
+Minors on `_training-clients/` still need **both** `consent_public_stats: true` AND `guardian_signed_release_on_file: true` — no default. That gate does not move.
+
+---
+
+## Multi-Channel Drafts (v1.1)
+
+The card brief now includes drafts for **four surfaces per card**:
+
+- **Twitter** — coach voice, one idea, short line.
+- **IG caption** — coach voice, two-beat opener, closes with "Coached by Hooks" line-of-sight.
+- **LinkedIn** — professional register · same stat frame · adds one line of program context (school, class year, position). Longer-form, no hashtags.
+- **Threads** — conversational, first-person as Margin, 1-2 short lines, no hashtags.
+
+Kyron picks which surfaces run per card during approval. Nothing publishes.
+
+---
+
+## Offer-Add Auto-Trigger (v1.1)
+
+Kyron confirmed 2026-07-17: **offer-add cards auto-generate.** Two triggers, both surfaced in the weekly brief:
+
+1. **First-appearance detection** — an athlete whose `athlete_id` was NOT present in the last 4 weekly stat files gets an offer-add card. This catches new signees, transfers-in, and returning athletes coming off injury.
+2. **Status change** — an athlete whose `status` field changed to `committed` or `signed` since the last ingest gets an offer-add card announcing it.
+
+Both trigger paths are diff-based (compare current week to prior weeks), computed by `build-cards.mjs` at build time. Auto-flagged cards land in `output/cards/YYYY-WW/_offer-add/` with a `[REASON]` prefix in the filename so Kyron can filter fast (e.g., `first-appearance-kaydon-finley-ig.png`).
+
+**Offer-add cards still never publish automatically.** They land as drafts like every other card. The auto-trigger is about *detection*, not *distribution*.
+
+---
+
+## Headshots (v1.1)
+
+**v1 renders text-only cards.** Kyron will upload headshots as they come in.
+
+Portrait convention:
+- Location: `assets/portraits/{athlete_id}.jpg` (or `.png`, `.webp`)
+- Aspect: 1:1 square, 800×800 minimum, subject centered
+- Missing portrait → card renders with a gold-tinted silhouette placeholder (no visible "missing image" defect).
+- Portrait present → card renders with the athlete's photo in a circular crop, top-of-card.
+
+The template detects the file's presence at build time. No config change required when a portrait lands — drop it in `assets/portraits/`, re-run `build-cards.mjs`, next card generation picks it up.
 
 ---
 
