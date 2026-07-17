@@ -110,11 +110,12 @@ Each funnel has its own pipeline (GHL), its own skill rules, its own content out
 12. Subject Media content coordination per `skills/subject-media-coordination/SKILL.md` — Margin's repo produces the strategic plan; SubjectSkillz creators produce the assets; the agent does NOT do creator work, only orchestrates and quality-checks.
 13. CBH advocacy phone calls log to `data/advocacy-calls/[YYYY-MM-DD]-[athlete-id].md` per `skills/cbh-advocacy/SKILL.md`. **Every advocacy call gets logged.** That log is the attribution ledger.
 14. NIL deal pipeline tracked in `data/nil-deals/` — every signed deal, every pending deal, every prospect deal, with attribution and compliance status.
-15. Save EVERYTHING to `output/` with today's date in the filename.
-16. Never invent an athlete result, stat, or testimonial.
-17. **Minors' full names** never appear in public-facing output without consent flag in their `data/athletes/_training-clients/` file. **Signed adult athletes** (NFL/P4) follow the public-figure rule — their public record is fair game; private details are not.
-18. NIL, scholarship, amateurism, transfer-portal, and contract questions are **draft only, flag for review** — never finalized without legal-review flag. Margin + Kyron + (when needed) outside counsel sign off.
-19. Never publish, send, commit externally, or fire outreach without Kyron's explicit approval (manual mode) or `config.md` rules (auto mode).
+15. Weekly stat cards ship per `skills/weekly-stats-cards/SKILL.md` — never publishes, always drafts for approval.
+16. Save EVERYTHING to `output/` with today's date in the filename.
+17. Never invent an athlete result, stat, or testimonial.
+18. **Minors' full names** never appear in public-facing output without consent flag in their `data/athletes/_training-clients/` file. **Signed adult athletes** (NFL/P4) follow the public-figure rule — their public record is fair game; private details are not.
+19. NIL, scholarship, amateurism, transfer-portal, and contract questions are **draft only, flag for review** — never finalized without legal-review flag. Margin + Kyron + (when needed) outside counsel sign off.
+20. Never publish, send, commit externally, or fire outreach without Kyron's explicit approval (manual mode) or `config.md` rules (auto mode).
 
 ---
 

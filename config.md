@@ -146,7 +146,7 @@ evaluation:
 athlete_brand_pipeline:
   roster_lockdown_status: _____   # pending — confirm v1.0 cohort from 6 NFL + 30+ P4
   weekly_cadence_active_for: _____   # list of athlete_ids once roster locks
-  stats_sources: see data/stats-sources.md
+  stats_sources: data/stats/
   nil_compliance_review: required_every_deal
 ```
 

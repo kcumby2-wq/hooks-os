@@ -197,6 +197,7 @@ This is Kyron's read of the entire portfolio in 5 minutes. Margin sees the same 
 - **`skills/prospect-edge-workflow/SKILL.md`** — managed athletes (especially those with pro draft prospects in their HS/college history) may have legacy PE evaluations worth pulling forward as brand assets.
 - **`skills/subject-media-coordination/SKILL.md`** — athlete content runs through SM. The brief flow is owned here; production is owned there.
 - **`skills/engagement-monitoring/SKILL.md`** — per-athlete engagement reads feed the brand-build calibration. Voice landings, content performance, deal-conversion signal.
+- **`skills/weekly-stats-cards/SKILL.md`** — for per-week stat cards specifically, see that skill. This one owns the strategic weekly roster pulse; that one owns the visual asset pack.
 
 ---
 

@@ -66,6 +66,12 @@ Flagged issues go in `output/content-review/[YYYY-MM-DD]-[content_id]-review.md`
 
 ---
 
+## Explicit Exception — Template-Driven Data Cards
+
+Template-driven data cards produced per `skills/weekly-stats-cards/` are an explicit exception to the no-creator-work rule below. The template is authored once (brand tokens locked, typography locked); the agent fills structured data into it. Editorial, narrative, and highlight assets remain SubjectSkillz creator territory. If a card ever grows an editorial element (a voice pull-quote, a per-athlete narrative frame), it graduates out of `weekly-stats-cards/` into a brief handled here.
+
+---
+
 ## What the Agent Does NOT Do
 
 - **Does not write final captions.** Drafts that go into the brief skeleton. Creators tune them.

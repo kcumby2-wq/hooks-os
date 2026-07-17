@@ -12,6 +12,8 @@ Runs `skills/engagement-monitoring/SKILL.md` end-to-end across all three funnels
 
 Three reports, ~30-45 min total, all landing in `output/reports/` with the week number. Kyron's Monday read is roughly 15 minutes across all three — each report is built to be a fast, action-oriented read, not a data dump.
 
+The Monday engagement pulse also reads **Sunday's stat-card brief** (`output/reports/YYYY-WW-card-brief.md` from `skills/weekly-stats-cards/`) to score which cards drove engagement — the loop that tunes next Sunday's card pack.
+
 ---
 
 ## What Gets Pushed to the TOJ Operational Transcript

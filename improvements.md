@@ -61,4 +61,50 @@ Margin's repo opens at v1.0 with twelve baked-in lessons that took the rest of t
 
 ---
 
+## 2026-07-17 — v1.1 addition: `skills/weekly-stats-cards/`
+
+**Feedback that drove this:**
+> "Right now Margin's weekly stat marketing works like this: he types stat lines into iPhone Notes, screenshots the list, posts the raw screenshot to his 25.2K-follower Twitter. Every week. Name variants drift ('Braylun' / 'Braylon', 'Mans. Lakeridge' / 'M.Lakeridge'), schools get abbreviated inconsistently, no branded card wraps the stats, no per-athlete leaderboard, no offer-add trigger, no rollup for the season."
+
+**What changed:**
+
+New skill `skills/weekly-stats-cards/SKILL.md` retires the iPhone-Notes-screenshot workflow. One canonical stat file per week (`data/stats/YYYY-WW.md`) — one branded card pack per week (`output/cards/YYYY-WW/`) — one approval brief per week (`output/reports/YYYY-WW-card-brief.md`).
+
+Three standalone Node scripts encode the pipeline:
+
+- `scripts/parse-stats.mjs` — accepts raw paste or structured YAML, resolves every name against `data/stats/canonical-athletes.md` (single lookup table), exits code 1 on any `PENDING-MATCH`. Uses Anthropic SDK + `claude-haiku-4-5` for free-form parsing.
+- `scripts/build-cards.mjs` — Playwright + Chromium renders four card templates (single-athlete IG 1080×1350, single-athlete Twitter 1200×675, leaderboard top-10 IG, offer-add IG) with STL brand tokens locked (navy #0B1D3A · gold #E4B23C · cream #F5F1E8) and Anton + Fraunces + JetBrains Mono + Manrope typography embedded from local woff2. No Google Fonts fetch at runtime.
+- `scripts/rollup-athlete-stats.mjs` — idempotent per-athlete season file update (`data/athletes/[folder]/stats-season-YYYY.md`) after every ingest.
+
+**Boundary contracts:**
+
+- Does NOT overlap with `athlete-brand-pipeline` — that skill runs the Monday strategic roster pulse; this skill produces the visual asset pack. Both skills now cross-reference each other.
+- Explicit exception clause added to `subject-media-coordination/SKILL.md` — template-driven data cards are agent-produced final assets by design; editorial and narrative pieces remain creator territory.
+
+**Hard rules encoded:**
+
+- **The skill never publishes.** Writes to `output/` only. No POST paths in code.
+- **Consent gate.** Adult athletes need `consent_public_stats: true`; minors need both that AND `guardian_signed_release_on_file: true`. Missing on a minor → no card renders at all.
+- **PENDING-MATCH blocks the pipeline.** Every name resolves through the canonical file or Kyron reconciles first.
+
+**Files touched:**
+
+- New: `skills/weekly-stats-cards/SKILL.md`, `data/stats/canonical-athletes.md`, `scripts/parse-stats.mjs`, `scripts/build-cards.mjs`, `scripts/rollup-athlete-stats.mjs`
+- Updated: `CLAUDE.md` (rule 15 added, subsequent rules renumbered), `workflows/daily.md` (Sunday stats-cards mode), `workflows/weekly-engagement-review.md` (Monday reads Sunday's card brief), `config.md` (`athlete_brand_pipeline.stats_sources` → `data/stats/`), `skills/athlete-brand-pipeline/SKILL.md` (cross-ref), `skills/subject-media-coordination/SKILL.md` (exception clause)
+
+**Why now:**
+
+TOJ Campaign × hooks-os federation integration. The stat-card motion is the most visible weekly artifact in Margin's marketing — retiring the Notes-app workflow before the August 10 pre-season deadline makes the operating-brain visible to the audience the same week the platform switches on. The season-long canonical stat record also becomes the case-study substrate that reinforces every CBH advocacy call and every future Trainer Blueprint sale.
+
+**Open questions carried forward to Kyron:**
+
+1. Preferred cadence — Sunday night default is proposed; alternative Monday-morning or on-demand-only is open.
+2. Headshot library for the athletes — v1 renders without headshots. If Margin has an image bank, v2 adds a portrait placeholder slot to the templates.
+3. `canonical-athletes.md` seeding — no cards ship until Kyron populates the file with the current roster + consent flags.
+4. Offer-add trigger — v1 recommendation is manual flag only (Kyron flags in the brief). Auto-triggering from a source (new signee, transfer commit, milestone stat) is a v2 conversation.
+5. Multi-channel drafts — brief includes Twitter + IG drafts. LinkedIn + Threads copy can be added in v2.
+6. Retirement of the tojcampaign Roster Pulse agent — Kyron sign-off needed before deleting `agents/hooks/roles/roster-pulse.js` from tojcampaign.
+
+---
+
 *Future entries follow the standard shape: feedback verbatim → what changed → which file the rule lives in.*

@@ -47,6 +47,7 @@ After August 10, priority order shifts to: parent/athlete comms → active event
 - **Advocacy day** → `skills/cbh-advocacy/SKILL.md` → pre-call briefs, debrief capture.
 - **Parent comms day** → `skills/parent-comms/SKILL.md`.
 - **Report day** → weekly/monthly reports → `output/reports/`.
+- **Stats-cards day (Sunday)** → `skills/weekly-stats-cards/SKILL.md` → parse raw paste, produce card pack, land brief in `output/reports/`.
 
 ---
 
