@@ -4,6 +4,21 @@ The instruction set the operating brain executes at the start of every session. 
 
 ---
 
+## The 6-step universal operator loop (runs at every altitude)
+
+Every day, every session, every automated flow follows the same six moves. Same shape whether it's an agent, a client close, or a product launch. Full protocol: [/framework-ops#loop](https://fbtrainer-tojcampaign.vercel.app/framework-ops#loop).
+
+1. **Capture** — voice memo, hotkey, mobile note, one-line paste into Inbox. Speed > shape.
+2. **Triage** — every item → Next · Doing · Waiting · Done · Ad-live. Zero items in Inbox at end of day.
+3. **Approval gate** — Q&A items get an explicit human check. No skip.
+4. **Evals + guardrails** — every output runs against the guardrail checklist before delivery.
+5. **Execute · retry · revise** — agent works to spec. 2-strike rule: fail twice → route to review, not to output.
+6. **Notify phone** — push when human attention is needed. Attention flows to Kyron, not the other way around.
+
+Altitude-agnostic. A Tactics agent runs it in seconds. A Principles workflow runs it over a week. An Essence engagement runs it over 12 months. Same six moves. Different clock.
+
+---
+
 ## STEP 1 — FEEDBACK CHECK (Always First)
 
 Open `feedback/feedback-log.md` AND scan `data/inbound-emails/` for anything new. Process each entry: identify the affected file, propose the edit, get approval, log in `improvements.md`.

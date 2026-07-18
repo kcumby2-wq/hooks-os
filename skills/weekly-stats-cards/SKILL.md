@@ -1,5 +1,9 @@
 # Weekly Stats Cards — Skill
 
+> **⬢ Operating altitude:** `T` · Template-driven data cards · fully specified · fully evaluable<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 **One paste in. One canonical stat file. One branded card pack out. One approval doc for Margin.**
 
 Retires the iPhone Notes screenshot workflow. Kills name-variant drift. Makes Sunday-night marketing deterministic, on-brand, and legible to the entire signed roster + training-client base.

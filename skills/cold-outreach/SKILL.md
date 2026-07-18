@@ -1,5 +1,9 @@
 # Cold Outreach — Skill
 
+> **⬢ Operating altitude:** `T→P` · Tactics-heavy (templates) climbing to principles (mode calibration)<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 Cold email, text, and DM outreach for STL/CBH. **Includes follower-triggered outreach.** Two-mode operation per the network standard — Manual Review or Auto Reach, set per channel in `config.md`.
 
 **Margin's situation:** as the founding apex trainer, inbound volume (people who already know the record and are reaching out) typically outweighs the value of aggressive outbound. Cold outreach here is lower-priority than for high-audience-tier clients building reach — the credential does the attracting. Outbound is used surgically: trainer-blueprint candidate sourcing, specific athlete families STL wants to reach, coach-network expansion.

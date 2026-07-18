@@ -1,5 +1,9 @@
 # Engagement Monitoring — Skill
 
+> **⬢ Operating altitude:** `P` · Pattern detection over time · not just recording<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent processes weekly engagement across STL/CBH's **three parallel funnels** and feeds patterns back into voice, content, and the TOJ Operational Transcript. **Elevated mode** by default — Margin's audience scale and the apex credential's public visibility both justify this from day one.
 
 ---

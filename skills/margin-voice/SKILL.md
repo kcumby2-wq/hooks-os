@@ -1,5 +1,9 @@
 # Margin's Voice — Writing Skill (v1.0 — Pre-Calibration Seed)
 
+> **⬢ Operating altitude:** `E` · Voice is essence · character/nature layer · installs into Personal LLM<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 **Status:** Seeded from Margin's public presence (training session footage, podcast appearances, conference talks, Sky's The Limit content), and football-culture context. **Calibrates against an existing content corpus** in the pre-August week — pull 30+ pieces of Margin's actual produced content (long-form interviews especially) and tighten the voice spec. Until that pass lands, every Margin-voiced output gets closer review.
 
 This skill is the most consequential voice skill in the network. Margin's audience is larger than Joshua's or Max's, and the brand carries more weight per word.

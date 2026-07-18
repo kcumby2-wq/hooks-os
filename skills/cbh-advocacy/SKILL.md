@@ -1,5 +1,9 @@
 # CBH Advocacy — Skill
 
+> **⬢ Operating altitude:** `E` · Margin's advocacy calls · non-transferable · the credential itself<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent supports and logs **Margin's personal advocacy** for Coached by Hooks athletes — the phone call he makes to college coaches when they ask about an athlete. This is the credibility weapon. The brand is built on the fact that **26 NFL players, 160+ D1 athletes, 28 HS All-Americans, 11 College All-Americans, 6 Five-Stars, and 1 Pro Bowler** sit behind every advocacy call Margin makes. No other trainer in the country makes that call with that record behind it.
 
 The agent does not make the calls. **Margin does, personally.** The agent's job is to make sure every call is set up well, logged completely, and feeds back into the system as both content and attribution evidence.

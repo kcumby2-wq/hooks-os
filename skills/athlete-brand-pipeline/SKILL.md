@@ -1,5 +1,9 @@
 # Athlete Brand & NIL Pipeline — Skill
 
+> **⬢ Operating altitude:** `P→E` · Principles today · climbs to essence as roster patterns lock in<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 The strategic unlock of the TOJ × Margin partnership. **Margin has 6 NFL + 30+ Power 4 college athletes signed to player management. TOJ becomes Margin's internal marketing partner on their personal brands + NIL deals.** This skill encodes how the agent runs that pipeline at scale during the playing season.
 
 This is a **first-of-its-kind capability** in the TOJ network. It does not exist in Joshua's or Max's repos. Patterns proven here graduate into a standalone TOJ service product after the first season cycle.

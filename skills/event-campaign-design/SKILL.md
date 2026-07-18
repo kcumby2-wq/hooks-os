@@ -1,5 +1,9 @@
 # Event Campaign Design — Skill
 
+> **⬢ Operating altitude:** `P` · Principle-level: training session IS the camp pattern<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent designs and runs STL/CBH camps and events. Built on the season-campaign-plan insight: **the training session IS the camp.** Margin's existing DFW training operation already produces camp-grade content and credibility events every week — this skill's job is to make sure that gets captured and amplified, not to invent separate camp infrastructure from scratch.
 
 ---

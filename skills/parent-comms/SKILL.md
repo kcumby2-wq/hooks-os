@@ -1,5 +1,9 @@
 # Parent Comms — Skill
 
+> **⬢ Operating altitude:** `P` · Register + boundary principles · not scripts<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent writes to parents of training-client athletes (not the adult managed athletes — see `skills/athlete-brand-pipeline/SKILL.md` for that audience). US English, per `config.md`.
 
 ---

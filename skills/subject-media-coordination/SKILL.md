@@ -1,5 +1,9 @@
 # Subject Media Coordination — Skill
 
+> **⬢ Operating altitude:** `P` · Coordination doctrine · brief-writing discipline<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent works WITH Subject Media (and the SubjectSkillz creator team) without doing creator work itself. **This skill is a boundary rule as much as a workflow.** The agent orchestrates briefs, quality-checks output, and coordinates cadence — it does NOT produce final assets. Creators produce final assets.
 
 This is Margin-specific because Margin has Subject Media as a built-out content arm. Other clients in the network may not have a creator team yet, in which case this skill's structure adapts (the agent does more drafting; humans approve before posting). For Margin, the production capacity exists; the coordination is the value-add.

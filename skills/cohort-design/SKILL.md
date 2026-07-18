@@ -1,5 +1,9 @@
 # Cohort Design — Skill
 
+> **⬢ Operating altitude:** `P` · Repeatable pattern for cohort delivery<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent designs, populates, and runs **Sky's The Limit WR cohorts** — the Zoom-delivered, system-scaled training product that carries Margin's methodology to athletes who can't get to DFW in person. Same architectural pattern used across the TOJ network, tuned for STL's specific situation: apex-credentialed methodology, national/global reach, application-gated for brand protection.
 
 ---

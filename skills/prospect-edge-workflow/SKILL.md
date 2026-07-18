@@ -1,5 +1,9 @@
 # Prospect Edge Workflow — Skill
 
+> **⬢ Operating altitude:** `P` · Evaluation methodology · principle-anchored<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent runs STL/CBH athletes through the Prospect Edge evaluation platform under the TOJ × Optimum Grading affiliate. **Prospect Edge is the evaluation backbone for the entire TOJ network — this repo is where it runs at the highest volume**, given Margin's broad athlete base (training clients + 36+ managed athletes).
 
 ---

@@ -1,5 +1,9 @@
 # Gated Content Platform — Skill
 
+> **⬢ Operating altitude:** `T` · Infrastructure · reproducible access control<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the STL / CBH digital platform monetizes Margin's teaching library through a **three-layer content gate** modeled on Study.com's freemium video pattern. This skill exists because the platform is the point where Margin's audience becomes measurable revenue — every free short, every 2-minute preview, every membership signup, every cohort application feeds one data model.
 
 Not a marketing plan. A **repeatable operational unit** — same three-layer structure any Elite-tier trainer client in the TOJ Sports avenue receives as part of the $30K Elite Package.

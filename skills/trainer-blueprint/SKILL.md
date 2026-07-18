@@ -1,5 +1,9 @@
 # Trainer Blueprint — Skill
 
+> **⬢ Operating altitude:** `P` · Productized principle set · Margin's methodology installable<br>
+> **⬢ Trusted-agent spec (7Q):** shadow-pending · see [`_trusted-agent-spec.md`](../_trusted-agent-spec.md) · full protocol [/framework-ops#spec](https://fbtrainer-tojcampaign.vercel.app/framework-ops#spec)
+
+
 How the agent runs the **Coached by Hooks Trainer Blueprint** product — the apex of Margin's trainer funnel. **This is Margin's own product, building Margin's own certified-trainer lineage.** Other apex-tier trainers in the TOJ network (e.g., a future Premier Athletes / Sly Johnson repo) productize and sell *their own* Blueprint under *their own* brand name, with their own pricing, their own qualification gates, and their own network tier names — see `toj-network-brain/shared-standards/apex-tier-defaults.md` for the shared skill structure that each apex trainer's Blueprint follows independently. These are parallel, independent products — not one shared funnel with multiple sellers.
 
 The Trainer Blueprint is what a trainer pays Margin $3,500–5,000 to receive: his personal methodology, the blueprint for building a successful training business, access to the STL network, and the right to operate as an STL Certified Trainer.
