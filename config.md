@@ -198,4 +198,31 @@ engagement_monitoring:
 
 ---
 
+## Growth Autopilot (bundled in Trainer OS Tier 3 · added 2026-07-20)
+
+```yaml
+growth_autopilot:
+  status: bundled_in_tier_3    # Kyron confirmed 2026-07-20 — Growth Autopilot 2 loops included at no add'l cost
+  loops_included: 2            # standard Tier 3 allocation
+  loops_active: _____          # populated at kickoff — pick 2 from below
+  candidate_loops:
+    - "IG DM opener (Coached by Hooks inbound)"
+    - "IG post caption hook (Margin content)"
+    - "Cold email opener (STL cohort outreach)"
+    - "Newsletter subject line (once ESP live)"
+    - "Trainer Blueprint landing page hero copy"
+    - "Athlete Community landing page hero copy"
+  approval_authority: kyron_or_margin_approves_before_promotion
+  voice_drift_check: true      # against hooks-os voice-rules-v1.md
+  loop_runtime_repo: "kcumby2-wq/autoresearch-os"
+  weekly_report_day: friday
+  add_loop_pricing:
+    third_loop: 199_per_month
+    fourth_plus_loop: 149_per_month_each
+```
+
+Growth Autopilot infrastructure lives in [autoresearch-os](https://github.com/kcumby2-wq/autoresearch-os) (federation-peer to hooks-os). Loop selection happens at Hooks kickoff · Kyron approves winners weekly.
+
+---
+
 *Populate the `_____` fields during the pre-August walkthrough. This file is signed off the same way the Identity Blueprint is — in writing, before the system runs in production for season.*
