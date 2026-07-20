@@ -61,4 +61,51 @@ Margin's repo opens at v1.0 with twelve baked-in lessons that took the rest of t
 
 ---
 
+## 2026-07-20 · Pre-Season Walkthrough demo prompt authored (Fable delivery)
+
+**Feedback verbatim:** *"Ok prepare on for Margin hooks also then I will tell you if I want to do Fable on both of them or not."* — Kyron 2026-07-20
+
+**What shipped:**
+- New folder: `demos/`
+- `demos/margin-hooks-demo-prompt.md` — masterclass Fable prompt for the Pre-Season Walkthrough
+- `demos/README.md` — usage guide + cohort-peer/Trainer-Blueprint-buyer placeholders
+
+**Prompt structure (7 acts, ~7 minutes total):**
+1. Sunday Night · 0:00–0:20 · Margin's own week named (47 unread parent emails · 12 outreach drafts · 3 stalled NIL) · silence-as-design
+2. Brain Wakes Up · 0:20–0:55 · CLAUDE.md center · 13 skills · workflows · data · feedback · goals in orbital cascade
+3. Two Brands · One Operation · 0:55–1:35 · CBH (apex · gold cluster) vs STL (distribution · green cluster) · working principle reunion
+4. Watch It Move · 1:35–3:15 · Wednesday 9:14 PM Coppell WR mom email · full routing simulation · 90 sec agent + 8 sec Margin approval · then rapid 6-scenario montage
+5. Personal LLM Path · 3:15–4:15 · 12-month arc scrubber · Months 1-3 context loading → 4-6 skill building → 7-12 Personal LLM emergence → Year 2+ Margin's LLM (productizable IP)
+6. The Cohort · 4:15–5:00 · hooks-os + youngblood-os + patterson-os · Growth Autopilot 2 loops running
+7. The Athletes · 5:00–6:15 · silhouette callouts by school abbreviation · 26 NFL · 160+ D1 · "the brain runs so you can be with them"
+
+**Discipline embedded:**
+- Aesthetic contract: cooler black `#0B0B0F` + warm gold `#E4B95E` + field-green `#1E3A2C` accent (trainer register, not corporate)
+- Typography: Anton + Inter + JetBrains Mono
+- Motion language: easing over linear · slow reveal · never bounce/flash/spin/wiggle
+- 12 explicit anti-patterns (no CRM dashboard · no fitness-app tropes · no military framing · no full athlete names · no hype vocabulary)
+- 7 Chills Checkpoints (Sunday Night → Brain Wakes → Two Brands → Watch It Move → Personal LLM → Cohort → Athletes)
+- Live GitHub API integration (repo metadata · commits · skill files fetched at runtime)
+- Time-back counter running throughout (12.5 hrs/week → 260+ hrs/season by Act 7)
+- Voice register from `margin-voice/` carried throughout
+
+**Contrast with pylon-os/demos/pylon-ceo-demo-prompt.md:**
+
+| Dimension | Pylon CEO version | Margin Hooks version |
+|---|---|---|
+| Audience | Corporate CEO | 20-year trainer |
+| Palette | Pylon black + electric yellow | Cooler black + warm gold + field green |
+| Emotional arc | Curiosity → chills → conviction | Fatigue → relief → power → legacy |
+| Reveal moment | $2.9M–$4M revenue reveal (Act 6) | 260+ hrs/season back + Personal LLM as IP (Acts 5 + 7) |
+| Simulation | Pylon Regional Championship (15 skills routed, 96 pieces shipped) | Wednesday 9:14 PM Coppell mom email (90 sec agent + 8 sec approval) |
+| Human stakes | 1,261 teams · 117K athletes · 38+ states | 26 NFL · 160+ D1 · many since middle school |
+| Anti-patterns | No SaaS dashboard · no clip art | No CRM · no fitness-app tropes · no military framing |
+
+Same architecture · different soul.
+
+**Why this matters:**
+Kyron ships the prompt to a fresh Fable session. Fable outputs the HTML. Kyron presents to Margin during the Pre-Season Walkthrough Zoom in the first week of August. If the demo lands, Margin signs off on the Readiness Plan, locks in the "things you don't touch during season" list, and walks into pre-season calm. The demo is part of the closing motion for the August 10 critical deadline.
+
+---
+
 *Future entries follow the standard shape: feedback verbatim → what changed → which file the rule lives in.*
