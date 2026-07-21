@@ -114,6 +114,8 @@ Every pillar carries a 0–100 score. Every score above 40 carries retrievable e
 **One-week move.** Lock wave-one of the roster: name the specific athletes in the v1.0 brand-build cohort and get individual consent packages signed this week, not as a rolling background task.
 **Success signal.** A named wave-one roster with signed consent, and at least one athlete's folder fully populated as the template for the rest.
 
+**Beyond this transcript's horizon.** A Year 2+ asset is already named in the pre-season walkthrough materials: a 12-month arc that converts Margin's 20 years of coaching wisdom into a Personal LLM he owns as productizable IP — the same shape as the Trainer Blueprint, one tier up. It doesn't move this transcript's score; it isn't a pre-August-10 gap. It's the next Growth Readiness horizon once the ladder, the storefront, and the log are running.
+
 ---
 
 ## 03 · Weakest pillar — Revenue Architecture: 39/100.
