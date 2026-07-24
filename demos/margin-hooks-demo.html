@@ -1,11 +1,12 @@
 <!--
-  Margin Hooks Operating Brain · Trainer Demo · v2.0 SPATIAL
+  Margin Hooks Operating Brain · Trainer Demo · v3.0 4D
   For presentation to Margin Hooks · Pre-Season Walkthrough Zoom · 2026-08 week 1
   Repo: github.com/kcumby2-wq/hooks-os
 
-  v2.0: full 3D perspective engine · camera flies through the brain ·
-  Act 4 email-comet routing in space · Act 5 12-month flight through
-  Personal-LLM gates · drag to orbit · scroll to zoom · parallax dust
+  v3.0 4D: camera roll/banking · warp-streak motion blur · world-lines
+  through time · interactive time scrub (drag in Act 5) · live T+months
+  readout · gyroscopic core rings · orbiting satellites · perspective
+  grid floor · continuous world rotation · speed-reactive FOV
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +39,9 @@ body{position:fixed;inset:0}
 #hud-repo{top:24px;right:32px;text-align:right;max-width:400px;line-height:1.5;font-size:10px}
 #hint{bottom:24px;right:32px;font-size:10px;color:var(--muted)}
 #act-label{bottom:24px;left:32px;color:var(--gold);font-weight:600;opacity:.5}
+
+#era{position:fixed;top:88px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:12px;letter-spacing:.3em;color:var(--gold);z-index:15;opacity:0;transition:opacity .8s;text-transform:uppercase;pointer-events:none}
+#era.show{opacity:.9}
 
 #timeback{position:fixed;bottom:64px;left:32px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);z-index:10;pointer-events:none;opacity:0;transition:opacity .6s}
 #timeback.show{opacity:1}
@@ -139,8 +143,9 @@ body{position:fixed;inset:0}
 
 <div id="hud-brand" class="hud"><b>hooks-os</b> · your operating brain</div>
 <div id="hud-repo" class="hud">github.com/kcumby2-wq/hooks-os<br><span id="repo-commit">13 skills · CBH × STL</span></div>
-<div id="hint" class="hud">DRAG ORBIT · SCROLL ZOOM · SPACE PAUSE · ← → ACTS · F FULLSCREEN · R RESTART</div>
+<div id="hint" class="hud">DRAG ORBIT · ACT 5 DRAG = TIME · SCROLL ZOOM · SPACE · ← → · F · R</div>
 <div id="act-label" class="hud"></div>
+<div id="era">T+0 MONTHS</div>
 <div id="timeback">
   <span class="n" id="tb-n">0</span>
   <span class="l" id="tb-l">HOURS BACK THIS WEEK</span>
@@ -257,7 +262,6 @@ const SKILLS = [
 ["engagement-monitoring","content","P","Content cadence tracking. Drift signals surface before they become problems."]
 ];
 
-/* 3D shells: CBH cluster tilts left-forward · STL tilts right-back */
 const SHELLS = {
   voice:{r:0, tx:0, tz:0, ph:0},
   cbh:{r:250, tx:0.55, tz:-0.35, ph:0.4},
@@ -295,7 +299,8 @@ const nodes=SKILLS.map(([name,domain,alt,desc],i)=>{
     wx=p[0]+jit(i*3+1,30);wy=p[1]+jit(i*3+2,30);wz=p[2]+jit(i*3+3,30);
   }
   const side = domain==="cbh"?-1 : domain==="stl"?1 : 0;
-  return{name,domain,alt,desc,side, wx,wy,wz, bx:wx,
+  return{name,domain,alt,desc,side, wy,wz, bx:wx,
+    cx:wx,cy:wy,cz:wz,
     lit:0,tlit:0, hi:0,thi:0, labelT:0, sx:0,sy:0,ss:0,sz:1e9};
 });
 
@@ -316,7 +321,13 @@ for(let i=0;i<420;i++){
   dust.push({x:jit(i*7+1,1)*2200,y:jit(i*7+2,1)*1400,z:-3800+((i*233)%9000)});
 }
 
-/* Act 5 gates: 12-month flight */
+/* gyroscopic rings around the core — the brain reads as a machine */
+const RINGS=[
+  {r:95, tx:0.9,  tz:0.2,  sp:0.00045},
+  {r:132,tx:-0.4, tz:0.7,  sp:-0.00032},
+  {r:170,tx:0.25, tz:-0.55,sp:0.00022}
+];
+
 const GATES=[
   {z:600, y:"MONTHS 1-3", c:"CONTEXT LOADING · VOICE RULES REFINED · THE BRAIN LEARNS YOUR BASELINE"},
   {z:1800, y:"MONTHS 4-6", c:"SKILL BUILDING · AGENTS GRADUATE SIMULATION → LIVE · MONDAY BRIEF SHIPS"},
@@ -324,7 +335,6 @@ const GATES=[
   {z:4200, y:"YEAR 2+", c:"YOUR LLM · YOUR IP · PRODUCTIZABLE LIKE YOUR TRAINER BLUEPRINT"}
 ];
 
-/* Act 6 cohort spheres */
 const SPHERES=[
   {x:0,y:0,z:0,r:150,label:"HOOKS-OS",sub:"FLAGSHIP · 26 NFL · 160+ D1",primary:true},
   {x:-820,y:-30,z:240,r:88,label:"YOUNGBLOOD-OS",sub:"COHORT PEER · GRADUATE TRACK",primary:false},
@@ -333,7 +343,6 @@ const SPHERES=[
   {x:420,y:430,z:480,r:60,label:"PYLON-OS",sub:"FEDERATION SIBLING · NOT YOUR OPS",primary:false,dim:true}
 ];
 
-/* Act 7 billboards */
 const BILLBOARDS=[
   {z:700,t:"WR · COPPELL",sub:"handled by parent-comms · shipped before you woke up",gold:true},
   {z:1600,t:"WR · BUCKS",sub:"film reviewed · outreach draft in queue",gold:true},
@@ -346,14 +355,14 @@ const BILLBOARDS=[
   {z:7100,t:"MANY SINCE MIDDLE SCHOOL.",sub:"",gold:true}
 ];
 
-/* Act 4 comet path: inbound → parent-comms → margin-voice → athlete-brand-pipeline → approve */
-function nodePos(name){const n=nodes.find(x=>x.name===name);return n?[n.wx,n.wy,n.wz]:[0,0,0]}
+/* comet path resolved live so it tracks the rotating world */
+function nodeCur(name){const n=nodes.find(x=>x.name===name);return n?[n.cx,n.cy,n.cz]:[0,0,0]}
 const COMET_PATH=[
-  [1600,-700,-1500],
-  nodePos("parent-comms"),
-  nodePos("margin-voice"),
-  nodePos("athlete-brand-pipeline"),
-  [0,-40,-420]
+  ()=>[1600,-700,-1500],
+  ()=>nodeCur("parent-comms"),
+  ()=>nodeCur("margin-voice"),
+  ()=>nodeCur("athlete-brand-pipeline"),
+  ()=>[0,-40,-420]
 ];
 const SIM_NODE_HITS=["parent-comms","margin-voice","athlete-brand-pipeline","cbh-advocacy"];
 
@@ -363,13 +372,15 @@ const state={
   mode:"graph",
   split:0,tsplit:0,
   cometT:-1, cometTrail:[],
-  focus:null,focusW:0,
-  particles:[],
   hoverNode:null,
   mouseX:0,mouseY:0,
   dragging:false,lastMX:0,lastMY:0,
   yawOff:0,pitchOff:0,fovMul:1,
-  cam:{x:0,y:0,z:-1500,rx:0,ry:0},
+  cam:{x:0,y:0,z:-1500,rx:0,ry:0,rz:0},
+  prevCam:{x:0,y:0,z:-1500},
+  camSpeed:0, fovKick:0,
+  worldYaw:0,
+  timeScrub:0, ttimeScrub:0,
   dimGraph:0,
   timeBack:0,ttimeBack:0
 };
@@ -394,11 +405,10 @@ function orbitCam(r,yaw,pitch,tx=0,ty=0,tz=0){
 function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
 
 function cometPos(t){
-  /* piecewise catmull-ish lerp across path points */
   const seg=COMET_PATH.length-1;
   const ft=Math.max(0,Math.min(0.999,t))*seg;
   const i=Math.floor(ft), f=ft-i;
-  const a=COMET_PATH[i], b=COMET_PATH[i+1];
+  const a=COMET_PATH[i](), b=COMET_PATH[i+1]();
   const e=f*f*(3-2*f);
   return[a[0]+(b[0]-a[0])*e, a[1]+(b[1]-a[1])*e - Math.sin(f*Math.PI)*60, a[2]+(b[2]-a[2])*e];
 }
@@ -408,7 +418,6 @@ function camGoal(act,u,ts){
     case 1:{const z=-2100+ease(u)*1150;return lookAt(0,0,z,0,0,0);}
     case 2:{const r=500+ease(u)*430;return orbitCam(r,u*0.9,0.22-u*0.06);}
     case 3:{
-      /* arc from CBH side to STL side and settle center */
       const yaw=-0.9+ease(u)*1.8;
       const r=760-Math.sin(u*Math.PI)*180;
       return orbitCam(r,yaw,0.16);
@@ -421,11 +430,27 @@ function camGoal(act,u,ts){
       }
       return orbitCam(780,0.4+u*0.5,0.18);
     }
-    case 5:{const z=-600+u*5600;return{x:Math.sin(u*6)*60,y:Math.cos(u*5)*40,z,rx:0,ry:0};}
+    case 5:{
+      /* THE 4TH DIMENSION — flight through time · drag scrubs the timeline */
+      const z=-600+u*5600+state.timeScrub;
+      return{x:Math.sin(u*6)*60,y:Math.cos(u*5)*40,z,rx:0,ry:0};
+    }
     case 6:{const z=-2200+ease(u)*240;return lookAt(0,-30,z,0,40,120);}
     case 7:{const z=-500+u*8300;return{x:Math.sin(u*4)*40,y:0,z,rx:0,ry:0};}
   }
   return state.cam;
+}
+
+/* camera roll — the spacecraft banks through turns */
+function rollFor(act,u,ts){
+  switch(act){
+    case 2:return Math.sin(u*Math.PI)*0.05;
+    case 3:return -Math.sin(u*Math.PI*2)*0.10;
+    case 4:return Math.sin(ts*0.4)*0.03;
+    case 5:return Math.sin(ts*0.35)*0.07;
+    case 7:return Math.sin(ts*0.25)*0.05;
+  }
+  return 0;
 }
 
 function project(wx,wy,wz){
@@ -433,16 +458,23 @@ function project(wx,wy,wz){
   let x=wx-c.x,y=wy-c.y,z=wz-c.z;
   const cy=Math.cos(c.ry+state.yawOff+state.mouseX*0.05),sy=Math.sin(c.ry+state.yawOff+state.mouseX*0.05);
   let x1=x*cy-z*sy,z1=x*sy+z*cy;
-  const cx=Math.cos(c.rx+state.pitchOff+state.mouseY*0.035),sx=Math.sin(c.rx+state.pitchOff+state.mouseY*0.035);
-  let y1=y*cx-z1*sx,z2=y*sx+z1*cx;
+  const cxx=Math.cos(c.rx+state.pitchOff+state.mouseY*0.035),sxx=Math.sin(c.rx+state.pitchOff+state.mouseY*0.035);
+  let y1=y*cxx-z1*sxx,z2=y*sxx+z1*cxx;
   if(z2<NEAR)return null;
-  const f=(FOV*state.fovMul)/z2;
+  /* roll — screen-space bank */
+  const rl=c.rz||0;
+  if(rl){
+    const cr=Math.cos(rl),sr=Math.sin(rl);
+    const xr=x1*cr-y1*sr, yr=x1*sr+y1*cr;
+    x1=xr;y1=yr;
+  }
+  const f=(FOV*state.fovMul*(1+state.fovKick))/z2;
   return{x:CX+x1*f,y:CY+y1*f,s:f,z:z2};
 }
 function fog(z){if(z<FOG0)return 1;if(z>FOG1)return 0;return 1-(z-FOG0)/(FOG1-FOG0);}
 
 function hideAll(){
-  ["act1","act2","simctrl","sim-hud","sim-draft","sim-summary","gate-cap","pllm-final","cohort-note","closing"].forEach(id=>{
+  ["act1","act2","simctrl","sim-hud","sim-draft","sim-summary","gate-cap","pllm-final","cohort-note","closing","era"].forEach(id=>{
     document.getElementById(id).classList.remove("show");
   });
   document.getElementById("act3-label").classList.remove("show");
@@ -456,9 +488,10 @@ function hide(id){document.getElementById(id).classList.remove("show")}
 function enterAct(n){
   cues=[];hideAll();
   state.act=n;state.actStart=state.now;
-  state.focus=null;state.focusW=0;state.dimGraph=0;
+  state.dimGraph=0;
   state.cometT=-1;state.cometTrail=[];
   state.yawOff=0;state.pitchOff=0;
+  state.timeScrub=0;state.ttimeScrub=0;
   document.getElementById("act-label").textContent=ACT_LABELS[n]||"";
 
   state.mode=(n===5)?"tunnel":(n===6)?"spheres":(n===7)?"drift":"graph";
@@ -489,7 +522,7 @@ function enterAct(n){
     cue(5200,()=>{hide("simctrl");startSim();});
   }
   if(n===5){
-    cue(600,()=>show("gate-cap"));
+    cue(600,()=>{show("gate-cap");show("era");});
     cue(ACT_DUR[5]-9000,()=>{hide("gate-cap");show("pllm-final");});
   }
   if(n===6){
@@ -541,7 +574,6 @@ function startSim(){
 
 function tickComet(dt,actEl){
   if(state.act!==4||state.cometT<0)return;
-  /* comet travels over sim window 5.2s..40s */
   const t0=800, t1=36000;
   const raw=(actEl-5200-t0)/(t1-t0);
   state.cometT=Math.max(0,Math.min(1.05,raw));
@@ -561,7 +593,11 @@ function lerpAngle(a,b,t){
 }
 
 function tick(dt){
-  if(!state.paused)state.now+=dt;
+  if(!state.paused){
+    state.now+=dt;
+    /* the world itself never stops turning — parallax even at rest */
+    state.worldYaw+=dt*0.00004;
+  }
   const el=state.now-state.actStart;
   const dur=ACT_DUR[state.act]||30000;
   const u=Math.min(1,el/dur);
@@ -569,23 +605,38 @@ function tick(dt){
   cues.forEach(c=>{if(!c.done&&el>=c.at){c.done=true;c.fn();}});
   tickComet(dt,el);
 
+  /* time scrub — Act 5 drag moves you through time by hand */
+  state.timeScrub=lerp(state.timeScrub,state.ttimeScrub,0.08);
+  if(!state.dragging)state.ttimeScrub*=0.985;
+
   const goal=camGoal(state.act,u,el/1000);
+  goal.rz=rollFor(state.act,u,el/1000);
   state.cam.x=lerp(state.cam.x,goal.x,0.045);
   state.cam.y=lerp(state.cam.y,goal.y,0.045);
   state.cam.z=lerp(state.cam.z,goal.z,0.045);
   state.cam.rx=lerpAngle(state.cam.rx,goal.rx,0.055);
   state.cam.ry=lerpAngle(state.cam.ry,goal.ry,0.055);
+  state.cam.rz=lerpAngle(state.cam.rz||0,goal.rz||0,0.05);
+
+  /* speed → FOV kick (acceleration you can feel) + warp streaks */
+  const vx=state.cam.x-state.prevCam.x, vy=state.cam.y-state.prevCam.y, vz=state.cam.z-state.prevCam.z;
+  state.camSpeed=Math.hypot(vx,vy,vz);
+  state.fovKick=lerp(state.fovKick,Math.min(0.16,state.camSpeed*0.0022),0.08);
 
   state.linesA=state.linesOn?Math.min(1,state.linesA+0.008):Math.max(0,state.linesA-0.02);
   state.split=lerp(state.split,state.tsplit,0.03);
   state.timeBack=lerp(state.timeBack,state.ttimeBack,0.03);
 
+  /* world rotation: recompute current node coords */
+  const cw=Math.cos(state.worldYaw), sw=Math.sin(state.worldYaw);
   nodes.forEach(n=>{
     n.lit=lerp(n.lit,n.tlit,0.08);
     n.hi=lerp(n.hi,n.thi,0.15);
     if(n.labelT>0)n.labelT-=dt;
-    /* CBH/STL split pushes clusters apart in X during act 3 */
-    n.wx=n.bx+n.side*state.split*170;
+    const px=n.bx+n.side*state.split*170;
+    n.cx=px*cw+n.wz*sw;
+    n.cy=n.wy;
+    n.cz=-px*sw+n.wz*cw;
   });
 
   if(state.act===5){
@@ -593,6 +644,10 @@ function tick(dt){
     for(const g of GATES){if(state.cam.z>g.z-800)cur=g;}
     document.getElementById("gc-y").textContent=cur.y;
     document.getElementById("gc-c").textContent=cur.c;
+    /* live 4D readout — months advance as you fly */
+    const months=Math.max(0,Math.min(24,Math.round((state.cam.z+600)/4800*12)));
+    document.getElementById("era").textContent=
+      months<=12?`T+${months} MONTHS`:`YEAR 2 · MONTH ${months-12}`;
   }
 
   const tbn=document.getElementById("tb-n");
@@ -602,16 +657,30 @@ function tick(dt){
   if(!state.paused&&u>=1&&state.act<7)enterAct(state.act+1);
 
   render();
+
+  state.prevCam.x=state.cam.x;state.prevCam.y=state.cam.y;state.prevCam.z=state.cam.z;
 }
 
 function render(){
   ctx.clearRect(0,0,CW,CH);
 
+  /* dust — stretches into warp streaks at speed */
+  const vx=state.cam.x-state.prevCam.x, vy=state.cam.y-state.prevCam.y, vz=state.cam.z-state.prevCam.z;
+  const fast=state.camSpeed>2.2;
   dust.forEach(d=>{
     const p=project(d.x,d.y,d.z);
     if(!p)return;
     const a=fog(p.z)*0.2;
     if(a<=0.005)return;
+    if(fast){
+      const q=project(d.x-vx*2.6,d.y-vy*2.6,d.z-vz*2.6);
+      if(q&&(Math.abs(q.x-p.x)>1.2||Math.abs(q.y-p.y)>1.2)){
+        ctx.strokeStyle=`rgba(245,241,232,${a})`;
+        ctx.lineWidth=Math.max(0.6,p.s*1.2);
+        ctx.beginPath();ctx.moveTo(q.x,q.y);ctx.lineTo(p.x,p.y);ctx.stroke();
+        return;
+      }
+    }
     ctx.fillStyle=`rgba(245,241,232,${a})`;
     ctx.fillRect(p.x,p.y,Math.max(0.6,p.s*1.4),Math.max(0.6,p.s*1.4));
   });
@@ -626,12 +695,56 @@ function render(){
 function renderGraph(){
   const dim=state.dimGraph?0.12:1;
 
+  /* perspective grid floor — the space has a ground */
+  {
+    const ga=0.05*(state.dimGraph?0.3:1);
+    ctx.lineWidth=0.6;
+    for(let xi=-1600;xi<=1600;xi+=320){
+      const p1=project(xi,540,-1400), p2=project(xi,540,1400);
+      if(!p1||!p2)continue;
+      const mid=project(xi,540,0);
+      const fg=mid?fog(mid.z):0.3;
+      if(ga*fg<=0.004)continue;
+      ctx.strokeStyle=`rgba(228,185,94,${ga*fg})`;
+      ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+    }
+    for(let zi=-1400;zi<=1400;zi+=280){
+      const p1=project(-1600,540,zi), p2=project(1600,540,zi);
+      if(!p1||!p2)continue;
+      const mid=project(0,540,zi);
+      const fg=mid?fog(mid.z):0.3;
+      if(ga*fg<=0.004)continue;
+      ctx.strokeStyle=`rgba(228,185,94,${ga*fg})`;
+      ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+    }
+  }
+
+  /* gyroscopic rings around the core */
+  const coreLit=nodes[0].lit;
+  if(coreLit>0.1){
+    const cw=Math.cos(state.worldYaw), sw=Math.sin(state.worldYaw);
+    RINGS.forEach(rg=>{
+      for(let k=0;k<40;k++){
+        const th=k/40*Math.PI*2 + state.now*rg.sp;
+        let p=[rg.r*Math.cos(th),0,rg.r*Math.sin(th)];
+        p=rotX(p,rg.tx);p=rotZ(p,rg.tz);
+        const rx2=p[0]*cw+p[2]*sw, rz2=-p[0]*sw+p[2]*cw;
+        const pr=project(rx2,p[1],rz2);
+        if(!pr)continue;
+        const fg=fog(pr.z)*(state.dimGraph?0.25:1);
+        if(fg<=0.02)continue;
+        ctx.fillStyle=`rgba(228,185,94,${0.30*coreLit*fg})`;
+        ctx.fillRect(pr.x,pr.y,Math.max(0.7,1.3*pr.s),Math.max(0.7,1.3*pr.s));
+      }
+    });
+  }
+
   if(state.linesA>0.02){
     ctx.lineWidth=0.7;
     edges.forEach(([a,b])=>{
       const na=nodes[a],nb=nodes[b];
       if(na.lit<0.3||nb.lit<0.3)return;
-      const pa=project(na.wx,na.wy,na.wz),pb=project(nb.wx,nb.wy,nb.wz);
+      const pa=project(na.cx,na.cy,na.cz),pb=project(nb.cx,nb.cy,nb.cz);
       if(!pa||!pb)return;
       const al=state.linesA*0.09*Math.min(fog(pa.z),fog(pb.z))*dim;
       if(al<0.004)return;
@@ -640,18 +753,22 @@ function renderGraph(){
     });
   }
 
+  /* hover: energy flows along the dependency lines */
   if(state.hoverNode!==null){
     const na=nodes[state.hoverNode];
-    const pa=project(na.wx,na.wy,na.wz);
+    const pa=project(na.cx,na.cy,na.cz);
     if(pa){
       ctx.lineWidth=1.3;
+      ctx.setLineDash([6,10]);
+      ctx.lineDashOffset=-(state.now*0.02)%16;
       nodeRefs.get(state.hoverNode).forEach(j=>{
         const nb=nodes[j];
-        const pb=project(nb.wx,nb.wy,nb.wz);
+        const pb=project(nb.cx,nb.cy,nb.cz);
         if(!pb)return;
         ctx.strokeStyle=`rgba(228,185,94,${0.5*fog(pb.z)})`;
         ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(pb.x,pb.y);ctx.stroke();
       });
+      ctx.setLineDash([]);
     }
   }
 
@@ -680,7 +797,7 @@ function renderGraph(){
   const list=[];
   nodes.forEach((n,i)=>{
     if(n.lit<0.02)return;
-    const p=project(n.wx,n.wy,n.wz);
+    const p=project(n.cx,n.cy,n.cz);
     n.sx=p?p.x:-9999;n.sy=p?p.y:-9999;n.ss=p?p.s:0;n.sz=p?p.z:1e9;
     if(p)list.push({n,p,i});
   });
@@ -693,7 +810,6 @@ function renderGraph(){
     const base=(isC?7:4.5)+n.hi*4;
     const size=Math.max(1,base*p.s);
 
-    /* gold for CBH side · field-green for STL side */
     const tint=n.side===1?"74,143,95":"228,185,94";
 
     if((n.lit>0.5||n.hi>0.2)&&p.s>0.12){
@@ -712,6 +828,16 @@ function renderGraph(){
     ctx.fillStyle=color;
     ctx.beginPath();ctx.arc(p.x,p.y,size,0,Math.PI*2);ctx.fill();
 
+    /* satellites orbit the firing skills */
+    if(n.hi>0.25&&p.s>0.2){
+      for(let k=0;k<3;k++){
+        const ang=state.now*0.004+k*2.094+i;
+        const ox=Math.cos(ang)*size*4.6, oy=Math.sin(ang)*size*4.6*0.42;
+        ctx.fillStyle=`rgba(228,185,94,${0.8*n.hi*fg})`;
+        ctx.beginPath();ctx.arc(p.x+ox,p.y+oy,Math.max(1,1.5*p.s),0,Math.PI*2);ctx.fill();
+      }
+    }
+
     const wantLabel=isC||i===state.hoverNode||n.labelT>0||n.hi>0.5;
     if(wantLabel&&p.s>0.28&&fg>0.25){
       const la=Math.min(1,n.labelT>0?n.labelT/900:1)*fg;
@@ -724,16 +850,30 @@ function renderGraph(){
 }
 
 function renderTunnel(){
-  /* gates as rings of dots flown through */
+  /* WORLD-LINES — each skill draws its own line through time */
+  ctx.lineWidth=0.6;
+  for(let gi=0;gi<GATES.length-1;gi++){
+    nodes.forEach((n,ni)=>{
+      if(ni%2)return;
+      const pa=project(n.bx*0.5,n.wy*0.5,n.wz*0.5+GATES[gi].z);
+      const pb=project(n.bx*0.5,n.wy*0.5,n.wz*0.5+GATES[gi+1].z);
+      if(!pa||!pb)return;
+      const al=0.07*Math.min(fog(pa.z),fog(pb.z));
+      if(al<=0.004)return;
+      ctx.strokeStyle=`rgba(228,185,94,${al})`;
+      ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(pb.x,pb.y);ctx.stroke();
+    });
+  }
+
+  /* gates as rings flown through — tint matures gold → field-green */
   GATES.forEach((g,gi)=>{
     const N=26;
     for(let k=0;k<N;k++){
-      const th=k/N*Math.PI*2;
+      const th=k/N*Math.PI*2 + state.now*0.00018*(gi%2?1:-1);
       const p=project(Math.cos(th)*300,Math.sin(th)*300,g.z);
       if(!p)continue;
       const fg=fog(p.z);
       if(fg<=0.01)continue;
-      /* later gates tinted greener — the brain matures */
       const mix=gi/(GATES.length-1);
       const r=Math.round(228+(74-228)*mix);
       const gg=Math.round(185+(143-185)*mix);
@@ -749,17 +889,29 @@ function renderTunnel(){
       ctx.fillText(g.y,pm.x,pm.y);
     }
   });
-  /* mini brain travels with the viewer at each gate: draw constellation faint at each gate z */
+
+  /* brain state at each gate — denser as it matures · temporal echo behind */
   GATES.forEach((g,gi)=>{
     const density=0.4+gi*0.2;
     nodes.forEach((n,ni)=>{
       if(ni%2===1&&gi<2)return;
       const p=project(n.bx*0.5,n.wy*0.5,n.wz*0.5+g.z);
-      if(!p)return;
-      const fg=fog(p.z);
-      if(fg<=0.01)return;
-      ctx.fillStyle=`rgba(228,185,94,${0.5*density*fg})`;
-      ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.6,2*p.s),0,Math.PI*2);ctx.fill();
+      if(p){
+        const fg=fog(p.z);
+        if(fg>0.01){
+          ctx.fillStyle=`rgba(228,185,94,${0.5*density*fg})`;
+          ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.6,2*p.s),0,Math.PI*2);ctx.fill();
+        }
+      }
+      /* echo: the same brain, a moment later in time */
+      const q=project(n.bx*0.5,n.wy*0.5,n.wz*0.5+g.z+260);
+      if(q){
+        const fq=fog(q.z);
+        if(fq>0.01){
+          ctx.fillStyle=`rgba(228,185,94,${0.18*density*fq})`;
+          ctx.beginPath();ctx.arc(q.x,q.y,Math.max(0.5,1.6*q.s),0,Math.PI*2);ctx.fill();
+        }
+      }
     });
   });
 }
@@ -788,8 +940,9 @@ function renderSpheres(){
       gg.addColorStop(1,"rgba(228,185,94,0)");
       ctx.fillStyle=gg;
       ctx.beginPath();ctx.arc(p.x,p.y,r*2.2,0,Math.PI*2);ctx.fill();
+      /* live mini-brain rotating inside the flagship sphere */
       nodes.forEach(n=>{
-        const q=project(n.bx*0.22,n.wy*0.22,n.wz*0.22);
+        const q=project(n.cx*0.22,n.cy*0.22,n.cz*0.22);
         if(!q)return;
         ctx.fillStyle=`rgba(228,185,94,${0.5*a})`;
         ctx.beginPath();ctx.arc(q.x,q.y,Math.max(0.6,1.4*q.s),0,Math.PI*2);ctx.fill();
@@ -838,9 +991,14 @@ canvas.addEventListener("mousemove",e=>{
   state.mouseX=(e.clientX/CW-0.5)*2;
   state.mouseY=(e.clientY/CH-0.5)*2;
   if(state.dragging){
-    state.yawOff+=(e.clientX-state.lastMX)*0.0032;
-    state.pitchOff+=(e.clientY-state.lastMY)*0.0022;
-    state.pitchOff=Math.max(-0.7,Math.min(0.7,state.pitchOff));
+    if(state.act===5){
+      /* drag = move through time */
+      state.ttimeScrub=Math.max(-1500,Math.min(2200,state.ttimeScrub-(e.clientX-state.lastMX)*4));
+    }else{
+      state.yawOff+=(e.clientX-state.lastMX)*0.0032;
+      state.pitchOff+=(e.clientY-state.lastMY)*0.0022;
+      state.pitchOff=Math.max(-0.7,Math.min(0.7,state.pitchOff));
+    }
     state.lastMX=e.clientX;state.lastMY=e.clientY;
     return;
   }
@@ -899,7 +1057,9 @@ addEventListener("keydown",e=>{
   if(e.key==="r"||e.key==="R"){
     nodes.forEach(n=>{n.tlit=0;n.thi=0;n.lit=0;n.hi=0;n.labelT=0});
     state.linesA=0;state.fovMul=1;state.timeBack=0;state.ttimeBack=0;
-    state.cam={x:0,y:0,z:-2100,rx:0,ry:0};
+    state.timeScrub=0;state.ttimeScrub=0;state.fovKick=0;
+    state.cam={x:0,y:0,z:-2100,rx:0,ry:0,rz:0};
+    state.prevCam={x:0,y:0,z:-2100};
     document.getElementById("tb-l").textContent="HOURS BACK THIS WEEK";
     document.getElementById("timeback").classList.remove("show");
     enterAct(1);
@@ -908,7 +1068,7 @@ addEventListener("keydown",e=>{
   if(num>=1&&num<=7)enterAct(num);
 });
 
-setTimeout(()=>{document.getElementById("hint").style.opacity=0},7000);
+setTimeout(()=>{document.getElementById("hint").style.opacity=0},9000);
 
 fetch("https://api.github.com/repos/kcumby2-wq/hooks-os/commits?per_page=1")
   .then(r=>r.ok?r.json():null)
