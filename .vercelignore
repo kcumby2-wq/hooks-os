@@ -1,0 +1,19 @@
+# Vercel deployment excludes — only demos/ + README.md + vercel.json ship
+
+CLAUDE.md
+config.md
+improvements.md
+STL-10-of-10-Readiness-Plan.md
+STL-Platform-Build-Plan.md
+SkysTheLimit-Site-Rebuild-Plan.md
+data/
+feedback/
+goals/
+output/
+scripts/
+skills/
+workflows/
+
+node_modules/
+.git
+.DS_Store
