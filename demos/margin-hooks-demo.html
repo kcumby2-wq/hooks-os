@@ -1,0 +1,918 @@
+<!--
+  Margin Hooks Operating Brain · Trainer Demo · v1.0
+  For presentation to Margin Hooks · Pre-Season Walkthrough Zoom · 2026-08 week 1
+  Repo: github.com/kcumby2-wq/hooks-os
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280,initial-scale=1">
+<title>HOOKS-OS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0B0F; --gold:#E4B95E; --field:#1E3A2C; --off:#F5F1E8;
+  --muted:#2B2B33; --dim:#6E6E76;
+  --anton:'Anton',Impact,'Segoe UI Black',system-ui,sans-serif;
+  --inter:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:var(--bg);color:var(--off);font-family:var(--inter);overflow:hidden;width:100vw;height:100vh}
+body{position:fixed;inset:0}
+#stage{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+
+.hud{position:fixed;font-family:var(--mono);text-transform:uppercase;letter-spacing:.15em;font-size:11px;color:var(--dim);z-index:10;pointer-events:none;transition:opacity .8s cubic-bezier(.65,0,.35,1)}
+#hud-brand{top:24px;left:32px}
+#hud-brand b{color:var(--off);font-weight:400}
+#hud-repo{top:24px;right:32px;text-align:right;max-width:400px;line-height:1.5;font-size:10px}
+#hint{bottom:24px;right:32px;font-size:10px;color:var(--muted)}
+#act-label{bottom:24px;left:32px;color:var(--gold);font-weight:600;opacity:.5}
+#timeback{position:fixed;bottom:64px;left:32px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);z-index:10;pointer-events:none;opacity:0;transition:opacity .6s}
+#timeback.show{opacity:1}
+#timeback .n{font-family:var(--anton);color:var(--gold);font-size:1.8rem;letter-spacing:.02em;display:block;line-height:1}
+#timeback .l{color:var(--dim);margin-top:4px}
+
+.overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none;z-index:20;text-align:center;padding:0 40px;opacity:0;transition:opacity 1.2s cubic-bezier(.65,0,.35,1)}
+.overlay.show{opacity:1}
+.overlay h1{font-family:var(--anton);text-transform:uppercase;letter-spacing:.04em;line-height:1.05;font-weight:400}
+.overlay h1.small{font-size:1.6rem;letter-spacing:.15em}
+.overlay h1.mid{font-size:2.8rem;letter-spacing:.08em}
+.overlay h1.big{font-size:5rem;letter-spacing:.02em}
+.overlay .sub{font-family:var(--mono);text-transform:uppercase;letter-spacing:.25em;font-size:12px;color:var(--gold);margin-bottom:24px}
+.overlay .gold{color:var(--gold)}
+.overlay .field{color:#4A8F5F}
+.overlay .caption{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:11px;color:var(--dim);margin-top:24px}
+
+/* Act 1 sunday lines */
+#act1{display:flex;flex-direction:column;gap:1.4rem;justify-content:center}
+#act1 .line{font-family:var(--inter);font-size:1.15rem;color:var(--off);opacity:0;transition:opacity 1s cubic-bezier(.65,0,.35,1);letter-spacing:.02em}
+#act1 .line.on{opacity:.75}
+#act1 .capstone{opacity:0;transition:opacity 1.2s cubic-bezier(.65,0,.35,1);margin-top:2rem}
+#act1 .capstone.on{opacity:1}
+
+/* Act 3 two brands */
+#act3-label{position:fixed;top:100px;left:50%;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity 1s}
+#act3-label.show{opacity:1}
+#act3-label .titles{font-family:var(--anton);font-size:1.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--off)}
+#act3-label .titles .cbh{color:var(--gold)}
+#act3-label .titles .stl{color:#4A8F5F}
+#act3-label .roles{font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);margin-top:8px}
+
+#act3-principle{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity 1s;font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--off);line-height:2}
+#act3-principle.show{opacity:1}
+#act3-principle .q{color:var(--dim);margin-right:12px}
+#act3-principle .a{color:var(--gold);font-weight:600}
+#act3-principle .a.field{color:#6BAF7F}
+
+/* Act 4 sim */
+#sim-hud{position:fixed;left:32px;top:50%;transform:translateY(-50%);z-index:15;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity .6s;max-width:340px;line-height:1.9}
+#sim-hud.show{opacity:1}
+#sim-hud .line{opacity:0;transition:opacity .5s;padding:6px 0 6px 12px;border-left:2px solid var(--gold);margin-bottom:8px}
+#sim-hud .line.on{opacity:1}
+#sim-hud .line .t{color:var(--off);font-weight:600;display:block;font-size:10px}
+#sim-hud .line .a{color:var(--dim);font-weight:400;text-transform:none;letter-spacing:.05em;font-size:11px}
+
+#sim-draft{position:fixed;right:32px;bottom:80px;z-index:15;max-width:340px;padding:20px;border:1px solid var(--muted);opacity:0;transition:opacity .8s;background:rgba(11,11,15,.8)}
+#sim-draft.show{opacity:1}
+#sim-draft .l{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+#sim-draft .b{font-family:var(--inter);font-size:14px;line-height:1.6;color:var(--off);font-style:italic}
+#sim-draft .m{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-top:12px}
+
+#sim-summary{position:fixed;left:50%;transform:translateX(-50%);bottom:80px;z-index:15;font-family:var(--anton);text-align:center;font-size:1.5rem;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity 1s;line-height:1.3}
+#sim-summary.show{opacity:1}
+#sim-summary .m{color:var(--off);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-top:16px;display:block}
+
+/* Act 5 personal LLM timeline */
+#pllm{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:15;width:88vw;max-width:1100px;opacity:0;transition:opacity 1s;text-align:center}
+#pllm.show{opacity:1}
+#pllm .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px}
+#pllm .phase{padding:32px 20px;border:1px solid var(--muted);opacity:.3;transition:opacity .8s,border-color .8s,transform .8s}
+#pllm .phase.on{opacity:1;border-color:var(--gold)}
+#pllm .phase.active{opacity:1;border-color:var(--gold);transform:translateY(-4px);box-shadow:0 0 40px rgba(228,185,94,.2)}
+#pllm .phase .m{font-family:var(--mono);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+#pllm .phase .t{font-family:var(--anton);font-size:1.3rem;letter-spacing:.02em;text-transform:uppercase;color:var(--off);line-height:1.1;min-height:2.6em}
+#pllm .phase .d{font-family:var(--inter);font-size:11px;color:var(--dim);margin-top:10px;line-height:1.5}
+#pllm .cap{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--off);margin-top:24px;opacity:0;transition:opacity .6s}
+#pllm .cap.on{opacity:1}
+#pllm .cap .gold{color:var(--gold)}
+
+/* Act 6 cohort */
+#cohort{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:15;opacity:0;transition:opacity 1.2s;pointer-events:none;padding:80px 40px 0}
+#cohort.show{opacity:1}
+#cohort .row{display:flex;align-items:center;justify-content:center;gap:80px}
+#cohort .row.top{margin-bottom:60px}
+#cohort .sphere{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#2A2A32,#0B0B0F);border:1px solid var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;transition:border-color .8s,box-shadow .8s;flex-shrink:0}
+#cohort .sphere.primary{border-color:var(--gold);box-shadow:0 0 60px rgba(228,185,94,.2);width:180px;height:180px}
+#cohort .sphere.small{width:130px;height:130px;opacity:.65}
+#cohort .sphere .n{font-family:var(--anton);font-size:1.2rem;text-transform:uppercase;letter-spacing:.02em;color:var(--off);line-height:1}
+#cohort .sphere.primary .n{color:var(--gold);font-size:1.4rem}
+#cohort .sphere .m{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:8px;line-height:1.4}
+#cohort .sphere .fig{font-family:var(--mono);font-size:9px;color:var(--gold);margin-top:6px;letter-spacing:.1em}
+#cohort .autoresearch{margin-top:32px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--off);text-align:center;opacity:.7;line-height:1.9}
+#cohort .autoresearch .g{color:var(--gold);font-weight:600}
+
+/* Act 7 athletes */
+#athletes{position:fixed;inset:0;z-index:16;opacity:0;transition:opacity 1s;pointer-events:none}
+#athletes.show{opacity:1}
+#athletes .athlete{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;opacity:0;transition:opacity 1s cubic-bezier(.65,0,.35,1)}
+#athletes .athlete.on{opacity:1}
+#athletes .athlete .sil{font-size:5rem;color:var(--muted);margin-bottom:16px;line-height:1}
+#athletes .athlete .pos{font-family:var(--anton);font-size:3rem;letter-spacing:.04em;text-transform:uppercase;color:var(--off)}
+#athletes .athlete .pos .gold{color:var(--gold)}
+#athletes .athlete .m{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:12px;line-height:1.8}
+#athletes .athlete .m .g{color:var(--gold)}
+
+#stats-cascade{position:fixed;inset:0;z-index:17;opacity:0;transition:opacity 1s;pointer-events:none}
+#stats-cascade.show{opacity:1}
+#stats-cascade .stat{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--anton);font-size:5rem;letter-spacing:.03em;text-transform:uppercase;color:var(--off);opacity:0;transition:opacity 1s cubic-bezier(.65,0,.35,1);white-space:nowrap;text-align:center;line-height:1.1}
+#stats-cascade .stat.on{opacity:1}
+#stats-cascade .stat.gold{color:var(--gold)}
+#stats-cascade .stat.large{font-size:6rem}
+
+#modal{position:fixed;inset:0;background:rgba(11,11,15,.94);z-index:100;display:none;align-items:center;justify-content:center;padding:40px;backdrop-filter:blur(20px)}
+#modal.show{display:flex}
+#modal-box{max-width:720px;max-height:80vh;overflow-y:auto;padding:48px}
+#modal-box h1{font-family:var(--anton);font-size:3rem;text-transform:uppercase;letter-spacing:.02em;color:var(--gold);line-height:1;margin-bottom:12px}
+#modal-box .alt{font-family:var(--mono);font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);margin-bottom:32px}
+#modal-box .body{font-family:var(--inter);font-size:15px;line-height:1.7;color:var(--off);opacity:.9}
+#modal-close{position:fixed;top:32px;right:32px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--dim);cursor:pointer;text-transform:uppercase;z-index:101}
+#modal-close:hover{color:var(--gold)}
+
+#progress{position:fixed;top:0;left:0;height:2px;background:var(--gold);width:0;z-index:50;transition:width .3s linear;opacity:.4}
+
+#hover{position:fixed;pointer-events:none;z-index:8;font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);background:rgba(11,11,15,.92);padding:8px 12px;border:1px solid var(--muted);transform:translate(-50%,-140%);opacity:0;transition:opacity .2s;white-space:nowrap}
+#hover.show{opacity:1}
+#hover .a{color:var(--dim);margin-left:10px;font-size:9px}
+
+@media(max-width:900px){
+  .overlay h1.big{font-size:2.8rem}
+  #cohort .row{gap:30px;flex-wrap:wrap}
+  #stats-cascade .stat{font-size:2.5rem}
+  #stats-cascade .stat.large{font-size:3rem}
+  #pllm .phases{grid-template-columns:1fr 1fr}
+  #pllm .phase{padding:20px 12px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="stage"></canvas>
+<div id="progress"></div>
+
+<div id="hud-brand" class="hud"><b>hooks-os</b> · your operating brain</div>
+<div id="hud-repo" class="hud">github.com/kcumby2-wq/hooks-os<br><span id="repo-commit">13 skills · CBH × STL</span></div>
+<div id="hint" class="hud">SPACE PAUSE · ← → SKIP ACT · 1-7 JUMP · F FULLSCREEN · CLICK NODE · R RESTART</div>
+<div id="act-label" class="hud"></div>
+<div id="timeback">
+  <span class="n" id="tb-n">0</span>
+  <span class="l" id="tb-l">HOURS BACK THIS WEEK</span>
+</div>
+
+<div id="act1" class="overlay">
+  <div class="line" id="a1l1">Sunday. 9:47 PM.</div>
+  <div class="line" id="a1l2">47 unread parent emails.</div>
+  <div class="line" id="a1l3">12 outreach drafts still in your head.</div>
+  <div class="line" id="a1l4">3 NIL deals stalled since Tuesday.</div>
+  <div class="capstone" id="a1cap">
+    <h1 class="mid" style="color:var(--gold)">YOU'VE BEEN DOING THIS<br>SINCE 2005.</h1>
+  </div>
+</div>
+
+<div id="act2" class="overlay">
+  <div class="sub">HOOKS-OS · V1.0</div>
+  <h1 class="big">13 SKILLS.<br>YOUR VOICE.<br>YOUR <span class="gold">PLAYBOOK.</span></h1>
+  <div class="caption">LOADED AUTOMATICALLY · EVERY SESSION</div>
+</div>
+
+<div id="act3-label">
+  <div class="titles">
+    <span class="cbh">COACHED BY HOOKS</span>
+    <span style="color:var(--dim);padding:0 20px">·</span>
+    <span class="stl">SKY'S THE LIMIT WR</span>
+  </div>
+  <div class="roles">THE APEX &nbsp;·&nbsp; THE DISTRIBUTION</div>
+</div>
+
+<div id="act3-principle">
+  <div><span class="q">Does this need your eyes?</span> <span class="a">CBH.</span></div>
+  <div><span class="q">Does the system carry it?</span> <span class="a field">STL.</span></div>
+  <div style="color:var(--dim);margin-top:12px;font-size:10px">Mixing them collapses the value of both.</div>
+</div>
+
+<div id="simctrl" class="overlay" style="justify-content:flex-end;padding-bottom:120px">
+  <div class="sub" style="margin-bottom:12px">SIMULATE: WEDNESDAY, 9:14 PM</div>
+  <div style="text-align:center;padding:24px 40px;border:1px solid var(--muted);background:rgba(11,11,15,.7)">
+    <div style="font-family:var(--anton);font-size:1.6rem;letter-spacing:.03em;text-transform:uppercase;color:var(--gold)">COPPELL WR · MOM EMAILS</div>
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:8px">"HE WANTS TO ADD A SUNDAY FILM SESSION BEFORE FRIDAY'S GAME"</div>
+  </div>
+</div>
+
+<div id="sim-hud">
+  <div class="line" id="sl1"><span class="t">9:14 PM · INBOUND ARRIVES</span><span class="a">Inbound Triage · parent-comms classifies · not urgent · not sensitive</span></div>
+  <div class="line" id="sl2"><span class="t">9:15 PM · VOICE CHECK</span><span class="a">margin-voice · draft matches your coaching register</span></div>
+  <div class="line" id="sl3"><span class="t">9:16 PM · ATHLETE CONTEXT</span><span class="a">athlete-brand-pipeline loads Coppell WR · last session · Friday vs Marcus</span></div>
+  <div class="line" id="sl4"><span class="t">9:17 PM · DRAFT READY</span><span class="a">Sits in your Approve queue · waiting for morning</span></div>
+  <div class="line" id="sl5"><span class="t">6:07 AM · YOU APPROVE</span><span class="a">Eight seconds · one tap · reply sent</span></div>
+  <div class="line" id="sl6"><span class="t">6:15 AM · MOM HAS ANSWER</span><span class="a">Before she starts the school run</span></div>
+</div>
+
+<div id="sim-draft">
+  <div class="l">DRAFT · IN YOUR APPROVE QUEUE</div>
+  <div class="b">"Yes — Sunday 10 AM works. I'll pull his Marcus tape tonight and we'll break it down before we hit routes."</div>
+  <div class="m">90 SEC AGENT · 8 SEC APPROVAL · YOU SLEPT THROUGH IT</div>
+</div>
+
+<div id="sim-summary">
+  90 SECONDS OF AGENT WORK<br>
+  8 SECONDS OF YOUR APPROVAL<br>
+  <span class="m">While you slept.</span>
+</div>
+
+<div id="pllm">
+  <div class="phases">
+    <div class="phase" id="ph1">
+      <div class="m">MONTHS 1-3</div>
+      <div class="t">CONTEXT<br>LOADING</div>
+      <div class="d">Voice rules refined · athlete data enriched · brain learns your baseline</div>
+    </div>
+    <div class="phase" id="ph2">
+      <div class="m">MONTHS 4-6</div>
+      <div class="t">SKILL<br>BUILDING</div>
+      <div class="d">Agents graduate Simulation → Live · Monday Brief live · Outreach live</div>
+    </div>
+    <div class="phase" id="ph3">
+      <div class="m">MONTHS 7-12</div>
+      <div class="t">PERSONAL LLM<br>EMERGENCE</div>
+      <div class="d">Brain passes the "would I have written this?" test · 90% first-time approval</div>
+    </div>
+    <div class="phase" id="ph4">
+      <div class="m">YEAR 2+</div>
+      <div class="t">YOUR LLM<br>YOUR IP</div>
+      <div class="d">Productizable · $3,500-$5,000 tier · like your Trainer Blueprint has been</div>
+    </div>
+  </div>
+  <div class="cap" id="pllm-cap">
+    YOUR VOICE · <span class="gold">CODIFIED.</span>
+    &nbsp; YOUR PLAYBOOK · <span class="gold">COMPOUNDED.</span>
+    &nbsp; YOUR 20 YEARS · <span class="gold">AN ASSET YOU OWN.</span>
+  </div>
+</div>
+
+<div id="cohort">
+  <div class="row top">
+    <div class="sphere">
+      <div class="n">YOUNGBLOOD-OS</div>
+      <div class="m">COHORT PEER</div>
+      <div class="fig">GRADUATE TRACK</div>
+    </div>
+    <div class="sphere primary">
+      <div class="n">HOOKS-OS</div>
+      <div class="m">FLAGSHIP</div>
+      <div class="fig">26 NFL · 160+ D1</div>
+    </div>
+    <div class="sphere">
+      <div class="n">PATTERSON-OS</div>
+      <div class="m">COHORT PEER</div>
+      <div class="fig">GRADUATE TRACK</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="sphere small">
+      <div class="n" style="font-size:1rem">AUTORESEARCH</div>
+      <div class="m">GROWTH AUTOPILOT</div>
+      <div class="fig">2 LOOPS BUNDLED</div>
+    </div>
+    <div class="sphere small" style="opacity:.35">
+      <div class="n" style="font-size:1rem">PYLON-OS</div>
+      <div class="m">FEDERATION SIBLING</div>
+      <div class="fig">NOT YOUR OPS</div>
+    </div>
+  </div>
+  <div class="autoresearch">
+    <span class="g">GROWTH AUTOPILOT</span> · 2 LOOPS RUNNING<br>
+    100+ EXPERIMENTS THIS WEEK<br>
+    YOU APPROVE THE WINNERS · MONDAY MORNINGS
+  </div>
+</div>
+
+<div id="athletes">
+  <div class="athlete" id="ath1">
+    <div class="sil">▮</div>
+    <div class="pos"><span class="gold">WR</span> · COPPELL</div>
+    <div class="m">handled by parent-comms · voice-checked · shipped before you woke up</div>
+  </div>
+  <div class="athlete" id="ath2">
+    <div class="sil">▮</div>
+    <div class="pos"><span class="gold">WR</span> · BUCKS</div>
+    <div class="m">film reviewed · outreach draft in queue · Monday brief includes update</div>
+  </div>
+  <div class="athlete" id="ath3">
+    <div class="sil">▮</div>
+    <div class="pos"><span class="gold">WR</span> · LOVEJOY</div>
+    <div class="m">advocacy call logged from voice memo · CBH-pattern ledger updated</div>
+  </div>
+  <div class="athlete" id="ath4">
+    <div class="sil">▮</div>
+    <div class="pos"><span class="gold">WR</span> · LEO</div>
+    <div class="m">NIL deal progressing · Friday follow-up drafted · you approve after practice</div>
+  </div>
+</div>
+
+<div id="stats-cascade">
+  <div class="stat" id="sc1">26 NFL.</div>
+  <div class="stat" id="sc2">160+ D1.</div>
+  <div class="stat" id="sc3">28 HS ALL-AMERICANS.</div>
+  <div class="stat" id="sc4">6 FIVE-STARS.</div>
+  <div class="stat gold" id="sc5">1 PRO BOWLER.</div>
+  <div class="stat" id="sc6">MANY SINCE MIDDLE SCHOOL.</div>
+  <div class="stat large" id="sc7">THE BRAIN RUNS<br>SO YOU CAN BE<br><span style="color:var(--gold)">WITH THEM.</span></div>
+</div>
+
+<div id="modal">
+  <div id="modal-close" onclick="closeModal()">ESC · CLOSE</div>
+  <div id="modal-box">
+    <h1 id="m-name"></h1>
+    <div class="alt" id="m-alt"></div>
+    <div class="body" id="m-body"></div>
+  </div>
+</div>
+
+<div id="hover"></div>
+
+<script>
+"use strict";
+
+const SKILLS = [
+["margin-voice","voice","E","Voice guardrail everything runs against. Your coaching register. Never drifts. Enforced on every generated draft."],
+["athlete-brand-pipeline","athlete","P","Athlete brand development motion. Content · exposure · recruiting readiness."],
+["cbh-advocacy","cbh","P","Coached by Hooks advocacy pattern + CBH-pattern ledger. Attribution the day it matters."],
+["cohort-design","stl","P","STL cohort structure + cadence. Global reach. Scales without your time."],
+["cold-outreach","outreach","P","Cold email · DM outreach discipline. Two-mode: warm + cold pool."],
+["engagement-monitoring","content","P","Content cadence tracking. Drift signals surface before they become problems."],
+["event-campaign-design","stl","P","Event + camp campaign design. STL platform events at scale."],
+["gated-content-platform","stl","P","STL membership discipline. What's free · what's paid · what earns access."],
+["parent-comms","parent","P","Parent-communication register. Voice + timing + escalation rules."],
+["prospect-edge-workflow","athlete","P","Prospect Edge integration workflow. Recruiting research + coach outreach targeting."],
+["role-model","cbh","E","The Margin persona pattern. Reference documentation for how you show up."],
+["subject-media-coordination","content","P","Subject Media 30+ posts/month production discipline. Voice-locked."],
+["trainer-blueprint","stl","E","Trainer Blueprint productization · $3,500-$5,000 per license. Your methodology · productized."]
+];
+
+const DOMAIN_ORBIT = {
+  voice:{r:0, a:0},
+  cbh:{r:180, a:-1.6},
+  stl:{r:210, a:1.4},
+  athlete:{r:250, a:-0.5},
+  parent:{r:220, a:2.6},
+  outreach:{r:280, a:0.4},
+  content:{r:290, a:-2.6}
+};
+
+const canvas = document.getElementById("stage");
+const ctx = canvas.getContext("2d");
+let dpr = Math.max(1, window.devicePixelRatio || 1);
+function resize(){
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  canvas.style.width = innerWidth + "px";
+  canvas.style.height = innerHeight + "px";
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  layout();
+}
+
+const nodes = SKILLS.map(([name,domain,alt,desc])=>({
+  name,domain,alt,desc,
+  x:0,y:0,tx:0,ty:0,
+  lit:0,tlit:0,
+  highlight:0,thighlight:0,
+  side:0 // -1 = CBH, 1 = STL, 0 = neutral
+}));
+
+function assignSides() {
+  nodes.forEach(n=>{
+    if (n.domain==="cbh") n.side = -1;
+    else if (n.domain==="stl") n.side = 1;
+    else n.side = 0;
+  });
+}
+assignSides();
+
+function layout(){
+  const cx = innerWidth/2, cy = innerHeight/2;
+  const scale = Math.min(1, innerWidth/1400, innerHeight/900);
+  nodes.forEach(n=>{
+    if (n.name === "margin-voice") {
+      n.tx = cx; n.ty = cy;
+    } else {
+      const orbit = DOMAIN_ORBIT[n.domain] || {r:250,a:0};
+      const domainNodes = nodes.filter(m=>m.domain===n.domain);
+      const idx = domainNodes.indexOf(n);
+      const cnt = domainNodes.length;
+      const spread = Math.min(1.4, 0.3 + cnt * 0.3);
+      const angle = orbit.a - spread/2 + (idx/(Math.max(1,cnt-1))) * spread;
+      const rr = orbit.r * scale;
+      n.tx = cx + Math.cos(angle) * rr;
+      n.ty = cy + Math.sin(angle) * rr * 0.82;
+    }
+  });
+  if (!state.initialized) {
+    nodes.forEach(n=>{n.x=n.tx;n.y=n.ty});
+    state.initialized = true;
+  }
+}
+
+const integrations = new Map();
+nodes.forEach((_,i)=>{
+  const refs = [];
+  const cnt = 3 + (i%3);
+  for (let k=1; k<=cnt; k++){
+    const j = (i*5 + k*7) % nodes.length;
+    if (j !== i && !refs.includes(j)) refs.push(j);
+  }
+  integrations.set(i, refs);
+});
+
+const state = {
+  act: 1,
+  actStart: 0,
+  now: 0,
+  paused: false,
+  showLines: false,
+  linesOpacity: 0,
+  scale: 1,
+  targetScale: 1,
+  offsetX: 0, targetOffsetX: 0,
+  offsetY: 0, targetOffsetY: 0,
+  rotation: 0, targetRotation: 0,
+  splitFactor: 0, targetSplitFactor: 0, // Act 3 CBH/STL horizontal split
+  hoverNode: null,
+  particles: [],
+  timeBack: 0,
+  targetTimeBack: 0,
+  initialized: false
+};
+
+const ACT_DUR = { 1:20000, 2:32000, 3:38000, 4:65000, 5:50000, 6:42000, 7:70000 };
+const ACT_LABELS = {
+  1:"ACT 1 · THE SUNDAY NIGHT",
+  2:"ACT 2 · THE BRAIN WAKES UP",
+  3:"ACT 3 · TWO BRANDS · ONE OPERATION",
+  4:"ACT 4 · WATCH IT MOVE",
+  5:"ACT 5 · PERSONAL LLM PATH",
+  6:"ACT 6 · THE COHORT",
+  7:"ACT 7 · THE ATHLETES"
+};
+
+const timers = [];
+function schedule(fn, delay) { const id = setTimeout(fn, delay); timers.push(id); return id; }
+function clearTimers() { timers.forEach(t=>clearTimeout(t)); timers.length = 0; }
+
+function enterAct(n) {
+  clearTimers();
+  state.act = n;
+  state.actStart = state.now;
+
+  ["act1","act2","simctrl","sim-hud","sim-draft","sim-summary","pllm","cohort","athletes","stats-cascade"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("show");
+  });
+  document.getElementById("act3-label").classList.remove("show");
+  document.getElementById("act3-principle").classList.remove("show");
+  ["a1l1","a1l2","a1l3","a1l4","a1cap"].forEach(id=>{
+    document.getElementById(id).classList.remove("on");
+  });
+  ["sl1","sl2","sl3","sl4","sl5","sl6"].forEach(id=>{
+    document.getElementById(id).classList.remove("on");
+  });
+  ["ph1","ph2","ph3","ph4"].forEach(id=>{
+    document.getElementById(id).classList.remove("on");
+    document.getElementById(id).classList.remove("active");
+  });
+  document.getElementById("pllm-cap").classList.remove("on");
+  ["ath1","ath2","ath3","ath4"].forEach(id=>{
+    document.getElementById(id).classList.remove("on");
+  });
+  ["sc1","sc2","sc3","sc4","sc5","sc6","sc7"].forEach(id=>{
+    document.getElementById(id).classList.remove("on");
+  });
+
+  document.getElementById("act-label").textContent = ACT_LABELS[n] || "";
+
+  state.targetSplitFactor = (n === 3) ? 1 : 0;
+  state.targetRotation = 0;
+  state.targetOffsetX = 0;
+
+  if (n <= 5) {
+    state.targetScale = 1;
+    state.targetOffsetY = n === 5 ? 200 : 0; // Move graph down when timeline shows
+    if (n === 5) state.targetScale = 0.5;
+  }
+
+  if (n >= 2) {
+    if (n === 2) {
+      nodes.forEach(nd=>{nd.tlit=0;nd.lit=0;});
+      startCascade();
+    } else {
+      nodes.forEach(nd=>{nd.tlit=1;});
+    }
+  } else {
+    nodes.forEach(nd=>{nd.tlit=0;nd.lit=0;});
+  }
+
+  if (n === 3) state.showLines = true;
+
+  if (n === 1) {
+    schedule(()=>document.getElementById("act1").classList.add("show"), 500);
+    schedule(()=>document.getElementById("a1l1").classList.add("on"), 2000);
+    schedule(()=>document.getElementById("a1l2").classList.add("on"), 5000);
+    schedule(()=>document.getElementById("a1l3").classList.add("on"), 8000);
+    schedule(()=>document.getElementById("a1l4").classList.add("on"), 11000);
+    schedule(()=>document.getElementById("a1cap").classList.add("on"), 14500);
+    schedule(()=>document.getElementById("act1").classList.remove("show"), 19000);
+  }
+  if (n === 3) {
+    schedule(()=>document.getElementById("act3-label").classList.add("show"), 1500);
+    schedule(()=>document.getElementById("act3-principle").classList.add("show"), 4000);
+  }
+  if (n === 4) {
+    document.getElementById("timeback").classList.add("show");
+    state.targetTimeBack = 0;
+    document.getElementById("simctrl").classList.add("show");
+    schedule(()=>{
+      document.getElementById("simctrl").classList.remove("show");
+      startSim();
+    }, 5000);
+  }
+  if (n === 5) {
+    schedule(()=>document.getElementById("pllm").classList.add("show"), 500);
+    startPllm();
+  }
+  if (n === 6) {
+    state.targetScale = 0.12;
+    state.targetOffsetY = 0;
+    schedule(()=>document.getElementById("cohort").classList.add("show"), 1500);
+  }
+  if (n === 7) {
+    state.targetScale = 0.05;
+    document.getElementById("cohort").classList.remove("show");
+    schedule(()=>{
+      document.getElementById("athletes").classList.add("show");
+      startAthletes();
+    }, 500);
+    schedule(()=>{
+      document.getElementById("athletes").classList.remove("show");
+      document.getElementById("stats-cascade").classList.add("show");
+      startStatsCascade();
+    }, 4 * 4500 + 1500);
+  }
+}
+
+function startCascade() {
+  const order = [0]; // margin-voice
+  const priority = ["athlete-brand-pipeline","cbh-advocacy","cohort-design","parent-comms"];
+  priority.forEach(name=>{
+    const idx = nodes.findIndex(n=>n.name===name);
+    if (idx>0 && !order.includes(idx)) order.push(idx);
+  });
+  nodes.forEach((n,i)=>{ if (!order.includes(i)) order.push(i); });
+
+  order.forEach((idx,i)=>{
+    schedule(()=>{ nodes[idx].tlit = 1; }, i * 500);
+  });
+
+  schedule(()=>{
+    document.getElementById("act2").classList.add("show");
+  }, order.length * 500 + 500);
+  schedule(()=>document.getElementById("act2").classList.remove("show"), 30000);
+}
+
+const SIM_PHASES = [
+  {skills:["parent-comms"], caption:"parent-comms classifies", hoursBack:0.5},
+  {skills:["margin-voice"], caption:"margin-voice checks the draft", hoursBack:0.5},
+  {skills:["athlete-brand-pipeline"], caption:"athlete context loaded", hoursBack:0.5},
+  {skills:["parent-comms","margin-voice"], caption:"draft queued", hoursBack:0.5},
+  {skills:["cbh-advocacy"], caption:"you approve · 8 seconds", hoursBack:0.25},
+  {skills:["cbh-advocacy","parent-comms"], caption:"reply sent · attribution logged", hoursBack:0}
+];
+
+function startSim() {
+  document.getElementById("sim-hud").classList.add("show");
+  SIM_PHASES.forEach((phase, i)=>{
+    schedule(()=>{
+      document.getElementById("sl"+(i+1)).classList.add("on");
+      state.targetTimeBack += phase.hoursBack;
+      phase.skills.forEach(name=>{
+        const idx = nodes.findIndex(n=>n.name===name);
+        if (idx>=0) {
+          nodes[idx].thighlight = 1;
+          spawnParticles(0, idx);
+          schedule(()=>{ nodes[idx].thighlight = 0.3; }, 2500);
+        }
+      });
+    }, i * 6000 + 1000);
+  });
+  schedule(()=>document.getElementById("sim-draft").classList.add("show"), 4 * 6000 + 800);
+  schedule(()=>document.getElementById("sim-summary").classList.add("show"), SIM_PHASES.length*6000 + 2500);
+
+  // Ramp time-back further after sim
+  schedule(()=>{ state.targetTimeBack = 12.5; }, SIM_PHASES.length*6000 + 4000);
+}
+
+function startPllm() {
+  ["ph1","ph2","ph3","ph4"].forEach((id,i)=>{
+    schedule(()=>{
+      // Clear active from previous
+      if (i>0) document.getElementById("ph"+i).classList.remove("active");
+      document.getElementById(id).classList.add("on");
+      document.getElementById(id).classList.add("active");
+    }, i * 10000 + 1500);
+  });
+  schedule(()=>{
+    document.getElementById("pllm-cap").classList.add("on");
+  }, 4 * 10000 + 2500);
+}
+
+function startAthletes() {
+  ["ath1","ath2","ath3","ath4"].forEach((id,i)=>{
+    schedule(()=>{
+      if (i>0) document.getElementById("ath"+i).classList.remove("on");
+      document.getElementById(id).classList.add("on");
+    }, i * 4500);
+  });
+}
+
+function startStatsCascade() {
+  const stats = ["sc1","sc2","sc3","sc4","sc5","sc6","sc7"];
+  stats.forEach((id,i)=>{
+    schedule(()=>{
+      if (i>0) document.getElementById(stats[i-1]).classList.remove("on");
+      document.getElementById(id).classList.add("on");
+    }, i * 4500);
+  });
+  // Ramp time-back to season total
+  schedule(()=>{ state.targetTimeBack = 260; document.getElementById("tb-l").textContent = "HOURS BACK THIS SEASON"; }, 3 * 4500);
+}
+
+function spawnParticles(fromIdx, toIdx) {
+  const from = nodes[fromIdx], to = nodes[toIdx];
+  for (let i=0; i<4; i++) {
+    state.particles.push({
+      fx: from.x, fy: from.y,
+      tx: to.x, ty: to.y,
+      t: 0,
+      speed: 0.010 + Math.random()*0.006,
+      offset: i * 0.12
+    });
+  }
+}
+
+function tick(dt) {
+  if (!state.paused) state.now += dt;
+
+  const lerp = (a,b,t)=>a+(b-a)*t;
+  state.scale = lerp(state.scale, state.targetScale, 0.04);
+  state.offsetX = lerp(state.offsetX, state.targetOffsetX, 0.04);
+  state.offsetY = lerp(state.offsetY, state.targetOffsetY, 0.04);
+  state.rotation = lerp(state.rotation, state.targetRotation, 0.02);
+  state.splitFactor = lerp(state.splitFactor, state.targetSplitFactor, 0.03);
+  state.timeBack = lerp(state.timeBack, state.targetTimeBack, 0.03);
+
+  if (state.showLines) state.linesOpacity = Math.min(1, state.linesOpacity + 0.008);
+  else state.linesOpacity = Math.max(0, state.linesOpacity - 0.02);
+
+  nodes.forEach(n=>{
+    n.lit = lerp(n.lit, n.tlit, 0.08);
+    n.highlight = lerp(n.highlight, n.thighlight, 0.15);
+    // Apply CBH/STL split offset
+    const baseTx = n.tx + n.side * state.splitFactor * 150;
+    n.x = lerp(n.x, baseTx, 0.05);
+    n.y = lerp(n.y, n.ty, 0.05);
+  });
+
+  const dur = ACT_DUR[state.act] || 30000;
+  const elapsed = state.now - state.actStart;
+  const progress = Math.min(1, elapsed / dur);
+  document.getElementById("progress").style.width = (progress*100)+"%";
+
+  // Update time-back display
+  const tbn = document.getElementById("tb-n");
+  if (state.timeBack < 20) tbn.textContent = state.timeBack.toFixed(1);
+  else tbn.textContent = Math.round(state.timeBack);
+
+  if (!state.paused && progress >= 1 && state.act < 7) {
+    enterAct(state.act + 1);
+  }
+
+  render();
+}
+
+function render() {
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+
+  const cx = innerWidth/2 + state.offsetX;
+  const cy = innerHeight/2 + state.offsetY;
+
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(state.scale, state.scale);
+  ctx.rotate(state.rotation);
+  ctx.translate(-cx, -cy);
+
+  if (state.linesOpacity > 0.02) {
+    ctx.strokeStyle = `rgba(228,185,94,${state.linesOpacity * 0.08})`;
+    ctx.lineWidth = 0.6;
+    integrations.forEach((refs, i)=>{
+      const from = nodes[i];
+      if (from.lit < 0.3) return;
+      refs.forEach(j=>{
+        const to = nodes[j];
+        if (to.lit < 0.3) return;
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        ctx.stroke();
+      });
+    });
+  }
+
+  if (state.hoverNode !== null && nodes[state.hoverNode].lit > 0.5) {
+    const from = nodes[state.hoverNode];
+    ctx.strokeStyle = "rgba(228,185,94,0.55)";
+    ctx.lineWidth = 1.2;
+    integrations.get(state.hoverNode).forEach(j=>{
+      const to = nodes[j];
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+    });
+  }
+
+  state.particles = state.particles.filter(p=>{
+    p.t += p.speed;
+    if (p.t >= 1.2) return false;
+    const t = Math.max(0, p.t - p.offset);
+    if (t > 1) return false;
+    const eased = t*t*(3-2*t);
+    const x = p.fx + (p.tx - p.fx) * eased;
+    const y = p.fy + (p.ty - p.fy) * eased;
+    ctx.fillStyle = `rgba(228,185,94,${0.9 * (1-t)})`;
+    ctx.beginPath();
+    ctx.arc(x, y, 2.5, 0, Math.PI*2);
+    ctx.fill();
+    return true;
+  });
+
+  nodes.forEach(n=>{
+    if (n.lit < 0.02) return;
+    const isCenter = n.name === "margin-voice";
+    const size = 4 + (isCenter ? 3 : 0) + n.highlight * 4;
+
+    if (n.lit > 0.5 || n.highlight > 0.2) {
+      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, size * 8);
+      // Green tint for STL, gold tint for CBH
+      const tint = n.side === 1 ? "74,143,95" : "228,185,94";
+      glow.addColorStop(0, `rgba(${tint},${0.32 * n.lit * (0.4 + n.highlight)})`);
+      glow.addColorStop(1, `rgba(${tint},0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, size*8, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    const isHighlighted = n.highlight > 0.3 || isCenter;
+    let color;
+    if (isCenter) color = `rgba(228,185,94,${n.lit})`;
+    else if (n.side === 1) color = `rgba(74,143,95,${n.lit * (0.65 + n.highlight * 0.35)})`;
+    else if (n.side === -1) color = `rgba(228,185,94,${n.lit * (0.65 + n.highlight * 0.35)})`;
+    else color = `rgba(245,241,232,${n.lit * (0.55 + n.highlight * 0.5)})`;
+
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, size, 0, Math.PI*2);
+    ctx.fill();
+
+    if (isCenter && n.lit > 0.5 && state.scale > 0.4) {
+      ctx.fillStyle = `rgba(228,185,94,${n.lit * 0.9})`;
+      ctx.font = "9px 'JetBrains Mono', monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("CLAUDE.md · MARGIN-VOICE", n.x, n.y - 22);
+    }
+  });
+
+  ctx.restore();
+}
+
+canvas.addEventListener("mousemove", e=>{
+  const mx = e.clientX, my = e.clientY;
+  const cx = innerWidth/2 + state.offsetX;
+  const cy = innerHeight/2 + state.offsetY;
+  const dx = (mx - cx) / state.scale;
+  const dy = (my - cy) / state.scale;
+  const rx = dx * Math.cos(-state.rotation) - dy * Math.sin(-state.rotation) + cx;
+  const ry = dx * Math.sin(-state.rotation) + dy * Math.cos(-state.rotation) + cy;
+
+  let found = null;
+  nodes.forEach((n, i)=>{
+    if (n.lit < 0.5) return;
+    const d = Math.hypot(n.x - rx, n.y - ry);
+    if (d < 16) found = i;
+  });
+  state.hoverNode = found;
+
+  const hover = document.getElementById("hover");
+  if (found !== null) {
+    const n = nodes[found];
+    hover.innerHTML = `${n.name} <span class="a">${n.alt}</span>`;
+    hover.style.left = mx + "px";
+    hover.style.top = my + "px";
+    hover.classList.add("show");
+    canvas.style.cursor = "pointer";
+  } else {
+    hover.classList.remove("show");
+    canvas.style.cursor = "default";
+  }
+});
+
+canvas.addEventListener("click", ()=>{
+  if (state.hoverNode !== null) openModal(nodes[state.hoverNode]);
+});
+
+function openModal(n) {
+  document.getElementById("m-name").textContent = n.name;
+  document.getElementById("m-alt").textContent = `ALTITUDE ${n.alt} · DOMAIN ${n.domain.toUpperCase()}`;
+  document.getElementById("m-body").innerHTML = n.desc + `<br><br><em style="color:var(--dim);font-size:12px">github.com/kcumby2-wq/hooks-os/blob/main/skills/${n.name}/SKILL.md</em>`;
+  document.getElementById("modal").classList.add("show");
+}
+function closeModal() { document.getElementById("modal").classList.remove("show"); }
+window.closeModal = closeModal;
+document.getElementById("modal").addEventListener("click", e=>{
+  if (e.target.id === "modal") closeModal();
+});
+
+addEventListener("keydown", e=>{
+  if (e.key === " " || e.code === "Space") { e.preventDefault(); state.paused = !state.paused; }
+  if (e.key === "ArrowRight" && state.act < 7) jumpToAct(state.act + 1);
+  if (e.key === "ArrowLeft" && state.act > 1) jumpToAct(state.act - 1);
+  if (e.key === "Escape") closeModal();
+  if (e.key === "f" || e.key === "F") {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(()=>{});
+  }
+  if (e.key === "r" || e.key === "R") {
+    clearTimers();
+    nodes.forEach(n=>{n.tlit=0;n.thighlight=0;n.lit=0;n.highlight=0;});
+    state.showLines = false;
+    state.linesOpacity = 0;
+    state.targetScale = 1;
+    state.targetOffsetY = 0;
+    state.targetSplitFactor = 0;
+    state.targetTimeBack = 0;
+    state.timeBack = 0;
+    document.getElementById("tb-l").textContent = "HOURS BACK THIS WEEK";
+    jumpToAct(1);
+  }
+  const num = parseInt(e.key);
+  if (num >= 1 && num <= 7) jumpToAct(num);
+});
+
+function jumpToAct(n) {
+  if (n < 3) state.showLines = false;
+  if (n >= 3) state.showLines = true;
+  enterAct(n);
+}
+
+setTimeout(()=>{
+  document.getElementById("hint").style.opacity = 0;
+}, 6000);
+
+fetch("https://api.github.com/repos/kcumby2-wq/hooks-os/commits?per_page=1")
+  .then(r=>r.ok?r.json():null)
+  .then(commits=>{
+    if (commits && commits[0]) {
+      const c = commits[0];
+      const msg = c.commit.message.split("\n")[0].slice(0, 42);
+      document.getElementById("repo-commit").textContent = c.sha.slice(0,7) + " · " + msg;
+    }
+  })
+  .catch(()=>{});
+
+addEventListener("resize", resize);
+resize();
+
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(50, now - last);
+  last = now;
+  tick(dt);
+  requestAnimationFrame(loop);
+}
+enterAct(1);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
