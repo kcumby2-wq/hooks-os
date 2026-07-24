@@ -1,7 +1,11 @@
 <!--
-  Margin Hooks Operating Brain · Trainer Demo · v1.0
+  Margin Hooks Operating Brain · Trainer Demo · v2.0 SPATIAL
   For presentation to Margin Hooks · Pre-Season Walkthrough Zoom · 2026-08 week 1
   Repo: github.com/kcumby2-wq/hooks-os
+
+  v2.0: full 3D perspective engine · camera flies through the brain ·
+  Act 4 email-comet routing in space · Act 5 12-month flight through
+  Personal-LLM gates · drag to orbit · scroll to zoom · parallax dust
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +18,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0B0B0F; --gold:#E4B95E; --field:#1E3A2C; --off:#F5F1E8;
+  --bg:#0B0B0F; --gold:#E4B95E; --field:#4A8F5F; --off:#F5F1E8;
   --muted:#2B2B33; --dim:#6E6E76;
   --anton:'Anton',Impact,'Segoe UI Black',system-ui,sans-serif;
   --inter:'Inter',system-ui,-apple-system,sans-serif;
@@ -23,7 +27,10 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--off);font-family:var(--inter);overflow:hidden;width:100vw;height:100vh}
 body{position:fixed;inset:0}
-#stage{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+#stage{position:fixed;inset:0;width:100vw;height:100vh;display:block;cursor:grab}
+#stage.dragging{cursor:grabbing}
+#vignette{position:fixed;inset:0;pointer-events:none;z-index:5;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%)}
 
 .hud{position:fixed;font-family:var(--mono);text-transform:uppercase;letter-spacing:.15em;font-size:11px;color:var(--dim);z-index:10;pointer-events:none;transition:opacity .8s cubic-bezier(.65,0,.35,1)}
 #hud-brand{top:24px;left:32px}
@@ -31,6 +38,7 @@ body{position:fixed;inset:0}
 #hud-repo{top:24px;right:32px;text-align:right;max-width:400px;line-height:1.5;font-size:10px}
 #hint{bottom:24px;right:32px;font-size:10px;color:var(--muted)}
 #act-label{bottom:24px;left:32px;color:var(--gold);font-weight:600;opacity:.5}
+
 #timeback{position:fixed;bottom:64px;left:32px;font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);z-index:10;pointer-events:none;opacity:0;transition:opacity .6s}
 #timeback.show{opacity:1}
 #timeback .n{font-family:var(--anton);color:var(--gold);font-size:1.8rem;letter-spacing:.02em;display:block;line-height:1}
@@ -44,31 +52,27 @@ body{position:fixed;inset:0}
 .overlay h1.big{font-size:5rem;letter-spacing:.02em}
 .overlay .sub{font-family:var(--mono);text-transform:uppercase;letter-spacing:.25em;font-size:12px;color:var(--gold);margin-bottom:24px}
 .overlay .gold{color:var(--gold)}
-.overlay .field{color:#4A8F5F}
 .overlay .caption{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:11px;color:var(--dim);margin-top:24px}
 
-/* Act 1 sunday lines */
 #act1{display:flex;flex-direction:column;gap:1.4rem;justify-content:center}
 #act1 .line{font-family:var(--inter);font-size:1.15rem;color:var(--off);opacity:0;transition:opacity 1s cubic-bezier(.65,0,.35,1);letter-spacing:.02em}
 #act1 .line.on{opacity:.75}
 #act1 .capstone{opacity:0;transition:opacity 1.2s cubic-bezier(.65,0,.35,1);margin-top:2rem}
 #act1 .capstone.on{opacity:1}
 
-/* Act 3 two brands */
-#act3-label{position:fixed;top:100px;left:50%;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity 1s}
+#act3-label{position:fixed;top:90px;left:50%;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity 1s;pointer-events:none}
 #act3-label.show{opacity:1}
-#act3-label .titles{font-family:var(--anton);font-size:1.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--off)}
+#act3-label .titles{font-family:var(--anton);font-size:1.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--off)}
 #act3-label .titles .cbh{color:var(--gold)}
-#act3-label .titles .stl{color:#4A8F5F}
+#act3-label .titles .stl{color:var(--field)}
 #act3-label .roles{font-family:var(--mono);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--dim);margin-top:8px}
 
-#act3-principle{position:fixed;bottom:120px;left:50%;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity 1s;font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--off);line-height:2}
+#act3-principle{position:fixed;bottom:110px;left:50%;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity 1s;font-family:var(--mono);font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--off);line-height:2;pointer-events:none}
 #act3-principle.show{opacity:1}
 #act3-principle .q{color:var(--dim);margin-right:12px}
 #act3-principle .a{color:var(--gold);font-weight:600}
-#act3-principle .a.field{color:#6BAF7F}
+#act3-principle .a.f{color:var(--field)}
 
-/* Act 4 sim */
 #sim-hud{position:fixed;left:32px;top:50%;transform:translateY(-50%);z-index:15;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity .6s;max-width:340px;line-height:1.9}
 #sim-hud.show{opacity:1}
 #sim-hud .line{opacity:0;transition:opacity .5s;padding:6px 0 6px 12px;border-left:2px solid var(--gold);margin-bottom:8px}
@@ -76,62 +80,33 @@ body{position:fixed;inset:0}
 #sim-hud .line .t{color:var(--off);font-weight:600;display:block;font-size:10px}
 #sim-hud .line .a{color:var(--dim);font-weight:400;text-transform:none;letter-spacing:.05em;font-size:11px}
 
-#sim-draft{position:fixed;right:32px;bottom:80px;z-index:15;max-width:340px;padding:20px;border:1px solid var(--muted);opacity:0;transition:opacity .8s;background:rgba(11,11,15,.8)}
+#sim-draft{position:fixed;right:32px;bottom:90px;z-index:15;max-width:340px;padding:20px;border:1px solid var(--muted);opacity:0;transition:opacity .8s;background:rgba(11,11,15,.85)}
 #sim-draft.show{opacity:1}
 #sim-draft .l{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 #sim-draft .b{font-family:var(--inter);font-size:14px;line-height:1.6;color:var(--off);font-style:italic}
 #sim-draft .m{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-top:12px}
 
-#sim-summary{position:fixed;left:50%;transform:translateX(-50%);bottom:80px;z-index:15;font-family:var(--anton);text-align:center;font-size:1.5rem;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity 1s;line-height:1.3}
+#sim-summary{position:fixed;left:50%;transform:translateX(-50%);bottom:70px;z-index:15;font-family:var(--anton);text-align:center;font-size:1.5rem;letter-spacing:.04em;text-transform:uppercase;color:var(--gold);opacity:0;transition:opacity 1s;line-height:1.3;pointer-events:none}
 #sim-summary.show{opacity:1}
 #sim-summary .m{color:var(--off);font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;margin-top:16px;display:block}
 
-/* Act 5 personal LLM timeline */
-#pllm{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:15;width:88vw;max-width:1100px;opacity:0;transition:opacity 1s;text-align:center}
-#pllm.show{opacity:1}
-#pllm .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-bottom:32px}
-#pllm .phase{padding:32px 20px;border:1px solid var(--muted);opacity:.3;transition:opacity .8s,border-color .8s,transform .8s}
-#pllm .phase.on{opacity:1;border-color:var(--gold)}
-#pllm .phase.active{opacity:1;border-color:var(--gold);transform:translateY(-4px);box-shadow:0 0 40px rgba(228,185,94,.2)}
-#pllm .phase .m{font-family:var(--mono);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
-#pllm .phase .t{font-family:var(--anton);font-size:1.3rem;letter-spacing:.02em;text-transform:uppercase;color:var(--off);line-height:1.1;min-height:2.6em}
-#pllm .phase .d{font-family:var(--inter);font-size:11px;color:var(--dim);margin-top:10px;line-height:1.5}
-#pllm .cap{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--off);margin-top:24px;opacity:0;transition:opacity .6s}
-#pllm .cap.on{opacity:1}
-#pllm .cap .gold{color:var(--gold)}
+#gate-cap{position:fixed;left:50%;bottom:110px;transform:translateX(-50%);z-index:15;text-align:center;opacity:0;transition:opacity .8s;pointer-events:none}
+#gate-cap.show{opacity:1}
+#gate-cap .y{font-family:var(--anton);font-size:2.2rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);line-height:1}
+#gate-cap .c{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--off);margin-top:12px;opacity:.8;max-width:560px}
 
-/* Act 6 cohort */
-#cohort{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:15;opacity:0;transition:opacity 1.2s;pointer-events:none;padding:80px 40px 0}
-#cohort.show{opacity:1}
-#cohort .row{display:flex;align-items:center;justify-content:center;gap:80px}
-#cohort .row.top{margin-bottom:60px}
-#cohort .sphere{width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#2A2A32,#0B0B0F);border:1px solid var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;transition:border-color .8s,box-shadow .8s;flex-shrink:0}
-#cohort .sphere.primary{border-color:var(--gold);box-shadow:0 0 60px rgba(228,185,94,.2);width:180px;height:180px}
-#cohort .sphere.small{width:130px;height:130px;opacity:.65}
-#cohort .sphere .n{font-family:var(--anton);font-size:1.2rem;text-transform:uppercase;letter-spacing:.02em;color:var(--off);line-height:1}
-#cohort .sphere.primary .n{color:var(--gold);font-size:1.4rem}
-#cohort .sphere .m{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:8px;line-height:1.4}
-#cohort .sphere .fig{font-family:var(--mono);font-size:9px;color:var(--gold);margin-top:6px;letter-spacing:.1em}
-#cohort .autoresearch{margin-top:32px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--off);text-align:center;opacity:.7;line-height:1.9}
-#cohort .autoresearch .g{color:var(--gold);font-weight:600}
+#pllm-final{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:16;text-align:center;opacity:0;transition:opacity 1.2s;pointer-events:none}
+#pllm-final.show{opacity:1}
+#pllm-final h1{font-family:var(--anton);font-size:3.4rem;letter-spacing:.04em;text-transform:uppercase;color:var(--off);line-height:1.25}
+#pllm-final h1 .g{color:var(--gold)}
 
-/* Act 7 athletes */
-#athletes{position:fixed;inset:0;z-index:16;opacity:0;transition:opacity 1s;pointer-events:none}
-#athletes.show{opacity:1}
-#athletes .athlete{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;opacity:0;transition:opacity 1s cubic-bezier(.65,0,.35,1)}
-#athletes .athlete.on{opacity:1}
-#athletes .athlete .sil{font-size:5rem;color:var(--muted);margin-bottom:16px;line-height:1}
-#athletes .athlete .pos{font-family:var(--anton);font-size:3rem;letter-spacing:.04em;text-transform:uppercase;color:var(--off)}
-#athletes .athlete .pos .gold{color:var(--gold)}
-#athletes .athlete .m{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-top:12px;line-height:1.8}
-#athletes .athlete .m .g{color:var(--gold)}
+#cohort-note{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:15;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--off);text-align:center;opacity:0;transition:opacity .8s;line-height:1.9;pointer-events:none}
+#cohort-note.show{opacity:.8}
+#cohort-note .g{color:var(--gold);font-weight:600}
 
-#stats-cascade{position:fixed;inset:0;z-index:17;opacity:0;transition:opacity 1s;pointer-events:none}
-#stats-cascade.show{opacity:1}
-#stats-cascade .stat{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:var(--anton);font-size:5rem;letter-spacing:.03em;text-transform:uppercase;color:var(--off);opacity:0;transition:opacity 1s cubic-bezier(.65,0,.35,1);white-space:nowrap;text-align:center;line-height:1.1}
-#stats-cascade .stat.on{opacity:1}
-#stats-cascade .stat.gold{color:var(--gold)}
-#stats-cascade .stat.large{font-size:6rem}
+#closing{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:18;opacity:0;transition:opacity 1.6s cubic-bezier(.65,0,.35,1);pointer-events:none;background:rgba(11,11,15,.55)}
+#closing.show{opacity:1}
+#closing h1{font-family:var(--anton);font-size:6rem;letter-spacing:.03em;text-transform:uppercase;color:var(--off);text-align:center;line-height:1.12}
 
 #modal{position:fixed;inset:0;background:rgba(11,11,15,.94);z-index:100;display:none;align-items:center;justify-content:center;padding:40px;backdrop-filter:blur(20px)}
 #modal.show{display:flex}
@@ -150,22 +125,21 @@ body{position:fixed;inset:0}
 
 @media(max-width:900px){
   .overlay h1.big{font-size:2.8rem}
-  #cohort .row{gap:30px;flex-wrap:wrap}
-  #stats-cascade .stat{font-size:2.5rem}
-  #stats-cascade .stat.large{font-size:3rem}
-  #pllm .phases{grid-template-columns:1fr 1fr}
-  #pllm .phase{padding:20px 12px}
+  #closing h1{font-size:3rem}
+  #pllm-final h1{font-size:2rem}
+  #sim-hud{font-size:9px;max-width:260px}
 }
 </style>
 </head>
 <body>
 
 <canvas id="stage"></canvas>
+<div id="vignette"></div>
 <div id="progress"></div>
 
 <div id="hud-brand" class="hud"><b>hooks-os</b> · your operating brain</div>
 <div id="hud-repo" class="hud">github.com/kcumby2-wq/hooks-os<br><span id="repo-commit">13 skills · CBH × STL</span></div>
-<div id="hint" class="hud">SPACE PAUSE · ← → SKIP ACT · 1-7 JUMP · F FULLSCREEN · CLICK NODE · R RESTART</div>
+<div id="hint" class="hud">DRAG ORBIT · SCROLL ZOOM · SPACE PAUSE · ← → ACTS · F FULLSCREEN · R RESTART</div>
 <div id="act-label" class="hud"></div>
 <div id="timeback">
   <span class="n" id="tb-n">0</span>
@@ -199,7 +173,7 @@ body{position:fixed;inset:0}
 
 <div id="act3-principle">
   <div><span class="q">Does this need your eyes?</span> <span class="a">CBH.</span></div>
-  <div><span class="q">Does the system carry it?</span> <span class="a field">STL.</span></div>
+  <div><span class="q">Does the system carry it?</span> <span class="a f">STL.</span></div>
   <div style="color:var(--dim);margin-top:12px;font-size:10px">Mixing them collapses the value of both.</div>
 </div>
 
@@ -214,7 +188,7 @@ body{position:fixed;inset:0}
 <div id="sim-hud">
   <div class="line" id="sl1"><span class="t">9:14 PM · INBOUND ARRIVES</span><span class="a">Inbound Triage · parent-comms classifies · not urgent · not sensitive</span></div>
   <div class="line" id="sl2"><span class="t">9:15 PM · VOICE CHECK</span><span class="a">margin-voice · draft matches your coaching register</span></div>
-  <div class="line" id="sl3"><span class="t">9:16 PM · ATHLETE CONTEXT</span><span class="a">athlete-brand-pipeline loads Coppell WR · last session · Friday vs Marcus</span></div>
+  <div class="line" id="sl3"><span class="t">9:16 PM · ATHLETE CONTEXT</span><span class="a">athlete-brand-pipeline loads Coppell WR · last session · Friday game</span></div>
   <div class="line" id="sl4"><span class="t">9:17 PM · DRAFT READY</span><span class="a">Sits in your Approve queue · waiting for morning</span></div>
   <div class="line" id="sl5"><span class="t">6:07 AM · YOU APPROVE</span><span class="a">Eight seconds · one tap · reply sent</span></div>
   <div class="line" id="sl6"><span class="t">6:15 AM · MOM HAS ANSWER</span><span class="a">Before she starts the school run</span></div>
@@ -232,104 +206,24 @@ body{position:fixed;inset:0}
   <span class="m">While you slept.</span>
 </div>
 
-<div id="pllm">
-  <div class="phases">
-    <div class="phase" id="ph1">
-      <div class="m">MONTHS 1-3</div>
-      <div class="t">CONTEXT<br>LOADING</div>
-      <div class="d">Voice rules refined · athlete data enriched · brain learns your baseline</div>
-    </div>
-    <div class="phase" id="ph2">
-      <div class="m">MONTHS 4-6</div>
-      <div class="t">SKILL<br>BUILDING</div>
-      <div class="d">Agents graduate Simulation → Live · Monday Brief live · Outreach live</div>
-    </div>
-    <div class="phase" id="ph3">
-      <div class="m">MONTHS 7-12</div>
-      <div class="t">PERSONAL LLM<br>EMERGENCE</div>
-      <div class="d">Brain passes the "would I have written this?" test · 90% first-time approval</div>
-    </div>
-    <div class="phase" id="ph4">
-      <div class="m">YEAR 2+</div>
-      <div class="t">YOUR LLM<br>YOUR IP</div>
-      <div class="d">Productizable · $3,500-$5,000 tier · like your Trainer Blueprint has been</div>
-    </div>
-  </div>
-  <div class="cap" id="pllm-cap">
-    YOUR VOICE · <span class="gold">CODIFIED.</span>
-    &nbsp; YOUR PLAYBOOK · <span class="gold">COMPOUNDED.</span>
-    &nbsp; YOUR 20 YEARS · <span class="gold">AN ASSET YOU OWN.</span>
-  </div>
+<div id="gate-cap">
+  <div class="y" id="gc-y">MONTHS 1-3</div>
+  <div class="c" id="gc-c">CONTEXT LOADING · VOICE RULES REFINED · THE BRAIN LEARNS YOUR BASELINE</div>
 </div>
 
-<div id="cohort">
-  <div class="row top">
-    <div class="sphere">
-      <div class="n">YOUNGBLOOD-OS</div>
-      <div class="m">COHORT PEER</div>
-      <div class="fig">GRADUATE TRACK</div>
-    </div>
-    <div class="sphere primary">
-      <div class="n">HOOKS-OS</div>
-      <div class="m">FLAGSHIP</div>
-      <div class="fig">26 NFL · 160+ D1</div>
-    </div>
-    <div class="sphere">
-      <div class="n">PATTERSON-OS</div>
-      <div class="m">COHORT PEER</div>
-      <div class="fig">GRADUATE TRACK</div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="sphere small">
-      <div class="n" style="font-size:1rem">AUTORESEARCH</div>
-      <div class="m">GROWTH AUTOPILOT</div>
-      <div class="fig">2 LOOPS BUNDLED</div>
-    </div>
-    <div class="sphere small" style="opacity:.35">
-      <div class="n" style="font-size:1rem">PYLON-OS</div>
-      <div class="m">FEDERATION SIBLING</div>
-      <div class="fig">NOT YOUR OPS</div>
-    </div>
-  </div>
-  <div class="autoresearch">
-    <span class="g">GROWTH AUTOPILOT</span> · 2 LOOPS RUNNING<br>
-    100+ EXPERIMENTS THIS WEEK<br>
-    YOU APPROVE THE WINNERS · MONDAY MORNINGS
-  </div>
+<div id="pllm-final">
+  <h1>YOUR VOICE · <span class="g">CODIFIED.</span><br>
+  YOUR PLAYBOOK · <span class="g">COMPOUNDED.</span><br>
+  YOUR 20 YEARS · <span class="g">AN ASSET YOU OWN.</span></h1>
 </div>
 
-<div id="athletes">
-  <div class="athlete" id="ath1">
-    <div class="sil">▮</div>
-    <div class="pos"><span class="gold">WR</span> · COPPELL</div>
-    <div class="m">handled by parent-comms · voice-checked · shipped before you woke up</div>
-  </div>
-  <div class="athlete" id="ath2">
-    <div class="sil">▮</div>
-    <div class="pos"><span class="gold">WR</span> · BUCKS</div>
-    <div class="m">film reviewed · outreach draft in queue · Monday brief includes update</div>
-  </div>
-  <div class="athlete" id="ath3">
-    <div class="sil">▮</div>
-    <div class="pos"><span class="gold">WR</span> · LOVEJOY</div>
-    <div class="m">advocacy call logged from voice memo · CBH-pattern ledger updated</div>
-  </div>
-  <div class="athlete" id="ath4">
-    <div class="sil">▮</div>
-    <div class="pos"><span class="gold">WR</span> · LEO</div>
-    <div class="m">NIL deal progressing · Friday follow-up drafted · you approve after practice</div>
-  </div>
+<div id="cohort-note">
+  <span class="g">GROWTH AUTOPILOT</span> · 2 LOOPS RUNNING · 100+ EXPERIMENTS THIS WEEK<br>
+  YOU APPROVE THE WINNERS · MONDAY MORNINGS
 </div>
 
-<div id="stats-cascade">
-  <div class="stat" id="sc1">26 NFL.</div>
-  <div class="stat" id="sc2">160+ D1.</div>
-  <div class="stat" id="sc3">28 HS ALL-AMERICANS.</div>
-  <div class="stat" id="sc4">6 FIVE-STARS.</div>
-  <div class="stat gold" id="sc5">1 PRO BOWLER.</div>
-  <div class="stat" id="sc6">MANY SINCE MIDDLE SCHOOL.</div>
-  <div class="stat large" id="sc7">THE BRAIN RUNS<br>SO YOU CAN BE<br><span style="color:var(--gold)">WITH THEM.</span></div>
+<div id="closing">
+  <h1>THE BRAIN RUNS<br>SO YOU CAN BE<br><span style="color:var(--gold)">WITH THEM.</span></h1>
 </div>
 
 <div id="modal">
@@ -346,568 +240,688 @@ body{position:fixed;inset:0}
 <script>
 "use strict";
 
+/* ============ DATA ============ */
 const SKILLS = [
 ["margin-voice","voice","E","Voice guardrail everything runs against. Your coaching register. Never drifts. Enforced on every generated draft."],
-["athlete-brand-pipeline","athlete","P","Athlete brand development motion. Content · exposure · recruiting readiness."],
 ["cbh-advocacy","cbh","P","Coached by Hooks advocacy pattern + CBH-pattern ledger. Attribution the day it matters."],
+["role-model","cbh","E","The Margin persona pattern. Reference documentation for how you show up."],
+["parent-comms","cbh","P","Parent-communication register. Voice + timing + escalation rules."],
 ["cohort-design","stl","P","STL cohort structure + cadence. Global reach. Scales without your time."],
-["cold-outreach","outreach","P","Cold email · DM outreach discipline. Two-mode: warm + cold pool."],
-["engagement-monitoring","content","P","Content cadence tracking. Drift signals surface before they become problems."],
 ["event-campaign-design","stl","P","Event + camp campaign design. STL platform events at scale."],
 ["gated-content-platform","stl","P","STL membership discipline. What's free · what's paid · what earns access."],
-["parent-comms","parent","P","Parent-communication register. Voice + timing + escalation rules."],
-["prospect-edge-workflow","athlete","P","Prospect Edge integration workflow. Recruiting research + coach outreach targeting."],
-["role-model","cbh","E","The Margin persona pattern. Reference documentation for how you show up."],
-["subject-media-coordination","content","P","Subject Media 30+ posts/month production discipline. Voice-locked."],
-["trainer-blueprint","stl","E","Trainer Blueprint productization · $3,500-$5,000 per license. Your methodology · productized."]
+["subject-media-coordination","stl","P","Subject Media 30+ posts/month production discipline. Voice-locked."],
+["trainer-blueprint","stl","E","Trainer Blueprint productization · $3,500-$5,000 per license."],
+["athlete-brand-pipeline","athlete","P","Athlete brand development motion. Content · exposure · recruiting readiness."],
+["prospect-edge-workflow","athlete","P","Prospect Edge integration workflow. Recruiting research + outreach targeting."],
+["cold-outreach","outreach","P","Cold email · DM outreach discipline. Two-mode: warm + cold pool."],
+["engagement-monitoring","content","P","Content cadence tracking. Drift signals surface before they become problems."]
 ];
 
-const DOMAIN_ORBIT = {
-  voice:{r:0, a:0},
-  cbh:{r:180, a:-1.6},
-  stl:{r:210, a:1.4},
-  athlete:{r:250, a:-0.5},
-  parent:{r:220, a:2.6},
-  outreach:{r:280, a:0.4},
-  content:{r:290, a:-2.6}
+/* 3D shells: CBH cluster tilts left-forward · STL tilts right-back */
+const SHELLS = {
+  voice:{r:0, tx:0, tz:0, ph:0},
+  cbh:{r:250, tx:0.55, tz:-0.35, ph:0.4},
+  stl:{r:330, tx:-0.4, tz:0.4, ph:1.6},
+  athlete:{r:280, tx:0.2, tz:0.6, ph:3.4},
+  outreach:{r:360, tx:-0.6, tz:-0.2, ph:2.6},
+  content:{r:390, tx:0.7, tz:0.2, ph:5.1}
 };
 
-const canvas = document.getElementById("stage");
-const ctx = canvas.getContext("2d");
-let dpr = Math.max(1, window.devicePixelRatio || 1);
+const canvas=document.getElementById("stage");
+const ctx=canvas.getContext("2d");
+let dpr=Math.max(1,window.devicePixelRatio||1);
+let CW=0,CH=0,CX=0,CY=0;
 function resize(){
-  canvas.width = innerWidth * dpr;
-  canvas.height = innerHeight * dpr;
-  canvas.style.width = innerWidth + "px";
-  canvas.style.height = innerHeight + "px";
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  layout();
+  CW=innerWidth;CH=innerHeight;CX=CW/2;CY=CH/2;
+  canvas.width=CW*dpr;canvas.height=CH*dpr;
+  canvas.style.width=CW+"px";canvas.style.height=CH+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 }
+addEventListener("resize",resize);resize();
 
-const nodes = SKILLS.map(([name,domain,alt,desc])=>({
-  name,domain,alt,desc,
-  x:0,y:0,tx:0,ty:0,
-  lit:0,tlit:0,
-  highlight:0,thighlight:0,
-  side:0 // -1 = CBH, 1 = STL, 0 = neutral
-}));
+function rotX(p,a){const c=Math.cos(a),s=Math.sin(a);return[p[0],p[1]*c-p[2]*s,p[1]*s+p[2]*c]}
+function rotZ(p,a){const c=Math.cos(a),s=Math.sin(a);return[p[0]*c-p[1]*s,p[0]*s+p[1]*c,p[2]]}
+function jit(seed,amt){const x=Math.sin(seed*127.1)*43758.5453;return (x-Math.floor(x)-0.5)*2*amt}
 
-function assignSides() {
-  nodes.forEach(n=>{
-    if (n.domain==="cbh") n.side = -1;
-    else if (n.domain==="stl") n.side = 1;
-    else n.side = 0;
-  });
-}
-assignSides();
-
-function layout(){
-  const cx = innerWidth/2, cy = innerHeight/2;
-  const scale = Math.min(1, innerWidth/1400, innerHeight/900);
-  nodes.forEach(n=>{
-    if (n.name === "margin-voice") {
-      n.tx = cx; n.ty = cy;
-    } else {
-      const orbit = DOMAIN_ORBIT[n.domain] || {r:250,a:0};
-      const domainNodes = nodes.filter(m=>m.domain===n.domain);
-      const idx = domainNodes.indexOf(n);
-      const cnt = domainNodes.length;
-      const spread = Math.min(1.4, 0.3 + cnt * 0.3);
-      const angle = orbit.a - spread/2 + (idx/(Math.max(1,cnt-1))) * spread;
-      const rr = orbit.r * scale;
-      n.tx = cx + Math.cos(angle) * rr;
-      n.ty = cy + Math.sin(angle) * rr * 0.82;
-    }
-  });
-  if (!state.initialized) {
-    nodes.forEach(n=>{n.x=n.tx;n.y=n.ty});
-    state.initialized = true;
+const nodes=SKILLS.map(([name,domain,alt,desc],i)=>{
+  const sh=SHELLS[domain];
+  let wx=0,wy=0,wz=0;
+  if(sh.r>0){
+    const dn=SKILLS.filter(s=>s[1]===domain);
+    const idx=dn.findIndex(s=>s[0]===name);
+    const th=sh.ph+(idx/dn.length)*Math.PI*2;
+    let p=[sh.r*Math.cos(th),0,sh.r*Math.sin(th)];
+    p=rotX(p,sh.tx);p=rotZ(p,sh.tz);
+    wx=p[0]+jit(i*3+1,30);wy=p[1]+jit(i*3+2,30);wz=p[2]+jit(i*3+3,30);
   }
-}
-
-const integrations = new Map();
-nodes.forEach((_,i)=>{
-  const refs = [];
-  const cnt = 3 + (i%3);
-  for (let k=1; k<=cnt; k++){
-    const j = (i*5 + k*7) % nodes.length;
-    if (j !== i && !refs.includes(j)) refs.push(j);
-  }
-  integrations.set(i, refs);
+  const side = domain==="cbh"?-1 : domain==="stl"?1 : 0;
+  return{name,domain,alt,desc,side, wx,wy,wz, bx:wx,
+    lit:0,tlit:0, hi:0,thi:0, labelT:0, sx:0,sy:0,ss:0,sz:1e9};
 });
 
-const state = {
-  act: 1,
-  actStart: 0,
-  now: 0,
-  paused: false,
-  showLines: false,
-  linesOpacity: 0,
-  scale: 1,
-  targetScale: 1,
-  offsetX: 0, targetOffsetX: 0,
-  offsetY: 0, targetOffsetY: 0,
-  rotation: 0, targetRotation: 0,
-  splitFactor: 0, targetSplitFactor: 0, // Act 3 CBH/STL horizontal split
-  hoverNode: null,
-  particles: [],
-  timeBack: 0,
-  targetTimeBack: 0,
-  initialized: false
+const edges=[];
+nodes.forEach((_,i)=>{
+  const cnt=3+(i%3);
+  for(let k=1;k<=cnt;k++){
+    const j=(i*5+k*7)%nodes.length;
+    if(j!==i)edges.push([i,j]);
+  }
+});
+const nodeRefs=new Map();
+nodes.forEach((_,i)=>nodeRefs.set(i,[]));
+edges.forEach(([a,b])=>{nodeRefs.get(a).push(b)});
+
+const dust=[];
+for(let i=0;i<420;i++){
+  dust.push({x:jit(i*7+1,1)*2200,y:jit(i*7+2,1)*1400,z:-3800+((i*233)%9000)});
+}
+
+/* Act 5 gates: 12-month flight */
+const GATES=[
+  {z:600, y:"MONTHS 1-3", c:"CONTEXT LOADING · VOICE RULES REFINED · THE BRAIN LEARNS YOUR BASELINE"},
+  {z:1800, y:"MONTHS 4-6", c:"SKILL BUILDING · AGENTS GRADUATE SIMULATION → LIVE · MONDAY BRIEF SHIPS"},
+  {z:3000, y:"MONTHS 7-12", c:"PERSONAL LLM EMERGENCE · PASSES THE \"WOULD I HAVE WRITTEN THIS?\" TEST"},
+  {z:4200, y:"YEAR 2+", c:"YOUR LLM · YOUR IP · PRODUCTIZABLE LIKE YOUR TRAINER BLUEPRINT"}
+];
+
+/* Act 6 cohort spheres */
+const SPHERES=[
+  {x:0,y:0,z:0,r:150,label:"HOOKS-OS",sub:"FLAGSHIP · 26 NFL · 160+ D1",primary:true},
+  {x:-820,y:-30,z:240,r:88,label:"YOUNGBLOOD-OS",sub:"COHORT PEER · GRADUATE TRACK",primary:false},
+  {x:820,y:-30,z:240,r:88,label:"PATTERSON-OS",sub:"COHORT PEER · GRADUATE TRACK",primary:false},
+  {x:-420,y:430,z:480,r:66,label:"AUTORESEARCH-OS",sub:"GROWTH AUTOPILOT · 2 LOOPS BUNDLED",primary:false},
+  {x:420,y:430,z:480,r:60,label:"PYLON-OS",sub:"FEDERATION SIBLING · NOT YOUR OPS",primary:false,dim:true}
+];
+
+/* Act 7 billboards */
+const BILLBOARDS=[
+  {z:700,t:"WR · COPPELL",sub:"handled by parent-comms · shipped before you woke up",gold:true},
+  {z:1600,t:"WR · BUCKS",sub:"film reviewed · outreach draft in queue",gold:true},
+  {z:2500,t:"WR · LOVEJOY",sub:"advocacy call logged · CBH ledger updated",gold:true},
+  {z:3400,t:"WR · LEO",sub:"NIL follow-up drafted · you approve after practice",gold:true},
+  {z:4300,t:"26 NFL.",sub:"",gold:false},
+  {z:5000,t:"160+ D1.",sub:"",gold:false},
+  {z:5700,t:"28 HS ALL-AMERICANS.",sub:"",gold:false},
+  {z:6400,t:"6 FIVE-STARS. 1 PRO BOWLER.",sub:"",gold:false},
+  {z:7100,t:"MANY SINCE MIDDLE SCHOOL.",sub:"",gold:true}
+];
+
+/* Act 4 comet path: inbound → parent-comms → margin-voice → athlete-brand-pipeline → approve */
+function nodePos(name){const n=nodes.find(x=>x.name===name);return n?[n.wx,n.wy,n.wz]:[0,0,0]}
+const COMET_PATH=[
+  [1600,-700,-1500],
+  nodePos("parent-comms"),
+  nodePos("margin-voice"),
+  nodePos("athlete-brand-pipeline"),
+  [0,-40,-420]
+];
+const SIM_NODE_HITS=["parent-comms","margin-voice","athlete-brand-pipeline","cbh-advocacy"];
+
+const state={
+  act:1,actStart:0,now:0,paused:false,
+  linesOn:false,linesA:0,
+  mode:"graph",
+  split:0,tsplit:0,
+  cometT:-1, cometTrail:[],
+  focus:null,focusW:0,
+  particles:[],
+  hoverNode:null,
+  mouseX:0,mouseY:0,
+  dragging:false,lastMX:0,lastMY:0,
+  yawOff:0,pitchOff:0,fovMul:1,
+  cam:{x:0,y:0,z:-1500,rx:0,ry:0},
+  dimGraph:0,
+  timeBack:0,ttimeBack:0
 };
+let cues=[];
+function cue(at,fn){cues.push({at,fn,done:false})}
 
-const ACT_DUR = { 1:20000, 2:32000, 3:38000, 4:65000, 5:50000, 6:42000, 7:70000 };
-const ACT_LABELS = {
-  1:"ACT 1 · THE SUNDAY NIGHT",
-  2:"ACT 2 · THE BRAIN WAKES UP",
-  3:"ACT 3 · TWO BRANDS · ONE OPERATION",
-  4:"ACT 4 · WATCH IT MOVE",
-  5:"ACT 5 · PERSONAL LLM PATH",
-  6:"ACT 6 · THE COHORT",
-  7:"ACT 7 · THE ATHLETES"
-};
+const ACT_DUR={1:20000,2:30000,3:38000,4:64000,5:46000,6:40000,7:72000};
+const ACT_LABELS={
+  1:"ACT 1 · THE SUNDAY NIGHT",2:"ACT 2 · THE BRAIN WAKES UP",
+  3:"ACT 3 · TWO BRANDS · ONE OPERATION",4:"ACT 4 · WATCH IT MOVE",
+  5:"ACT 5 · PERSONAL LLM PATH",6:"ACT 6 · THE COHORT",7:"ACT 7 · THE ATHLETES"};
 
-const timers = [];
-function schedule(fn, delay) { const id = setTimeout(fn, delay); timers.push(id); return id; }
-function clearTimers() { timers.forEach(t=>clearTimeout(t)); timers.length = 0; }
+const FOV=760,NEAR=60,FOG0=1400,FOG1=4200;
 
-function enterAct(n) {
-  clearTimers();
-  state.act = n;
-  state.actStart = state.now;
+function lookAt(px,py,pz,tx,ty,tz){
+  const dx=tx-px,dy=ty-py,dz=tz-pz;
+  return{x:px,y:py,z:pz,ry:Math.atan2(dx,dz),rx:Math.atan2(dy,Math.hypot(dx,dz))};
+}
+function orbitCam(r,yaw,pitch,tx=0,ty=0,tz=0){
+  return lookAt(tx+r*Math.sin(yaw)*Math.cos(pitch),ty+r*Math.sin(pitch),tz-r*Math.cos(yaw)*Math.cos(pitch),tx,ty,tz);
+}
+function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
 
-  ["act1","act2","simctrl","sim-hud","sim-draft","sim-summary","pllm","cohort","athletes","stats-cascade"].forEach(id=>{
-    const el = document.getElementById(id);
-    if (el) el.classList.remove("show");
+function cometPos(t){
+  /* piecewise catmull-ish lerp across path points */
+  const seg=COMET_PATH.length-1;
+  const ft=Math.max(0,Math.min(0.999,t))*seg;
+  const i=Math.floor(ft), f=ft-i;
+  const a=COMET_PATH[i], b=COMET_PATH[i+1];
+  const e=f*f*(3-2*f);
+  return[a[0]+(b[0]-a[0])*e, a[1]+(b[1]-a[1])*e - Math.sin(f*Math.PI)*60, a[2]+(b[2]-a[2])*e];
+}
+
+function camGoal(act,u,ts){
+  switch(act){
+    case 1:{const z=-2100+ease(u)*1150;return lookAt(0,0,z,0,0,0);}
+    case 2:{const r=500+ease(u)*430;return orbitCam(r,u*0.9,0.22-u*0.06);}
+    case 3:{
+      /* arc from CBH side to STL side and settle center */
+      const yaw=-0.9+ease(u)*1.8;
+      const r=760-Math.sin(u*Math.PI)*180;
+      return orbitCam(r,yaw,0.16);
+    }
+    case 4:{
+      if(state.cometT>=0 && state.cometT<=1){
+        const cp=cometPos(state.cometT);
+        const base=orbitCam(780,0.4+u*0.5,0.18);
+        return lookAt(base.x,base.y,base.z, cp[0],cp[1],cp[2]);
+      }
+      return orbitCam(780,0.4+u*0.5,0.18);
+    }
+    case 5:{const z=-600+u*5600;return{x:Math.sin(u*6)*60,y:Math.cos(u*5)*40,z,rx:0,ry:0};}
+    case 6:{const z=-2200+ease(u)*240;return lookAt(0,-30,z,0,40,120);}
+    case 7:{const z=-500+u*8300;return{x:Math.sin(u*4)*40,y:0,z,rx:0,ry:0};}
+  }
+  return state.cam;
+}
+
+function project(wx,wy,wz){
+  const c=state.cam;
+  let x=wx-c.x,y=wy-c.y,z=wz-c.z;
+  const cy=Math.cos(c.ry+state.yawOff+state.mouseX*0.05),sy=Math.sin(c.ry+state.yawOff+state.mouseX*0.05);
+  let x1=x*cy-z*sy,z1=x*sy+z*cy;
+  const cx=Math.cos(c.rx+state.pitchOff+state.mouseY*0.035),sx=Math.sin(c.rx+state.pitchOff+state.mouseY*0.035);
+  let y1=y*cx-z1*sx,z2=y*sx+z1*cx;
+  if(z2<NEAR)return null;
+  const f=(FOV*state.fovMul)/z2;
+  return{x:CX+x1*f,y:CY+y1*f,s:f,z:z2};
+}
+function fog(z){if(z<FOG0)return 1;if(z>FOG1)return 0;return 1-(z-FOG0)/(FOG1-FOG0);}
+
+function hideAll(){
+  ["act1","act2","simctrl","sim-hud","sim-draft","sim-summary","gate-cap","pllm-final","cohort-note","closing"].forEach(id=>{
+    document.getElementById(id).classList.remove("show");
   });
   document.getElementById("act3-label").classList.remove("show");
   document.getElementById("act3-principle").classList.remove("show");
-  ["a1l1","a1l2","a1l3","a1l4","a1cap"].forEach(id=>{
-    document.getElementById(id).classList.remove("on");
-  });
-  ["sl1","sl2","sl3","sl4","sl5","sl6"].forEach(id=>{
-    document.getElementById(id).classList.remove("on");
-  });
-  ["ph1","ph2","ph3","ph4"].forEach(id=>{
-    document.getElementById(id).classList.remove("on");
-    document.getElementById(id).classList.remove("active");
-  });
-  document.getElementById("pllm-cap").classList.remove("on");
-  ["ath1","ath2","ath3","ath4"].forEach(id=>{
-    document.getElementById(id).classList.remove("on");
-  });
-  ["sc1","sc2","sc3","sc4","sc5","sc6","sc7"].forEach(id=>{
-    document.getElementById(id).classList.remove("on");
-  });
+  ["a1l1","a1l2","a1l3","a1l4","a1cap"].forEach(id=>document.getElementById(id).classList.remove("on"));
+  for(let i=1;i<=6;i++)document.getElementById("sl"+i).classList.remove("on");
+}
+function show(id){document.getElementById(id).classList.add("show")}
+function hide(id){document.getElementById(id).classList.remove("show")}
 
-  document.getElementById("act-label").textContent = ACT_LABELS[n] || "";
+function enterAct(n){
+  cues=[];hideAll();
+  state.act=n;state.actStart=state.now;
+  state.focus=null;state.focusW=0;state.dimGraph=0;
+  state.cometT=-1;state.cometTrail=[];
+  state.yawOff=0;state.pitchOff=0;
+  document.getElementById("act-label").textContent=ACT_LABELS[n]||"";
 
-  state.targetSplitFactor = (n === 3) ? 1 : 0;
-  state.targetRotation = 0;
-  state.targetOffsetX = 0;
+  state.mode=(n===5)?"tunnel":(n===6)?"spheres":(n===7)?"drift":"graph";
+  state.linesOn=(n===3||n===4);
+  state.tsplit=(n===3)?1:0;
 
-  if (n <= 5) {
-    state.targetScale = 1;
-    state.targetOffsetY = n === 5 ? 200 : 0; // Move graph down when timeline shows
-    if (n === 5) state.targetScale = 0.5;
+  if(n>=2){
+    if(n===2){nodes.forEach(nd=>{nd.tlit=0;nd.lit=0;nd.labelT=0});buildCascade();}
+    else nodes.forEach(nd=>{nd.tlit=1});
+  } else nodes.forEach(nd=>{nd.tlit=0;nd.lit=0});
+
+  if(n===1){
+    cue(500,()=>show("act1"));
+    cue(2000,()=>document.getElementById("a1l1").classList.add("on"));
+    cue(5000,()=>document.getElementById("a1l2").classList.add("on"));
+    cue(8000,()=>document.getElementById("a1l3").classList.add("on"));
+    cue(11000,()=>document.getElementById("a1l4").classList.add("on"));
+    cue(14500,()=>document.getElementById("a1cap").classList.add("on"));
+    cue(19000,()=>hide("act1"));
   }
-
-  if (n >= 2) {
-    if (n === 2) {
-      nodes.forEach(nd=>{nd.tlit=0;nd.lit=0;});
-      startCascade();
-    } else {
-      nodes.forEach(nd=>{nd.tlit=1;});
-    }
-  } else {
-    nodes.forEach(nd=>{nd.tlit=0;nd.lit=0;});
+  if(n===3){
+    cue(1500,()=>show("act3-label"));
+    cue(4200,()=>show("act3-principle"));
   }
-
-  if (n === 3) state.showLines = true;
-
-  if (n === 1) {
-    schedule(()=>document.getElementById("act1").classList.add("show"), 500);
-    schedule(()=>document.getElementById("a1l1").classList.add("on"), 2000);
-    schedule(()=>document.getElementById("a1l2").classList.add("on"), 5000);
-    schedule(()=>document.getElementById("a1l3").classList.add("on"), 8000);
-    schedule(()=>document.getElementById("a1l4").classList.add("on"), 11000);
-    schedule(()=>document.getElementById("a1cap").classList.add("on"), 14500);
-    schedule(()=>document.getElementById("act1").classList.remove("show"), 19000);
-  }
-  if (n === 3) {
-    schedule(()=>document.getElementById("act3-label").classList.add("show"), 1500);
-    schedule(()=>document.getElementById("act3-principle").classList.add("show"), 4000);
-  }
-  if (n === 4) {
+  if(n===4){
     document.getElementById("timeback").classList.add("show");
-    state.targetTimeBack = 0;
-    document.getElementById("simctrl").classList.add("show");
-    schedule(()=>{
-      document.getElementById("simctrl").classList.remove("show");
-      startSim();
-    }, 5000);
+    cue(300,()=>show("simctrl"));
+    cue(5200,()=>{hide("simctrl");startSim();});
   }
-  if (n === 5) {
-    schedule(()=>document.getElementById("pllm").classList.add("show"), 500);
-    startPllm();
+  if(n===5){
+    cue(600,()=>show("gate-cap"));
+    cue(ACT_DUR[5]-9000,()=>{hide("gate-cap");show("pllm-final");});
   }
-  if (n === 6) {
-    state.targetScale = 0.12;
-    state.targetOffsetY = 0;
-    schedule(()=>document.getElementById("cohort").classList.add("show"), 1500);
+  if(n===6){
+    cue(3000,()=>show("cohort-note"));
   }
-  if (n === 7) {
-    state.targetScale = 0.05;
-    document.getElementById("cohort").classList.remove("show");
-    schedule(()=>{
-      document.getElementById("athletes").classList.add("show");
-      startAthletes();
-    }, 500);
-    schedule(()=>{
-      document.getElementById("athletes").classList.remove("show");
-      document.getElementById("stats-cascade").classList.add("show");
-      startStatsCascade();
-    }, 4 * 4500 + 1500);
-  }
-}
-
-function startCascade() {
-  const order = [0]; // margin-voice
-  const priority = ["athlete-brand-pipeline","cbh-advocacy","cohort-design","parent-comms"];
-  priority.forEach(name=>{
-    const idx = nodes.findIndex(n=>n.name===name);
-    if (idx>0 && !order.includes(idx)) order.push(idx);
-  });
-  nodes.forEach((n,i)=>{ if (!order.includes(i)) order.push(i); });
-
-  order.forEach((idx,i)=>{
-    schedule(()=>{ nodes[idx].tlit = 1; }, i * 500);
-  });
-
-  schedule(()=>{
-    document.getElementById("act2").classList.add("show");
-  }, order.length * 500 + 500);
-  schedule(()=>document.getElementById("act2").classList.remove("show"), 30000);
-}
-
-const SIM_PHASES = [
-  {skills:["parent-comms"], caption:"parent-comms classifies", hoursBack:0.5},
-  {skills:["margin-voice"], caption:"margin-voice checks the draft", hoursBack:0.5},
-  {skills:["athlete-brand-pipeline"], caption:"athlete context loaded", hoursBack:0.5},
-  {skills:["parent-comms","margin-voice"], caption:"draft queued", hoursBack:0.5},
-  {skills:["cbh-advocacy"], caption:"you approve · 8 seconds", hoursBack:0.25},
-  {skills:["cbh-advocacy","parent-comms"], caption:"reply sent · attribution logged", hoursBack:0}
-];
-
-function startSim() {
-  document.getElementById("sim-hud").classList.add("show");
-  SIM_PHASES.forEach((phase, i)=>{
-    schedule(()=>{
-      document.getElementById("sl"+(i+1)).classList.add("on");
-      state.targetTimeBack += phase.hoursBack;
-      phase.skills.forEach(name=>{
-        const idx = nodes.findIndex(n=>n.name===name);
-        if (idx>=0) {
-          nodes[idx].thighlight = 1;
-          spawnParticles(0, idx);
-          schedule(()=>{ nodes[idx].thighlight = 0.3; }, 2500);
-        }
-      });
-    }, i * 6000 + 1000);
-  });
-  schedule(()=>document.getElementById("sim-draft").classList.add("show"), 4 * 6000 + 800);
-  schedule(()=>document.getElementById("sim-summary").classList.add("show"), SIM_PHASES.length*6000 + 2500);
-
-  // Ramp time-back further after sim
-  schedule(()=>{ state.targetTimeBack = 12.5; }, SIM_PHASES.length*6000 + 4000);
-}
-
-function startPllm() {
-  ["ph1","ph2","ph3","ph4"].forEach((id,i)=>{
-    schedule(()=>{
-      // Clear active from previous
-      if (i>0) document.getElementById("ph"+i).classList.remove("active");
-      document.getElementById(id).classList.add("on");
-      document.getElementById(id).classList.add("active");
-    }, i * 10000 + 1500);
-  });
-  schedule(()=>{
-    document.getElementById("pllm-cap").classList.add("on");
-  }, 4 * 10000 + 2500);
-}
-
-function startAthletes() {
-  ["ath1","ath2","ath3","ath4"].forEach((id,i)=>{
-    schedule(()=>{
-      if (i>0) document.getElementById("ath"+i).classList.remove("on");
-      document.getElementById(id).classList.add("on");
-    }, i * 4500);
-  });
-}
-
-function startStatsCascade() {
-  const stats = ["sc1","sc2","sc3","sc4","sc5","sc6","sc7"];
-  stats.forEach((id,i)=>{
-    schedule(()=>{
-      if (i>0) document.getElementById(stats[i-1]).classList.remove("on");
-      document.getElementById(id).classList.add("on");
-    }, i * 4500);
-  });
-  // Ramp time-back to season total
-  schedule(()=>{ state.targetTimeBack = 260; document.getElementById("tb-l").textContent = "HOURS BACK THIS SEASON"; }, 3 * 4500);
-}
-
-function spawnParticles(fromIdx, toIdx) {
-  const from = nodes[fromIdx], to = nodes[toIdx];
-  for (let i=0; i<4; i++) {
-    state.particles.push({
-      fx: from.x, fy: from.y,
-      tx: to.x, ty: to.y,
-      t: 0,
-      speed: 0.010 + Math.random()*0.006,
-      offset: i * 0.12
+  if(n===7){
+    state.dimGraph=1;
+    cue(62000,()=>show("closing"));
+    cue(46000,()=>{
+      state.ttimeBack=260;
+      document.getElementById("tb-l").textContent="HOURS BACK THIS SEASON";
     });
   }
 }
 
-function tick(dt) {
-  if (!state.paused) state.now += dt;
+function buildCascade(){
+  const order=[0];
+  ["cbh-advocacy","cohort-design","parent-comms","athlete-brand-pipeline"].forEach(nm=>{
+    const i=nodes.findIndex(n=>n.name===nm);if(i>0&&!order.includes(i))order.push(i);
+  });
+  nodes.forEach((n,i)=>{if(!order.includes(i))order.push(i)});
+  order.forEach((idx,i)=>{
+    cue(i*520,()=>{nodes[idx].tlit=1;nodes[idx].labelT=2800;});
+  });
+  cue(order.length*520+400,()=>show("act2"));
+  cue(27000,()=>hide("act2"));
+}
 
-  const lerp = (a,b,t)=>a+(b-a)*t;
-  state.scale = lerp(state.scale, state.targetScale, 0.04);
-  state.offsetX = lerp(state.offsetX, state.targetOffsetX, 0.04);
-  state.offsetY = lerp(state.offsetY, state.targetOffsetY, 0.04);
-  state.rotation = lerp(state.rotation, state.targetRotation, 0.02);
-  state.splitFactor = lerp(state.splitFactor, state.targetSplitFactor, 0.03);
-  state.timeBack = lerp(state.timeBack, state.targetTimeBack, 0.03);
+const SIM_TIMES=[6000,12000,18000,24000,30000,36000];
+function startSim(){
+  show("sim-hud");
+  state.cometT=0;
 
-  if (state.showLines) state.linesOpacity = Math.min(1, state.linesOpacity + 0.008);
-  else state.linesOpacity = Math.max(0, state.linesOpacity - 0.02);
+  SIM_TIMES.forEach((t,i)=>{
+    cue(t,()=>{
+      document.getElementById("sl"+(i+1)).classList.add("on");
+      state.ttimeBack=Math.min(12.5, state.ttimeBack + (i<4?0.6:0.25));
+      const nm=SIM_NODE_HITS[Math.min(i,SIM_NODE_HITS.length-1)];
+      const idx=nodes.findIndex(n=>n.name===nm);
+      if(idx>=0){
+        nodes[idx].thi=1;nodes[idx].labelT=3200;
+        setTimeout(()=>{nodes[idx].thi=0.3},2600);
+      }
+    });
+  });
+  cue(25000,()=>show("sim-draft"));
+  cue(40000,()=>{show("sim-summary");state.ttimeBack=12.5;});
+}
+
+function tickComet(dt,actEl){
+  if(state.act!==4||state.cometT<0)return;
+  /* comet travels over sim window 5.2s..40s */
+  const t0=800, t1=36000;
+  const raw=(actEl-5200-t0)/(t1-t0);
+  state.cometT=Math.max(0,Math.min(1.05,raw));
+  if(state.cometT>=0&&state.cometT<=1){
+    const p=cometPos(state.cometT);
+    state.cometTrail.push(p);
+    if(state.cometTrail.length>14)state.cometTrail.shift();
+  }
+}
+
+const lerp=(a,b,t)=>a+(b-a)*t;
+function lerpAngle(a,b,t){
+  let d=b-a;
+  while(d>Math.PI)d-=Math.PI*2;
+  while(d<-Math.PI)d+=Math.PI*2;
+  return a+d*t;
+}
+
+function tick(dt){
+  if(!state.paused)state.now+=dt;
+  const el=state.now-state.actStart;
+  const dur=ACT_DUR[state.act]||30000;
+  const u=Math.min(1,el/dur);
+
+  cues.forEach(c=>{if(!c.done&&el>=c.at){c.done=true;c.fn();}});
+  tickComet(dt,el);
+
+  const goal=camGoal(state.act,u,el/1000);
+  state.cam.x=lerp(state.cam.x,goal.x,0.045);
+  state.cam.y=lerp(state.cam.y,goal.y,0.045);
+  state.cam.z=lerp(state.cam.z,goal.z,0.045);
+  state.cam.rx=lerpAngle(state.cam.rx,goal.rx,0.055);
+  state.cam.ry=lerpAngle(state.cam.ry,goal.ry,0.055);
+
+  state.linesA=state.linesOn?Math.min(1,state.linesA+0.008):Math.max(0,state.linesA-0.02);
+  state.split=lerp(state.split,state.tsplit,0.03);
+  state.timeBack=lerp(state.timeBack,state.ttimeBack,0.03);
 
   nodes.forEach(n=>{
-    n.lit = lerp(n.lit, n.tlit, 0.08);
-    n.highlight = lerp(n.highlight, n.thighlight, 0.15);
-    // Apply CBH/STL split offset
-    const baseTx = n.tx + n.side * state.splitFactor * 150;
-    n.x = lerp(n.x, baseTx, 0.05);
-    n.y = lerp(n.y, n.ty, 0.05);
+    n.lit=lerp(n.lit,n.tlit,0.08);
+    n.hi=lerp(n.hi,n.thi,0.15);
+    if(n.labelT>0)n.labelT-=dt;
+    /* CBH/STL split pushes clusters apart in X during act 3 */
+    n.wx=n.bx+n.side*state.split*170;
   });
 
-  const dur = ACT_DUR[state.act] || 30000;
-  const elapsed = state.now - state.actStart;
-  const progress = Math.min(1, elapsed / dur);
-  document.getElementById("progress").style.width = (progress*100)+"%";
-
-  // Update time-back display
-  const tbn = document.getElementById("tb-n");
-  if (state.timeBack < 20) tbn.textContent = state.timeBack.toFixed(1);
-  else tbn.textContent = Math.round(state.timeBack);
-
-  if (!state.paused && progress >= 1 && state.act < 7) {
-    enterAct(state.act + 1);
+  if(state.act===5){
+    let cur=GATES[0];
+    for(const g of GATES){if(state.cam.z>g.z-800)cur=g;}
+    document.getElementById("gc-y").textContent=cur.y;
+    document.getElementById("gc-c").textContent=cur.c;
   }
+
+  const tbn=document.getElementById("tb-n");
+  tbn.textContent=state.timeBack<20?state.timeBack.toFixed(1):Math.round(state.timeBack);
+
+  document.getElementById("progress").style.width=(u*100)+"%";
+  if(!state.paused&&u>=1&&state.act<7)enterAct(state.act+1);
 
   render();
 }
 
-function render() {
-  ctx.clearRect(0,0,innerWidth,innerHeight);
+function render(){
+  ctx.clearRect(0,0,CW,CH);
 
-  const cx = innerWidth/2 + state.offsetX;
-  const cy = innerHeight/2 + state.offsetY;
-
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.scale(state.scale, state.scale);
-  ctx.rotate(state.rotation);
-  ctx.translate(-cx, -cy);
-
-  if (state.linesOpacity > 0.02) {
-    ctx.strokeStyle = `rgba(228,185,94,${state.linesOpacity * 0.08})`;
-    ctx.lineWidth = 0.6;
-    integrations.forEach((refs, i)=>{
-      const from = nodes[i];
-      if (from.lit < 0.3) return;
-      refs.forEach(j=>{
-        const to = nodes[j];
-        if (to.lit < 0.3) return;
-        ctx.beginPath();
-        ctx.moveTo(from.x, from.y);
-        ctx.lineTo(to.x, to.y);
-        ctx.stroke();
-      });
-    });
-  }
-
-  if (state.hoverNode !== null && nodes[state.hoverNode].lit > 0.5) {
-    const from = nodes[state.hoverNode];
-    ctx.strokeStyle = "rgba(228,185,94,0.55)";
-    ctx.lineWidth = 1.2;
-    integrations.get(state.hoverNode).forEach(j=>{
-      const to = nodes[j];
-      ctx.beginPath();
-      ctx.moveTo(from.x, from.y);
-      ctx.lineTo(to.x, to.y);
-      ctx.stroke();
-    });
-  }
-
-  state.particles = state.particles.filter(p=>{
-    p.t += p.speed;
-    if (p.t >= 1.2) return false;
-    const t = Math.max(0, p.t - p.offset);
-    if (t > 1) return false;
-    const eased = t*t*(3-2*t);
-    const x = p.fx + (p.tx - p.fx) * eased;
-    const y = p.fy + (p.ty - p.fy) * eased;
-    ctx.fillStyle = `rgba(228,185,94,${0.9 * (1-t)})`;
-    ctx.beginPath();
-    ctx.arc(x, y, 2.5, 0, Math.PI*2);
-    ctx.fill();
-    return true;
+  dust.forEach(d=>{
+    const p=project(d.x,d.y,d.z);
+    if(!p)return;
+    const a=fog(p.z)*0.2;
+    if(a<=0.005)return;
+    ctx.fillStyle=`rgba(245,241,232,${a})`;
+    ctx.fillRect(p.x,p.y,Math.max(0.6,p.s*1.4),Math.max(0.6,p.s*1.4));
   });
 
-  nodes.forEach(n=>{
-    if (n.lit < 0.02) return;
-    const isCenter = n.name === "margin-voice";
-    const size = 4 + (isCenter ? 3 : 0) + n.highlight * 4;
+  if(state.mode==="graph"||state.mode==="drift")renderGraph();
+  else if(state.mode==="tunnel")renderTunnel();
+  else if(state.mode==="spheres")renderSpheres();
 
-    if (n.lit > 0.5 || n.highlight > 0.2) {
-      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, size * 8);
-      // Green tint for STL, gold tint for CBH
-      const tint = n.side === 1 ? "74,143,95" : "228,185,94";
-      glow.addColorStop(0, `rgba(${tint},${0.32 * n.lit * (0.4 + n.highlight)})`);
-      glow.addColorStop(1, `rgba(${tint},0)`);
-      ctx.fillStyle = glow;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, size*8, 0, Math.PI*2);
-      ctx.fill();
-    }
-
-    const isHighlighted = n.highlight > 0.3 || isCenter;
-    let color;
-    if (isCenter) color = `rgba(228,185,94,${n.lit})`;
-    else if (n.side === 1) color = `rgba(74,143,95,${n.lit * (0.65 + n.highlight * 0.35)})`;
-    else if (n.side === -1) color = `rgba(228,185,94,${n.lit * (0.65 + n.highlight * 0.35)})`;
-    else color = `rgba(245,241,232,${n.lit * (0.55 + n.highlight * 0.5)})`;
-
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, size, 0, Math.PI*2);
-    ctx.fill();
-
-    if (isCenter && n.lit > 0.5 && state.scale > 0.4) {
-      ctx.fillStyle = `rgba(228,185,94,${n.lit * 0.9})`;
-      ctx.font = "9px 'JetBrains Mono', monospace";
-      ctx.textAlign = "center";
-      ctx.fillText("CLAUDE.md · MARGIN-VOICE", n.x, n.y - 22);
-    }
-  });
-
-  ctx.restore();
+  if(state.act===7)renderBillboards();
 }
 
-canvas.addEventListener("mousemove", e=>{
-  const mx = e.clientX, my = e.clientY;
-  const cx = innerWidth/2 + state.offsetX;
-  const cy = innerHeight/2 + state.offsetY;
-  const dx = (mx - cx) / state.scale;
-  const dy = (my - cy) / state.scale;
-  const rx = dx * Math.cos(-state.rotation) - dy * Math.sin(-state.rotation) + cx;
-  const ry = dx * Math.sin(-state.rotation) + dy * Math.cos(-state.rotation) + cy;
+function renderGraph(){
+  const dim=state.dimGraph?0.12:1;
 
-  let found = null;
-  nodes.forEach((n, i)=>{
-    if (n.lit < 0.5) return;
-    const d = Math.hypot(n.x - rx, n.y - ry);
-    if (d < 16) found = i;
+  if(state.linesA>0.02){
+    ctx.lineWidth=0.7;
+    edges.forEach(([a,b])=>{
+      const na=nodes[a],nb=nodes[b];
+      if(na.lit<0.3||nb.lit<0.3)return;
+      const pa=project(na.wx,na.wy,na.wz),pb=project(nb.wx,nb.wy,nb.wz);
+      if(!pa||!pb)return;
+      const al=state.linesA*0.09*Math.min(fog(pa.z),fog(pb.z))*dim;
+      if(al<0.004)return;
+      ctx.strokeStyle=`rgba(228,185,94,${al})`;
+      ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(pb.x,pb.y);ctx.stroke();
+    });
+  }
+
+  if(state.hoverNode!==null){
+    const na=nodes[state.hoverNode];
+    const pa=project(na.wx,na.wy,na.wz);
+    if(pa){
+      ctx.lineWidth=1.3;
+      nodeRefs.get(state.hoverNode).forEach(j=>{
+        const nb=nodes[j];
+        const pb=project(nb.wx,nb.wy,nb.wz);
+        if(!pb)return;
+        ctx.strokeStyle=`rgba(228,185,94,${0.5*fog(pb.z)})`;
+        ctx.beginPath();ctx.moveTo(pa.x,pa.y);ctx.lineTo(pb.x,pb.y);ctx.stroke();
+      });
+    }
+  }
+
+  /* comet + trail */
+  if(state.act===4&&state.cometT>=0&&state.cometT<=1){
+    state.cometTrail.forEach((tp,i)=>{
+      const p=project(tp[0],tp[1],tp[2]);
+      if(!p)return;
+      const a=(i/state.cometTrail.length)*0.6;
+      ctx.fillStyle=`rgba(228,185,94,${a})`;
+      ctx.beginPath();ctx.arc(p.x,p.y,Math.max(1,(1+i*0.28)*p.s),0,Math.PI*2);ctx.fill();
+    });
+    const cp=cometPos(state.cometT);
+    const p=project(cp[0],cp[1],cp[2]);
+    if(p){
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,26*p.s);
+      g.addColorStop(0,"rgba(228,185,94,0.9)");
+      g.addColorStop(1,"rgba(228,185,94,0)");
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(p.x,p.y,26*p.s,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle="rgba(245,241,232,0.95)";
+      ctx.beginPath();ctx.arc(p.x,p.y,Math.max(1.6,3.4*p.s),0,Math.PI*2);ctx.fill();
+    }
+  }
+
+  const list=[];
+  nodes.forEach((n,i)=>{
+    if(n.lit<0.02)return;
+    const p=project(n.wx,n.wy,n.wz);
+    n.sx=p?p.x:-9999;n.sy=p?p.y:-9999;n.ss=p?p.s:0;n.sz=p?p.z:1e9;
+    if(p)list.push({n,p,i});
   });
-  state.hoverNode = found;
+  list.sort((a,b)=>b.p.z-a.p.z);
 
-  const hover = document.getElementById("hover");
-  if (found !== null) {
-    const n = nodes[found];
-    hover.innerHTML = `${n.name} <span class="a">${n.alt}</span>`;
-    hover.style.left = mx + "px";
-    hover.style.top = my + "px";
+  list.forEach(({n,p,i})=>{
+    const fg=fog(p.z)*dim;
+    if(fg<=0.01)return;
+    const isC=n.name==="margin-voice";
+    const base=(isC?7:4.5)+n.hi*4;
+    const size=Math.max(1,base*p.s);
+
+    /* gold for CBH side · field-green for STL side */
+    const tint=n.side===1?"74,143,95":"228,185,94";
+
+    if((n.lit>0.5||n.hi>0.2)&&p.s>0.12){
+      const g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,size*7);
+      g.addColorStop(0,`rgba(${tint},${0.32*n.lit*(0.4+n.hi)*fg})`);
+      g.addColorStop(1,`rgba(${tint},0)`);
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(p.x,p.y,size*7,0,Math.PI*2);ctx.fill();
+    }
+
+    let color;
+    if(isC)color=`rgba(228,185,94,${n.lit*fg})`;
+    else if(n.side===1)color=`rgba(74,143,95,${n.lit*(0.7+n.hi*0.3)*fg})`;
+    else if(n.side===-1)color=`rgba(228,185,94,${n.lit*(0.7+n.hi*0.3)*fg})`;
+    else color=`rgba(245,241,232,${n.lit*(0.55+n.hi*0.5)*fg})`;
+    ctx.fillStyle=color;
+    ctx.beginPath();ctx.arc(p.x,p.y,size,0,Math.PI*2);ctx.fill();
+
+    const wantLabel=isC||i===state.hoverNode||n.labelT>0||n.hi>0.5;
+    if(wantLabel&&p.s>0.28&&fg>0.25){
+      const la=Math.min(1,n.labelT>0?n.labelT/900:1)*fg;
+      ctx.fillStyle=`rgba(${isC?"228,185,94":"245,241,232"},${0.75*la})`;
+      ctx.font=`${Math.max(8,9*Math.min(1.6,p.s))}px 'JetBrains Mono', monospace`;
+      ctx.textAlign="center";
+      ctx.fillText(isC?"CLAUDE.md · MARGIN-VOICE":n.name,p.x,p.y-size-6);
+    }
+  });
+}
+
+function renderTunnel(){
+  /* gates as rings of dots flown through */
+  GATES.forEach((g,gi)=>{
+    const N=26;
+    for(let k=0;k<N;k++){
+      const th=k/N*Math.PI*2;
+      const p=project(Math.cos(th)*300,Math.sin(th)*300,g.z);
+      if(!p)continue;
+      const fg=fog(p.z);
+      if(fg<=0.01)continue;
+      /* later gates tinted greener — the brain matures */
+      const mix=gi/(GATES.length-1);
+      const r=Math.round(228+(74-228)*mix);
+      const gg=Math.round(185+(143-185)*mix);
+      const b=Math.round(94+(95-94)*mix);
+      ctx.fillStyle=`rgba(${r},${gg},${b},${0.7*fg})`;
+      ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.8,2.8*p.s),0,Math.PI*2);ctx.fill();
+    }
+    const pm=project(0,-430,g.z);
+    if(pm&&fog(pm.z)>0.05){
+      ctx.fillStyle=`rgba(228,185,94,${0.85*fog(pm.z)})`;
+      ctx.font=`${Math.max(10,24*pm.s)}px 'Anton', Impact, sans-serif`;
+      ctx.textAlign="center";
+      ctx.fillText(g.y,pm.x,pm.y);
+    }
+  });
+  /* mini brain travels with the viewer at each gate: draw constellation faint at each gate z */
+  GATES.forEach((g,gi)=>{
+    const density=0.4+gi*0.2;
+    nodes.forEach((n,ni)=>{
+      if(ni%2===1&&gi<2)return;
+      const p=project(n.bx*0.5,n.wy*0.5,n.wz*0.5+g.z);
+      if(!p)return;
+      const fg=fog(p.z);
+      if(fg<=0.01)return;
+      ctx.fillStyle=`rgba(228,185,94,${0.5*density*fg})`;
+      ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.6,2*p.s),0,Math.PI*2);ctx.fill();
+    });
+  });
+}
+
+function renderSpheres(){
+  const list=SPHERES.map(s=>({s,p:project(s.x,s.y,s.z)})).filter(o=>o.p);
+  list.sort((a,b)=>b.p.z-a.p.z);
+  list.forEach(({s,p})=>{
+    const fg=fog(p.z);
+    const r=Math.max(6,s.r*p.s);
+    const a=(s.dim?0.35:1)*fg;
+    const g=ctx.createRadialGradient(p.x-r*0.25,p.y-r*0.25,r*0.1,p.x,p.y,r*1.15);
+    g.addColorStop(0,`rgba(56,56,64,${0.9*a})`);
+    g.addColorStop(0.75,`rgba(22,22,28,${0.95*a})`);
+    g.addColorStop(1,"rgba(11,11,15,0)");
+    ctx.fillStyle=g;
+    ctx.beginPath();ctx.arc(p.x,p.y,r*1.15,0,Math.PI*2);ctx.fill();
+
+    ctx.strokeStyle=s.primary?`rgba(228,185,94,${0.85*a})`:`rgba(100,100,110,${0.8*a})`;
+    ctx.lineWidth=s.primary?1.6:1;
+    ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.stroke();
+
+    if(s.primary){
+      const gg=ctx.createRadialGradient(p.x,p.y,r*0.6,p.x,p.y,r*2.2);
+      gg.addColorStop(0,`rgba(228,185,94,${0.12*a})`);
+      gg.addColorStop(1,"rgba(228,185,94,0)");
+      ctx.fillStyle=gg;
+      ctx.beginPath();ctx.arc(p.x,p.y,r*2.2,0,Math.PI*2);ctx.fill();
+      nodes.forEach(n=>{
+        const q=project(n.bx*0.22,n.wy*0.22,n.wz*0.22);
+        if(!q)return;
+        ctx.fillStyle=`rgba(228,185,94,${0.5*a})`;
+        ctx.beginPath();ctx.arc(q.x,q.y,Math.max(0.6,1.4*q.s),0,Math.PI*2);ctx.fill();
+      });
+    }
+
+    ctx.fillStyle=s.primary?`rgba(228,185,94,${a})`:`rgba(245,241,232,${0.9*a})`;
+    ctx.font=`${Math.max(10,18*p.s)}px 'Anton', Impact, sans-serif`;
+    ctx.textAlign="center";
+    ctx.fillText(s.label,p.x,p.y+r+24*p.s+12);
+    ctx.fillStyle=`rgba(110,110,118,${0.85*a})`;
+    ctx.font=`${Math.max(7,9*p.s)}px 'JetBrains Mono', monospace`;
+    ctx.fillText(s.sub,p.x,p.y+r+24*p.s+30);
+  });
+
+  const c0=project(SPHERES[0].x,SPHERES[0].y,SPHERES[0].z);
+  for(let i=1;i<SPHERES.length;i++){
+    const ci=project(SPHERES[i].x,SPHERES[i].y,SPHERES[i].z);
+    if(!c0||!ci)continue;
+    ctx.strokeStyle="rgba(228,185,94,0.14)";
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(c0.x,c0.y);ctx.lineTo(ci.x,ci.y);ctx.stroke();
+  }
+}
+
+function renderBillboards(){
+  BILLBOARDS.forEach((b,bi)=>{
+    const p=project(bi%2===0?-110:110,(bi%3-1)*70,b.z);
+    if(!p)return;
+    const prox=Math.max(0,Math.min(1,(1400-Math.abs(p.z-520))/1100));
+    if(prox<=0.02)return;
+    ctx.fillStyle=b.gold?`rgba(228,185,94,${prox})`:`rgba(245,241,232,${prox})`;
+    ctx.font=`${Math.max(14,66*p.s)}px 'Anton', Impact, sans-serif`;
+    ctx.textAlign="center";
+    ctx.fillText(b.t,p.x,p.y);
+    if(b.sub){
+      ctx.fillStyle=`rgba(110,110,118,${prox*0.9})`;
+      ctx.font=`${Math.max(8,11*p.s)}px 'JetBrains Mono', monospace`;
+      ctx.fillText(b.sub.toUpperCase(),p.x,p.y+40*p.s);
+    }
+  });
+}
+
+/* ============ INTERACTION ============ */
+canvas.addEventListener("mousemove",e=>{
+  state.mouseX=(e.clientX/CW-0.5)*2;
+  state.mouseY=(e.clientY/CH-0.5)*2;
+  if(state.dragging){
+    state.yawOff+=(e.clientX-state.lastMX)*0.0032;
+    state.pitchOff+=(e.clientY-state.lastMY)*0.0022;
+    state.pitchOff=Math.max(-0.7,Math.min(0.7,state.pitchOff));
+    state.lastMX=e.clientX;state.lastMY=e.clientY;
+    return;
+  }
+  let found=null,best=18;
+  nodes.forEach((n,i)=>{
+    if(n.lit<0.5||n.ss<=0)return;
+    const d=Math.hypot(n.sx-e.clientX,n.sy-e.clientY);
+    if(d<best){best=d;found=i;}
+  });
+  state.hoverNode=found;
+  const hover=document.getElementById("hover");
+  if(found!==null&&state.mode==="graph"){
+    const n=nodes[found];
+    hover.innerHTML=`${n.name} <span class="a">${n.alt}</span>`;
+    hover.style.left=e.clientX+"px";
+    hover.style.top=e.clientY+"px";
     hover.classList.add("show");
-    canvas.style.cursor = "pointer";
-  } else {
+  }else{
     hover.classList.remove("show");
-    canvas.style.cursor = "default";
+    state.hoverNode=null;
   }
 });
-
-canvas.addEventListener("click", ()=>{
-  if (state.hoverNode !== null) openModal(nodes[state.hoverNode]);
+canvas.addEventListener("mousedown",e=>{
+  state.dragging=true;state.lastMX=e.clientX;state.lastMY=e.clientY;
+  canvas.classList.add("dragging");
+});
+addEventListener("mouseup",()=>{state.dragging=false;canvas.classList.remove("dragging")});
+canvas.addEventListener("wheel",e=>{
+  e.preventDefault();
+  state.fovMul*=e.deltaY<0?1.07:0.935;
+  state.fovMul=Math.max(0.5,Math.min(2.1,state.fovMul));
+},{passive:false});
+canvas.addEventListener("click",()=>{
+  if(state.hoverNode!==null&&!state.dragging)openModal(nodes[state.hoverNode]);
 });
 
-function openModal(n) {
-  document.getElementById("m-name").textContent = n.name;
-  document.getElementById("m-alt").textContent = `ALTITUDE ${n.alt} · DOMAIN ${n.domain.toUpperCase()}`;
-  document.getElementById("m-body").innerHTML = n.desc + `<br><br><em style="color:var(--dim);font-size:12px">github.com/kcumby2-wq/hooks-os/blob/main/skills/${n.name}/SKILL.md</em>`;
+function openModal(n){
+  document.getElementById("m-name").textContent=n.name;
+  document.getElementById("m-alt").textContent=`ALTITUDE ${n.alt} · DOMAIN ${n.domain.toUpperCase()}`;
+  document.getElementById("m-body").innerHTML=n.desc+`<br><br><em style="color:var(--dim);font-size:12px">github.com/kcumby2-wq/hooks-os/blob/main/skills/${n.name}/SKILL.md</em>`;
   document.getElementById("modal").classList.add("show");
 }
-function closeModal() { document.getElementById("modal").classList.remove("show"); }
-window.closeModal = closeModal;
-document.getElementById("modal").addEventListener("click", e=>{
-  if (e.target.id === "modal") closeModal();
-});
+function closeModal(){document.getElementById("modal").classList.remove("show")}
+window.closeModal=closeModal;
+document.getElementById("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
 
-addEventListener("keydown", e=>{
-  if (e.key === " " || e.code === "Space") { e.preventDefault(); state.paused = !state.paused; }
-  if (e.key === "ArrowRight" && state.act < 7) jumpToAct(state.act + 1);
-  if (e.key === "ArrowLeft" && state.act > 1) jumpToAct(state.act - 1);
-  if (e.key === "Escape") closeModal();
-  if (e.key === "f" || e.key === "F") {
-    if (document.fullscreenElement) document.exitFullscreen();
+addEventListener("keydown",e=>{
+  if(e.key===" "||e.code==="Space"){e.preventDefault();state.paused=!state.paused;}
+  if(e.key==="ArrowRight"&&state.act<7)enterAct(state.act+1);
+  if(e.key==="ArrowLeft"&&state.act>1)enterAct(state.act-1);
+  if(e.key==="Escape")closeModal();
+  if(e.key==="f"||e.key==="F"){
+    if(document.fullscreenElement)document.exitFullscreen();
     else document.documentElement.requestFullscreen().catch(()=>{});
   }
-  if (e.key === "r" || e.key === "R") {
-    clearTimers();
-    nodes.forEach(n=>{n.tlit=0;n.thighlight=0;n.lit=0;n.highlight=0;});
-    state.showLines = false;
-    state.linesOpacity = 0;
-    state.targetScale = 1;
-    state.targetOffsetY = 0;
-    state.targetSplitFactor = 0;
-    state.targetTimeBack = 0;
-    state.timeBack = 0;
-    document.getElementById("tb-l").textContent = "HOURS BACK THIS WEEK";
-    jumpToAct(1);
+  if(e.key==="r"||e.key==="R"){
+    nodes.forEach(n=>{n.tlit=0;n.thi=0;n.lit=0;n.hi=0;n.labelT=0});
+    state.linesA=0;state.fovMul=1;state.timeBack=0;state.ttimeBack=0;
+    state.cam={x:0,y:0,z:-2100,rx:0,ry:0};
+    document.getElementById("tb-l").textContent="HOURS BACK THIS WEEK";
+    document.getElementById("timeback").classList.remove("show");
+    enterAct(1);
   }
-  const num = parseInt(e.key);
-  if (num >= 1 && num <= 7) jumpToAct(num);
+  const num=parseInt(e.key);
+  if(num>=1&&num<=7)enterAct(num);
 });
 
-function jumpToAct(n) {
-  if (n < 3) state.showLines = false;
-  if (n >= 3) state.showLines = true;
-  enterAct(n);
-}
-
-setTimeout(()=>{
-  document.getElementById("hint").style.opacity = 0;
-}, 6000);
+setTimeout(()=>{document.getElementById("hint").style.opacity=0},7000);
 
 fetch("https://api.github.com/repos/kcumby2-wq/hooks-os/commits?per_page=1")
   .then(r=>r.ok?r.json():null)
-  .then(commits=>{
-    if (commits && commits[0]) {
-      const c = commits[0];
-      const msg = c.commit.message.split("\n")[0].slice(0, 42);
-      document.getElementById("repo-commit").textContent = c.sha.slice(0,7) + " · " + msg;
+  .then(cs=>{
+    if(cs&&cs[0]){
+      document.getElementById("repo-commit").textContent=
+        cs[0].sha.slice(0,7)+" · "+cs[0].commit.message.split("\n")[0].slice(0,42);
     }
-  })
-  .catch(()=>{});
+  }).catch(()=>{});
 
-addEventListener("resize", resize);
-resize();
-
-let last = performance.now();
-function loop(now) {
-  const dt = Math.min(50, now - last);
-  last = now;
+let last=performance.now();
+function loop(now){
+  const dt=Math.min(50,now-last);last=now;
   tick(dt);
   requestAnimationFrame(loop);
 }
