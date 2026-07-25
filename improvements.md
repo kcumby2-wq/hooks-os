@@ -4,6 +4,59 @@
 
 ---
 
+## 2026-07-25 · STL Growth Plan absorbed · 12 new skills + workflow + adoption doc
+
+**Feedback verbatim:** *"Lets look in the hooks-os repo I want to add things that arent already implemented into the Hooks-os. The name will in the contract does not matter. This is mine now. We are using this to make the plan stronger."* — Kyron
+
+**Source:** external CRM/Automation growth plan received for Sky's The Limit WR (Margin Hooks). Original document named a third-party operator on the 10% roster revenue share — per Kyron's directive, that arrangement is now TOJ's. Authorship irrelevant · execution is what matters.
+
+**Gap-analysis pass** against existing hooks-os skills identified 12 tactical/operational layers the strategic skill set was missing.
+
+### 12 new skills shipped
+
+**CRM foundation (5):**
+- `client-segmentation/` — three-segment frame (Youth/HS · College-Bound · Alumni/Pro-Track) every other skill reads against
+- `lead-capture-automation/` — every inbound tagged + segment-routed · ad-specific landing pages · form-first pattern
+- `session-booking-no-show/` — confirmation cadence + no-show recovery + post-consult 3-way branch
+- `onboarding-sequence/` — welcome → intake → first session → first recap · per-segment parallel tracks
+- `package-renewal-tracking/` — 30/14/7 reminder cadence + missed-payment recovery + churned-client win-back
+
+**Agent layer (3):**
+- `post-session-recap-agent/` — **highest-leverage retention lever** · auto-recap to athlete + parent within 4-6h
+- `account-health-agent/` — signal-based drop-off detection · surfaces at-risk before churn
+- `sales-qualification-agent/` — inbound DM → segment classification → booked consult
+
+**Marketing discipline (3):**
+- `outcomes-based-communication/` — feature-vs-outcome frame · fires on every generated output
+- `release-room-friday/` — weekly athlete-story content series · one production cycle → all platforms
+- `athlete-referral-program/` — client-to-client referrals with alumni weighting + real-moment triggers
+
+**Commercial layer (1):**
+- `roster-revenue-share/` — TOJ 10% on Margin's roster referrals · auto-tracked via CRM tag · zero manual logging
+
+### Plus
+
+- `workflows/lead-to-client-flow.md` — 8-step visualized flow with per-step skill references
+- `STL-Growth-Plan-Adoption.md` — top-level mapping doc showing what existed, what shipped, and the 3-phase sequencing (Foundation → Intelligence → Social & content)
+
+### Notable retention insight preserved
+
+Per the Growth Plan return table, the automated post-session recap is *"the single highest-leverage change in the plan for retention · a documented weekly recap is the difference between a parent who renews on autopilot and one who has to be re-sold every package."* Codified as its own skill (`post-session-recap-agent/`) rather than folded into `parent-comms/` — because retention runs through it, and every other skill hands off to or supports it.
+
+### Contract note
+
+The original growth plan named a third-party partner for the 10% roster revenue share. Per Kyron's directive, all partnership terms flow to TOJ. `roster-revenue-share/SKILL.md` documents the arrangement · specific legal instrument to be finalized in the master TOJ-Margin operating agreement.
+
+### 3-phase adoption sequencing (per `STL-Growth-Plan-Adoption.md`)
+
+- **Phase 01 · Foundation (pre-August walkthrough):** the 5 CRM foundation skills + `post-session-recap-agent/` — ship first for immediate visible wins
+- **Phase 02 · Intelligence layer (August-October):** the 3 agent skills + outcomes-based-communication voice audit
+- **Phase 03 · Social & content (October-December):** Release Room Friday + Athlete Referral Program + social auto-reply expansion
+
+**Ongoing:** `roster-revenue-share/` active from Phase 1 · statement auto-generated monthly.
+
+---
+
 ## 2026-06-25 — v1.0 Founding (the most-prepared founding pass in the network)
 
 This repo is the founding trainer brand of the TOJ network, but it is being built **third** in the operating-brain sequence (after youngblood-os v1.0→v1.2 and patterson-os v1.0). That means Margin's brain opens at a quality level **neither of the prior two repos reached at founding** — every architectural lesson learned in the prior client cycles is pre-applied here. The order of building did not match the order of seniority in the federation, and that gap is the gift: Margin's brain skips the growing pains.
