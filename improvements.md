@@ -4,6 +4,52 @@
 
 ---
 
+## 2026-07-25 · Move #2 · Wired GHL/Supabase automation infrastructure
+
+**Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (referring to the 3-move sequence)
+
+**Move #2 complete.** Every skill spec now has a concrete runtime. `infra/` scaffolds the whole automation layer.
+
+### Shipped
+
+**`infra/README.md`** — top-level runtime allocation: Supabase (source of truth) · GHL (CRM/comms) · Stripe (payments) · Anthropic Claude (agent layer).
+
+**`infra/skill-runtime-map.md`** — every skill mapped to concrete runtime with SB/GHL/STR/AI/HUM legend, daily cron schedule, and env vars required.
+
+**Supabase migrations (5):**
+- `001_core_schema.sql` — leads · consults · clients · packages · sessions (with segment + source_tag flowing through)
+- `002_recap_pipeline.sql` — session_notes · recaps · recap_events + `recap_delivery_stats` view
+- `003_account_health.sql` — signals · flags · interventions · scan_runs (with severity + intervention type enums)
+- `004_revenue_share.sql` — payment_events · revenue_share_ledger · revenue_share_statements + `calculate_revenue_share()` plpgsql function
+- `005_engagement.sql` — content_briefs · content_assets · engagement_events · advocacy_log · referrals · engagement_weekly_snapshots
+
+**Supabase Edge Functions (4 + shared):**
+- `_shared/voice-drift-check.ts` — runs inside every AI function · enforces outcomes-based-communication + margin-voice · 3-retry loop then escalate
+- `recap-agent/` — post-session-recap-agent runtime · triggered by session_notes insert · segment-aware recipient picking
+- `qual-agent/` — inbound classifier · routes fit/sponsor/complaint · creates lead row + drafts reply
+- `health-agent/` — daily 09:00 CT cron · computes signals · reconciles flags · queues interventions by severity
+- `stripe-webhook/` — payment events → payment_events + fires calculate_revenue_share() for roster-attributed clients
+
+**GHL integration specs:**
+- `infra/ghl/field-mapping.md` — every custom field mapped bi-directionally · tag conventions · what stays out of GHL
+- `infra/ghl/webhooks.md` — 7 inbound webhook contracts + outbound endpoint reference · retry/idempotency rules
+- `infra/ghl/workflows/README.md` — index of 20 workflows Kyron builds in GHL UI · phased by Foundation/Intelligence/Social+Content
+- `infra/ghl/workflows/10-hooks-recap-delivery.md` — exemplar per-workflow spec (recap delivery · the highest-leverage one)
+
+### What this changes
+
+Before Move #2: the skill specs described WHAT to do. After Move #2: every skill has WHERE (which table, which function, which workflow) and HOW (concrete columns, concrete API calls, concrete cron times). The operating brain is now buildable — Will can start on Stripe integration · Kyron can start on GHL workflow builds · migrations can go to prod Supabase whenever Kyron reviews.
+
+### What's NOT in this move (deliberate)
+
+- No production secrets · no actual API keys · no PII · schemas only
+- GHL workflow JSON exports (those live in GHL UI · specs are here)
+- Auth model beyond service-role · fine-grained RLS policies deferred to a future migration when client-facing dashboards ship
+
+**Next up:** Move #3 (draft the TOJ-Margin master operating agreement · legal instrument codifying the roster-revenue-share and the whole commercial arrangement).
+
+---
+
 ## 2026-07-25 · v1.1 upgrades · 4 existing skills cross-referenced to new skills
 
 **Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (referring to my proposed 3-move sequence: v1.1 upgrades → automation wiring → operating agreement)
