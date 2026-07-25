@@ -4,6 +4,45 @@
 
 ---
 
+## 2026-07-25 · Move #3 · Drafted TOJ-Margin master operating agreement
+
+**Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (final move of the 3-move sequence)
+
+**Move #3 complete.** The commercial layer of the operating brain now has a legal instrument. Draft v0.1 codifies the arrangement into a contract-shaped document ready for attorney review.
+
+### Shipped
+
+- **`contracts/toj-margin-master-operating-agreement.md`** — 13-section master agreement with 4 appendices covering: recitals · definitions · scope of services · 10% revenue share on Roster Referrals · IP ownership (TOJ owns methodology · Margin owns coaching craft + brand) · confidentiality · term/termination · audit + dispute resolution · non-compete boundary · reps/warranties · liability cap · general provisions · signature blocks · roster source tag reference · excluded categories · reference schema · change log · attorney-review checklist.
+- **`contracts/toj-margin-master-operating-agreement.html`** — print/DocuSign-ready HTML render of the same agreement. Same content · signable formatting · print button · attorney-review checklist. Non-repudiation via the `.md` source (canonical) plus the `.html` render (executable).
+- **`contracts/README.md`** — folder index + attorney-review workflow + explanation of why contracts live in the operating-brain repo (commercial terms and operational terms stay in sync).
+
+### Key commercial terms codified
+
+- **10% revenue share** on Collected Revenue from every Roster Referral (source: `roster_referral` · `alumni_network` · `direct_margin_intro`) · auto-calculated via `calculate_revenue_share()` · zero manual reconciliation
+- **Grandfather clause:** pre-Effective-Date paying clients excluded unless they sign a new package after signing
+- **Excluded:** Trainer Blueprint · sponsorships · book/course sales · one-off consults · pre-existing engagements
+- **IP boundary:** TOJ owns Operating Brain methodology · Margin owns coaching craft + client relationships + brand
+- **License-back:** on termination, TOJ delivers Margin-specific snapshot for continuity
+- **Revenue-share tail cap:** post-termination obligations capped at `[REVIEW: 24 or 36]` months to prevent perpetual entanglement
+- **XPAND supersession:** §12.5 expressly supersedes "any prior arrangement naming a different entity as revenue-share partner in connection with roster referrals"
+
+### What's still `[REVIEW]`
+
+Twelve bracketed items require attorney or joint-principal input before execution: governing-law state, payout cadence/method, initial term length, non-renewal window, termination-for-convenience notice, tail cap duration, confidentiality survival, non-compete scope, liability cap sizing, insurance minimums, notice addresses, audit interest rate. Attorney should also confirm the revenue-share structure doesn't inadvertently trigger franchise, securities, or MLM regulatory frameworks.
+
+### What this closes
+
+The 3-move sequence is complete:
+- **Move #1:** v1.1 skill upgrades wiring existing skills to the 12 new Growth Plan skills ✓
+- **Move #2:** GHL/Supabase infrastructure making every skill spec runnable ✓
+- **Move #3:** Legal instrument formalizing the commercial arrangement ✓
+
+The operating brain now has skills (WHAT), infrastructure (HOW), and contract (WHO OWNS WHAT + WHO GETS PAID WHAT) all in the same repo, cross-referencing each other. Any material change to a skill or infrastructure component that affects commercial terms must trigger a same-session contract amendment.
+
+**Not shipped intentionally:** actual execution. Both principals + both attorneys must review the draft before signing. This is v0.1 · not a signed instrument.
+
+---
+
 ## 2026-07-25 · Move #2 · Wired GHL/Supabase automation infrastructure
 
 **Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (referring to the 3-move sequence)

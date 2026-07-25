@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Master Operating Agreement · TOJ &times; Margin Hooks</title>
+<style>
+  @media print {
+    body { margin: 0; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+  }
+  :root {
+    --ink: #1a1a1a;
+    --muted: #5a5a5a;
+    --rule: #d8d8d8;
+    --warn-bg: #fff8e6;
+    --warn-border: #e0b400;
+    --accent: #7a1f1f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--ink);
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 48px 32px 96px;
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  h1 {
+    font-size: 26px;
+    text-align: center;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 32px;
+    font-family: Arial, sans-serif;
+  }
+  .parties {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .parties p { margin: 6px 0; }
+  .draft-banner {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    margin-bottom: 32px;
+  }
+  .draft-banner strong { color: var(--accent); }
+  h2 {
+    font-size: 17px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+    margin-top: 40px;
+  }
+  h3 { font-size: 15px; margin-top: 20px; }
+  p, li { margin: 8px 0; }
+  .review {
+    background: #fff2f2;
+    border-bottom: 1px dashed var(--accent);
+    padding: 0 2px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    color: var(--accent);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+  }
+  th, td {
+    border: 1px solid var(--rule);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th { background: #f5f5f5; }
+  code {
+    font-family: 'Courier New', monospace;
+    background: #f2f2f2;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+  .sig-block {
+    margin-top: 36px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  .sig-line {
+    border-bottom: 1px solid var(--ink);
+    display: inline-block;
+    width: 320px;
+    margin: 24px 0 4px;
+  }
+  .sig-field { margin: 4px 0; }
+  .toc {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    columns: 2;
+    column-gap: 32px;
+    margin-bottom: 32px;
+  }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .checklist {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    background: #f7f7f7;
+    border-radius: 6px;
+    padding: 16px 20px 16px 36px;
+    margin-top: 24px;
+  }
+  .print-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-family: Arial, sans-serif;
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  hr { border: none; border-top: 1px solid var(--rule); margin: 28px 0; }
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Print / Save as PDF</button>
+
+<h1>Master Operating Agreement</h1>
+<div class="subtitle">Trail of Joy Player Management Group &times; Margin Hooks / Sky's The Limit WR / Coached by Hooks</div>
+
+<div class="parties">
+  <p><strong>Between:</strong> Trail of Joy Player Management Group (&ldquo;<strong>TOJ</strong>&rdquo;) — represented by Kyron Cumby, Principal</p>
+  <p><strong>And:</strong> Margin Hooks / Sky's The Limit WR / Coached by Hooks (collectively, &ldquo;<strong>Margin</strong>&rdquo;) — represented by Margin Hooks, Principal</p>
+  <p><strong>Effective Date:</strong> _______________ (to be set at signing)</p>
+</div>
+
+<div class="draft-banner">
+  <strong>&#9888; DRAFT · v0.1 · 2026-07-25 · attorney review required before signing.</strong>
+  This document codifies the commercial and operational arrangement between TOJ and Margin as it currently operates in the <code>hooks-os</code> repository. It is drafted to reflect intent, not to serve as final legal counsel. <strong>Both parties must have this reviewed by their own attorney before execution.</strong> Text highlighted like <span class="review">this</span> marks a decision requiring attorney input or a joint principal call before final language is set.
+</div>
+
+<div class="toc no-print">
+  <a href="#s1">1. Recitals</a>
+  <a href="#s2">2. Definitions</a>
+  <a href="#s3">3. Scope of Services</a>
+  <a href="#s4">4. Compensation · Revenue Share</a>
+  <a href="#s5">5. Intellectual Property</a>
+  <a href="#s6">6. Confidentiality</a>
+  <a href="#s7">7. Term and Termination</a>
+  <a href="#s8">8. Audit and Dispute Resolution</a>
+  <a href="#s9">9. Non-Compete / Non-Solicitation</a>
+  <a href="#s10">10. Representations and Warranties</a>
+  <a href="#s11">11. Limitation of Liability</a>
+  <a href="#s12">12. General Provisions</a>
+  <a href="#s13">13. Signatures</a>
+</div>
+
+<h2 id="s1">1. Recitals</h2>
+<p><strong>WHEREAS</strong>, Margin has built a decade of coaching authority and a roster of active and alumni athletes in the wide-receiver development space through Margin Hooks (professional training), Sky's The Limit WR (&ldquo;<strong>STL</strong>&rdquo;) (athlete platform + membership), and Coached by Hooks (&ldquo;<strong>CBH</strong>&rdquo;) (college placement advocacy);</p>
+<p><strong>WHEREAS</strong>, TOJ has built the operating infrastructure — CRM automation, lifecycle sequences, agent-layer intelligence, recap discipline, revenue-share tracking, content production cycle, and the codified operating brain documented in the <code>hooks-os</code> repository — that converts Margin's coaching authority into recurring, tracked, high-retention paying client revenue;</p>
+<p><strong>WHEREAS</strong>, the parties wish to formalize the terms under which TOJ provides the operating infrastructure to Margin, receives compensation for that infrastructure, and defines the ownership boundaries between Margin's coaching craft and TOJ's operating system;</p>
+<p><strong>NOW THEREFORE</strong>, in consideration of the mutual covenants below, the parties agree:</p>
+
+<h2 id="s2">2. Definitions</h2>
+<ul>
+  <li><strong>&ldquo;Operating Brain&rdquo;</strong> — the collection of skill specifications, runtime infrastructure, agent code, content workflows, and CRM configuration documented in the <code>hooks-os</code> repository, as maintained and evolved by TOJ.</li>
+  <li><strong>&ldquo;Roster Referral&rdquo;</strong> — an athlete who becomes a paying client of Margin's business AND whose intake was tagged with source <code>roster_referral</code>, <code>alumni_network</code>, or <code>direct_margin_intro</code> under the <code>client-segmentation</code> / <code>lead-capture-automation</code> skills.</li>
+  <li><strong>&ldquo;New Acquisition&rdquo;</strong> — an athlete who becomes a paying client through channels that did NOT originate from Margin's pre-existing network: paid ads, cold inbound, organic social, newsletter, and client-to-client referrals not sourced from the roster.</li>
+  <li><strong>&ldquo;Collected Revenue&rdquo;</strong> — revenue actually received (net of refunds, chargebacks, and processor fees) by Margin's business from a given client during the client's tenure as an active paying customer, as recorded by the payment processor and mirrored in the <code>payment_events</code> table.</li>
+  <li><strong>&ldquo;Active Client&rdquo;</strong> — an athlete or family with at least one non-expired paying package (per <code>packages.status = 'active'</code>).</li>
+  <li><strong>&ldquo;Trainer Blueprint&rdquo;</strong> — the separate certified-trainer program governed by its own commercial terms (<code>skills/trainer-blueprint</code>). Blueprint sales are <strong>excluded</strong> from this Agreement's revenue-share scope.</li>
+</ul>
+
+<h2 id="s3">3. Scope of Services</h2>
+<p>TOJ shall provide, maintain, and evolve the Operating Brain on Margin's behalf, including but not limited to:</p>
+
+<h3>3.1 Operating infrastructure</h3>
+<ul>
+  <li>Lead capture, segmentation, and routing (<code>lead-capture-automation</code>, <code>client-segmentation</code>)</li>
+  <li>Consult booking and no-show recovery (<code>session-booking-no-show</code>)</li>
+  <li>Onboarding lifecycle sequences per segment (<code>onboarding-sequence</code>)</li>
+  <li>Package renewal cadence (30/14/7 day) and payment recovery (<code>package-renewal-tracking</code>)</li>
+  <li>Post-session recap generation and delivery within 4-6h SLA (<code>post-session-recap-agent</code>)</li>
+  <li>Account-health monitoring and intervention queuing (<code>account-health-agent</code>)</li>
+  <li>Inbound qualification and consult booking (<code>sales-qualification-agent</code>)</li>
+  <li>Voice-consistency enforcement across all agent-generated communication (<code>outcomes-based-communication</code>, <code>margin-voice</code>)</li>
+</ul>
+
+<h3>3.2 Content and marketing operations</h3>
+<ul>
+  <li>Weekly Release Room Friday production cycle (<code>release-room-friday</code>, <code>subject-media-coordination</code>)</li>
+  <li>Athlete referral program mechanics (<code>athlete-referral-program</code>)</li>
+  <li>Outbound outreach coordination (<code>cold-outreach</code>)</li>
+  <li>Engagement monitoring and weekly Monday review (<code>engagement-monitoring</code>)</li>
+</ul>
+
+<h3>3.3 Commercial infrastructure</h3>
+<ul>
+  <li>Revenue-share tracking and monthly statement generation (<code>roster-revenue-share</code>)</li>
+  <li>CRM &harr; Supabase field synchronization and data integrity (<code>infra/</code>)</li>
+  <li>Stripe integration and payment webhook processing</li>
+</ul>
+
+<h3>3.4 Ongoing evolution</h3>
+<ul>
+  <li>Iteration on skill specifications as the operating brain learns from feedback</li>
+  <li>Bug fixes, integration maintenance, and infrastructure upgrades</li>
+  <li>Documentation of every rule change in <code>improvements.md</code> for auditable evolution</li>
+</ul>
+
+<h3>3.5 What is NOT within TOJ's scope</h3>
+<ul>
+  <li>Coaching delivery (Margin's craft)</li>
+  <li>Athlete evaluation and grading (<code>prospect-edge-workflow</code>)</li>
+  <li>College advocacy calls (<code>cbh-advocacy</code>)</li>
+  <li>Trainer Blueprint candidate vetting (Margin personally vets every relationship)</li>
+  <li>Content that requires Margin's personal presence, voice, or on-camera involvement</li>
+</ul>
+
+<h2 id="s4">4. Compensation · Roster Revenue Share</h2>
+<p><strong>4.1 Revenue-share rate.</strong> TOJ shall receive <strong>ten percent (10%)</strong> of the Collected Revenue attributable to every Roster Referral, for as long as that Roster Referral remains an Active Client.</p>
+<p><strong>4.2 Automatic calculation.</strong> The share is calculated automatically from <code>payment_events</code> records in the operating brain's Supabase schema via the <code>calculate_revenue_share()</code> function. No manual reconciliation is required.</p>
+<p><strong>4.3 What triggers a share entry:</strong></p>
+<ul>
+  <li>a. The athlete's <code>leads.source</code> is one of <code>roster_referral</code>, <code>alumni_network</code>, or <code>direct_margin_intro</code> at the time of package purchase.</li>
+  <li>b. The athlete has an active package (any tier: STL Membership, STL Cohort, Prospect Edge, CBH Apex).</li>
+  <li>c. A payment for that package has successfully processed.</li>
+</ul>
+<p><strong>4.4 What does NOT trigger a share entry:</strong></p>
+<ul>
+  <li>a. New Acquisition clients (source: <code>cold_inbound</code>, <code>paid_ad</code>, <code>client_referral</code> from non-roster clients).</li>
+  <li>b. Trainer Blueprint sales, governed by separate commercial terms.</li>
+  <li>c. Athletes Margin was actively training as paying clients <strong>before</strong> this Agreement's Effective Date, unless they sign a new package post-Effective Date.</li>
+  <li>d. One-off consultations, evaluations, or ad-hoc engagements that do not become a recurring package.</li>
+</ul>
+<p><strong>4.5 Reversals.</strong> Refunds, chargebacks, and partial refunds create a reversal entry that offsets the corresponding accrual. Net owed for any period equals accruals minus reversals plus adjustments.</p>
+<p><strong>4.6 Payout cadence.</strong> A monthly statement is auto-generated on the first business day of each month covering the prior month's activity. Payout to TOJ is due within <span class="review">[REVIEW: 15 or 30]</span> calendar days of statement issuance. Payout method: <span class="review">[REVIEW: ACH · wire · Stripe transfer]</span>.</p>
+<p><strong>4.7 Statement contents.</strong> Each monthly statement includes: gross qualified revenue, total share accrued, reversals in period, net owed, per-client breakdown, per-package breakdown, and running ledger balance.</p>
+<p><strong>4.8 Rate adjustment.</strong> The 10% rate is fixed for the initial term. Rate revisions require written amendment signed by both parties and take effect prospectively only.</p>
+
+<h2 id="s5">5. Intellectual Property</h2>
+<p><strong>5.1 TOJ ownership.</strong> TOJ owns and retains all right, title, and interest in: the Operating Brain codebase and specifications; the skill format, altitude framework, and operating-brain architecture as a methodology; agent prompts, voice-drift check logic, and generation templates; analytics dashboards and derived metrics infrastructure; the right to apply the Operating Brain methodology to other clients in non-competing verticals, so long as no client-specific data or Margin-specific voice signals leak between customers.</p>
+<p><strong>5.2 Margin ownership.</strong> Margin owns and retains all right, title, and interest in: all coaching content, training methodology, drill progressions, and grading standards; all athlete relationships, client rosters, and referral networks that pre-existed this Agreement; all footage, film, video, and photography featuring Margin personally or Margin's client athletes; the STL, CBH, and Margin Hooks brand assets, trademarks, domain names, and social handles; the record book, credential, and personal reputation that attracts inbound in the first place.</p>
+<p><strong>5.3 Client data.</strong> All client data belongs to Margin's business as data controller. TOJ acts as data processor and infrastructure operator, with obligations to protect and not exfiltrate this data.</p>
+<p><strong>5.4 Improvements.</strong> Improvements to the Operating Brain developed during this Agreement belong to TOJ (methodology) unless they are Margin-specific customizations, which belong to Margin.</p>
+<p><strong>5.5 Termination license-back.</strong> Upon termination, TOJ shall provide Margin, at Margin's request and expense, a snapshot of the Operating Brain configuration specific to Margin's business sufficient for Margin to rebuild or transition the operating infrastructure. This does not include TOJ's general methodology or non-Margin-specific templates.</p>
+
+<h2 id="s6">6. Confidentiality</h2>
+<p><strong>6.1</strong> &ldquo;Confidential Information&rdquo; means client data, revenue figures, roster composition, unreleased content plans, agent prompts, private repository contents, and any information marked confidential or reasonably understood to be confidential.</p>
+<p><strong>6.2</strong> Each party shall protect the other's Confidential Information with reasonable care and use it only for the purposes of this Agreement.</p>
+<p><strong>6.3</strong> Standard exclusions apply (public information, rightfully known before disclosure, independently developed, legally compelled disclosure).</p>
+<p><strong>6.4</strong> All client PII is Confidential Information at the highest sensitivity. Neither party may sell, license, share, or use client PII outside the operation of Margin's business.</p>
+<p><strong>6.5</strong> Confidentiality obligations survive termination for <span class="review">[REVIEW: 3 or 5]</span> years, and indefinitely for client PII and trade secrets.</p>
+
+<h2 id="s7">7. Term and Termination</h2>
+<p><strong>7.1 Initial term.</strong> <span class="review">[REVIEW: 12 or 24]</span> months from the Effective Date.</p>
+<p><strong>7.2 Renewal.</strong> Auto-renews for successive <span class="review">[REVIEW: 12]</span>-month periods unless either party gives written notice of non-renewal at least <span class="review">[REVIEW: 60 or 90]</span> days before term end.</p>
+<p><strong>7.3 Termination for cause.</strong> Either party may terminate immediately for uncured material breach (30-day cure window), insolvency, or a conviction materially harming the other party's reputation.</p>
+<p><strong>7.4 Termination for convenience.</strong> After the initial term, either party may terminate without cause on <span class="review">[REVIEW: 90]</span> days' written notice.</p>
+<p><strong>7.5 Effect of termination.</strong> License-back snapshot delivered; revenue-share continues for pre-termination Roster Referrals subject to the tail cap; Confidential Information returned/destroyed within 30 days; accrued amounts due within 15 days.</p>
+<p><strong>7.6 Revenue-share tail cap.</strong> Post-termination revenue-share obligations continue for a maximum of <span class="review">[REVIEW: 24 or 36]</span> months, after which all share obligations for previously-converted Roster Referrals cease.</p>
+
+<h2 id="s8">8. Audit and Dispute Resolution</h2>
+<p><strong>8.1</strong> The <code>revenue_share_ledger</code> is the authoritative accounting record. Both parties have read access.</p>
+<p><strong>8.2 Audit right.</strong> Once per calendar year, TOJ may, at its own expense, audit Margin's payment records and CRM classifications. Underpayment over <span class="review">[REVIEW: 5%]</span> shifts audit cost to Margin plus shortfall and <span class="review">[REVIEW: interest at prime + 2%]</span>.</p>
+<p><strong>8.3 Classification disputes.</strong> Logged on the lead record within 30 days of first payment; good-faith conferral; Margin's classification stands for the current billing cycle if unresolved within 15 days.</p>
+<p><strong>8.4 General disputes.</strong> Good-faith principal negotiation first; unresolved after 30 days escalates to binding arbitration in <span class="review">[REVIEW: state]</span> under <span class="review">[REVIEW: AAA Commercial Arbitration]</span> rules, single arbitrator, English.</p>
+
+<h2 id="s9">9. Non-Compete and Non-Solicitation</h2>
+<p><strong>9.1</strong> TOJ shall not build or operate a competing WR-training operating brain for a directly-competing trainer of similar credential and market during the term and <span class="review">[REVIEW: 12]</span> months thereafter. TOJ may operate the methodology in adjacent verticals.</p>
+<p><strong>9.2</strong> Margin shall not solicit or hire TOJ's employees or contractors without written consent, during the term and <span class="review">[REVIEW: 12]</span> months thereafter.</p>
+<p><strong>9.3</strong> Neither party shall solicit the other's clients for out-of-scope services during the term and <span class="review">[REVIEW: 12]</span> months thereafter.</p>
+<p><strong>9.4</strong> Margin's coaching relationships with roster athletes, alumni, and the coach network remain Margin's own and are not restricted by this Agreement outside the STL/CBH commercial tiers.</p>
+
+<h2 id="s10">10. Representations and Warranties</h2>
+<p><strong>10.1</strong> Each party represents full authority to enter this Agreement, no conflicts with other agreements, and compliance with applicable law.</p>
+<p><strong>10.2</strong> TOJ represents the Operating Brain does not knowingly infringe third-party IP and meets commercially reasonable security/reliability standards.</p>
+<p><strong>10.3</strong> Margin represents the right to engage TOJ, that it will not knowingly misclassify athletes to reduce revenue-share obligations, and that it will maintain the coaching quality this system depends on.</p>
+<p><strong>10.4 Disclaimer.</strong> Except as expressly stated, neither party makes any warranty, express or implied. <span class="review">[REVIEW: attorney to strengthen or soften]</span></p>
+
+<h2 id="s11">11. Limitation of Liability and Indemnification</h2>
+<p><strong>11.1</strong> Except for confidentiality breaches, IP indemnification, or gross negligence/willful misconduct, each party's total liability shall not exceed amounts paid or payable in the preceding 12 months. <span class="review">[REVIEW]</span></p>
+<p><strong>11.2</strong> Neither party is liable for indirect, consequential, incidental, or punitive damages.</p>
+<p><strong>11.3</strong> TOJ indemnifies Margin against IP-infringement claims re: the Operating Brain. Margin indemnifies TOJ against claims arising from Margin's coaching content, relationships, or brand.</p>
+<p><strong>11.4</strong> Each party maintains commercially reasonable liability insurance. <span class="review">[REVIEW: specific coverage minimums]</span></p>
+
+<h2 id="s12">12. General Provisions</h2>
+<p>Independent contractors · assignment restrictions with M&amp;A carve-out · written notice requirements · governing law <span class="review">[REVIEW: state]</span> · entire agreement (expressly superseding any prior arrangement naming a different revenue-share partner) · written amendments only · severability · written waiver only · counterparts/e-signature (DocuSign) · force majeure (revenue-share continues regardless).</p>
+
+<h2 id="s13" class="page-break">13. Signatures</h2>
+
+<div class="sig-block">
+  <p><strong>TRAIL OF JOY PLAYER MANAGEMENT GROUP</strong></p>
+  <div class="sig-line"></div>
+  <div class="sig-field">By:</div>
+  <div class="sig-field">Name: Kyron Cumby</div>
+  <div class="sig-field">Title: Principal</div>
+  <div class="sig-field">Date: _______________</div>
+  <div class="sig-field">Address: <span class="review">[REVIEW]</span></div>
+  <div class="sig-field">Email: <span class="review">[REVIEW]</span></div>
+</div>
+
+<hr>
+
+<div class="sig-block">
+  <p><strong>MARGIN HOOKS / SKY'S THE LIMIT WR / COACHED BY HOOKS</strong></p>
+  <div class="sig-line"></div>
+  <div class="sig-field">By:</div>
+  <div class="sig-field">Name: Margin Hooks</div>
+  <div class="sig-field">Title: Principal</div>
+  <div class="sig-field">Date: _______________</div>
+  <div class="sig-field">Address: <span class="review">[REVIEW]</span></div>
+  <div class="sig-field">Email: <span class="review">[REVIEW]</span></div>
+</div>
+
+<h2 class="page-break">Appendix A · Roster Source Tag Reference</h2>
+<p>The following <code>leads.source</code> tag values qualify as Roster Referrals under &sect;4.3(a):</p>
+<table>
+  <tr><th>Tag</th><th>Meaning</th></tr>
+  <tr><td><code>roster_referral</code></td><td>Athlete referred by an existing Margin roster client</td></tr>
+  <tr><td><code>alumni_network</code></td><td>Athlete referred by a Margin alumni (former client now at college or NFL)</td></tr>
+  <tr><td><code>direct_margin_intro</code></td><td>Athlete Margin personally introduces to the STL/CBH intake</td></tr>
+</table>
+<p>The following do <strong>not</strong> qualify:</p>
+<table>
+  <tr><th>Tag</th><th>Meaning</th></tr>
+  <tr><td><code>cold_inbound</code></td><td>Website or social contact with no attribution</td></tr>
+  <tr><td><code>paid_ad</code></td><td>Landing page from an ad campaign</td></tr>
+  <tr><td><code>client_referral</code></td><td>Client-to-client referral from a non-roster client</td></tr>
+  <tr><td><code>unknown</code></td><td>Attribution not set</td></tr>
+</table>
+
+<h2>Appendix B · Excluded Categories</h2>
+<ul>
+  <li>Trainer Blueprint packages</li>
+  <li>Speaking engagements, camps, and events outside the recurring package structure</li>
+  <li>Book, course, and digital-product sales outside the CRM's package system</li>
+  <li>Sponsorship, brand deals, and media revenue paid to Margin personally</li>
+  <li>Revenue collected before the Effective Date</li>
+</ul>
+
+<h2>Appendix C · Reference Schema</h2>
+<p>Ledger schema: <code>infra/supabase/migrations/004_revenue_share.sql</code> — <code>payment_events</code>, <code>revenue_share_ledger</code>, <code>revenue_share_statements</code>. The <code>calculate_revenue_share()</code> function fires from the <code>stripe-webhook</code> Edge Function on every qualifying payment.</p>
+
+<h2>Appendix D · Change Log</h2>
+<p><strong>v0.1 · 2026-07-25</strong> — Initial draft. Codifies the arrangement documented in <code>skills/roster-revenue-share/</code> and the <code>hooks-os</code> infrastructure. Requires attorney review before execution.</p>
+
+<div class="checklist no-print">
+  <strong>Attorney-review checklist:</strong>
+  <ol>
+    <li>State selection for governing law + arbitration seat (&sect;8.4, &sect;12.4)</li>
+    <li>Payout cadence and method (&sect;4.6)</li>
+    <li>Initial term length and non-renewal notice window (&sect;7.1, &sect;7.2)</li>
+    <li>Termination-for-convenience notice period (&sect;7.4)</li>
+    <li>Post-termination revenue-share tail cap (&sect;7.6)</li>
+    <li>Confidentiality survival period (&sect;6.5)</li>
+    <li>Non-compete and non-solicitation scope + duration (&sect;9)</li>
+    <li>Liability cap sizing (&sect;11.1)</li>
+    <li>Insurance minimums (&sect;11.4)</li>
+    <li>Notice addresses and emails (&sect;12.3)</li>
+    <li>Audit interest rate (&sect;8.2)</li>
+    <li>Any state-specific consumer-protection or franchise-law considerations, including whether the revenue-share structure triggers franchise, securities, or MLM regulatory frameworks</li>
+  </ol>
+</div>
+
+</body>
+</html>
