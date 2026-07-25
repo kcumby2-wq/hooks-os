@@ -1,8 +1,12 @@
 # Cold Outreach — Skill
 
+**Version:** v1.1 (2026-07-25 · aligned with STL Growth Plan absorption)
+
 Cold email, text, and DM outreach for STL/CBH. **Includes follower-triggered outreach.** Two-mode operation per the network standard — Manual Review or Auto Reach, set per channel in `config.md`.
 
 **Margin's situation:** as the founding apex trainer, inbound volume (people who already know the record and are reaching out) typically outweighs the value of aggressive outbound. Cold outreach here is lower-priority than for high-audience-tier clients building reach — the credential does the attracting. Outbound is used surgically: trainer-blueprint candidate sourcing, specific athlete families STL wants to reach, coach-network expansion.
+
+**v1.1 note:** cold outreach handles OUTBOUND initiated by STL. Inbound handling (DMs, comment replies, form submissions asking about training) is now the domain of `sales-qualification-agent/` — that agent responds to inbound with segment classification + consult booking. This skill does not touch inbound. Segment tags on outbound targets read from `client-segmentation/`. Voice guardrails per `margin-voice/` + `outcomes-based-communication/` apply to every draft.
 
 ---
 
@@ -86,4 +90,18 @@ Saved to `data/engagement/outreach/[batch_id].yaml`.
 
 ---
 
-*This skill is intentionally lower-volume than the equivalent in high-audience-tier repos. The credential attracts; outreach here protects relationships rather than chasing growth.*
+## Cross-Skill Integration (v1.1)
+
+- **`sales-qualification-agent/`** — handles INBOUND (this skill handles OUTBOUND · they are siblings, not overlaps)
+- **`client-segmentation/`** — outbound target lists tagged by segment before drafting · voice tuned per segment
+- **`margin-voice/`** — voice guardrail on every draft
+- **`outcomes-based-communication/`** — every outbound message leads with what changes for the athlete
+- **`lead-capture-automation/`** — outbound responses that convert route into this skill's intake flow
+- **`trainer-blueprint/`** — Blueprint candidate outreach targets sourced against Blueprint qualification profile
+- **`cbh-advocacy/`** — coach-network outreach coordinates with the advocacy log
+- **`athlete-referral-program/`** — target lists for outreach can be built from referring family's network (with consent)
+- **`roster-revenue-share/`** — outbound converting a roster contact is tagged at intake for revenue-share tracking
+
+---
+
+*This skill is intentionally lower-volume than the equivalent in high-audience-tier repos. The credential attracts; outreach here protects relationships rather than chasing growth. v1.1: paired with `sales-qualification-agent/` for full-direction coverage (outbound + inbound).*

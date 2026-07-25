@@ -1,6 +1,15 @@
 # Engagement Monitoring — Skill
 
+**Version:** v1.1 (2026-07-25 · aligned with STL Growth Plan absorption)
+
 How the agent processes weekly engagement across STL/CBH's **three parallel funnels** and feeds patterns back into voice, content, and the TOJ Operational Transcript. **Elevated mode** by default — Margin's audience scale and the apex credential's public visibility both justify this from day one.
+
+**v1.1 note:** engagement-monitoring is the CONTENT-SIDE rhythm skill · sibling to `account-health-agent/` (the CLIENT-SIDE rhythm skill). Both watch signals, but at different layers:
+
+- **This skill:** are we reaching audiences · is content landing · are the three business funnels moving · are patterns shifting week-over-week
+- **`account-health-agent/`:** is a specific active client engaging · attending · opening recaps · at risk of drop-off
+
+They complement each other. Neither replaces the other. Content-side patterns from here feed content-brief improvements via `subject-media-coordination/`. Client-side flags from `account-health-agent/` feed Margin's intervention priorities.
 
 ---
 
@@ -80,10 +89,25 @@ Generalizable patterns (no PII, no client-specific copy, no revenue figures) pus
 ## What This Skill Does NOT Do
 
 - Does not auto-edit voice/content skills — proposes only.
-- Does not respond to comments/DMs in real time.
+- Does not respond to comments/DMs in real time — that's `sales-qualification-agent/`.
 - Does not report vanity metrics without an attached action.
 - Does not replace the dedicated athlete-brand-pipeline weekly roster pulse — it complements it.
+- Does not watch individual-client engagement — that's `account-health-agent/`.
 
 ---
 
-*Elevated mode, three-funnel structure, apex-tier precedent-setting. The Monday review here carries more weight than in any other repo in the network.*
+## Cross-Skill Integration (v1.1)
+
+- **`account-health-agent/`** — sibling · client-side rhythm to this skill's content-side rhythm
+- **`release-room-friday/`** — the primary content pillar this skill's engagement scrape reads · weekly episode-performance feeds patterns-worth-a-rule-change
+- **`subject-media-coordination/`** — post-performance patterns feed the brief-writing improvement loop
+- **`athlete-brand-pipeline/`** — per-managed-athlete performance layer complements the roster pulse
+- **`cbh-advocacy/`** — Funnel 1 signal cross-references the weekly advocacy log
+- **`trainer-blueprint/`** — Funnel 2 signal drives Blueprint marketing calibration
+- **`sales-qualification-agent/`** — comment/DM patterns from social surfaces feed this agent's script tuning
+- **`athlete-referral-program/`** — spike patterns often coincide with a spotlight or referral moment · flags for real-moment triggers
+- **`outcomes-based-communication/`** — content-format patterns feed the feature-vs-outcome frame calibration
+
+---
+
+*Elevated mode, three-funnel structure, apex-tier precedent-setting. The Monday review here carries more weight than in any other repo in the network. v1.1: paired with `account-health-agent/` for full-signal coverage (content rhythm + client rhythm).*

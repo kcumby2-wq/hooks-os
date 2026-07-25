@@ -4,6 +4,27 @@
 
 ---
 
+## 2026-07-25 · v1.1 upgrades · 4 existing skills cross-referenced to new skills
+
+**Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (referring to my proposed 3-move sequence: v1.1 upgrades → automation wiring → operating agreement)
+
+**Move #1 complete.** Four existing skills got a v1.1 pass adding version headers, three-segment framing where relevant, and cross-skill integration blocks pointing to the 12 new skills shipped in the Growth Plan absorption.
+
+### Upgrades landed
+
+- **`parent-comms/` v1.1** — expanded from 2-segment to 3-segment (per `client-segmentation/`) + full Cross-Skill Integration block. Handshakes to `onboarding-sequence/`, `post-session-recap-agent/`, `package-renewal-tracking/`, `session-booking-no-show/`, `athlete-referral-program/`, `account-health-agent/`, `sales-qualification-agent/`.
+- **`engagement-monitoring/` v1.1** — clarified sibling relationship to `account-health-agent/` (content-side rhythm vs client-side rhythm — both watch signals at different layers). Added cross-references to `release-room-friday/`, `subject-media-coordination/`, `athlete-brand-pipeline/`, `cbh-advocacy/`, `trainer-blueprint/`, `sales-qualification-agent/`, `athlete-referral-program/`, `outcomes-based-communication/`.
+- **`subject-media-coordination/` v1.1** — new "Release Room Friday integration" section codifying the weekly production cycle this skill orchestrates. Added `output/content-briefs/_templates/release-room-friday.yaml` template reference. Expanded Cross-Skill Integration to include `release-room-friday/`, `athlete-referral-program/`, `sales-qualification-agent/`, `outcomes-based-communication/`.
+- **`cold-outreach/` v1.1** — clarified sibling relationship to `sales-qualification-agent/` (this skill handles OUTBOUND · that agent handles INBOUND). Added cross-references to `client-segmentation/`, `lead-capture-automation/`, `outcomes-based-communication/`, `roster-revenue-share/`.
+
+### Why this matters
+
+The 12 new skills the Growth Plan absorption shipped only work if the existing skills know they exist and hand off to them correctly. Without these v1.1 upgrades, the operating brain would have two disconnected halves — legacy strategic skills on one side, new tactical automation skills on the other. Now every skill either references or hands off to the new layer.
+
+**Next up:** Move #2 (wire GHL/Supabase automation infrastructure · scaffold the concrete runtime for the specs).
+
+---
+
 ## 2026-07-25 · STL Growth Plan absorbed · 12 new skills + workflow + adoption doc
 
 **Feedback verbatim:** *"Lets look in the hooks-os repo I want to add things that arent already implemented into the Hooks-os. The name will in the contract does not matter. This is mine now. We are using this to make the plan stronger."* — Kyron

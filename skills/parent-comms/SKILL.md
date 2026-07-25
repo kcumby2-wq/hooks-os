@@ -1,17 +1,25 @@
 # Parent Comms — Skill
 
+**Version:** v1.1 (2026-07-25 · aligned with STL Growth Plan absorption)
+
 How the agent writes to parents of training-client athletes (not the adult managed athletes — see `skills/athlete-brand-pipeline/SKILL.md` for that audience). US English, per `config.md`.
+
+**v1.1 note:** parent-comms is now the voice register that fires INSIDE the lifecycle sequences shipped in Growth Plan absorption (`onboarding-sequence/` · `post-session-recap-agent/` · `package-renewal-tracking/`). Segmentation reads from `client-segmentation/` (three segments, not two — see below). Every generated parent message honors `outcomes-based-communication/` as sibling guardrail to `margin-voice/`.
 
 ---
 
-## Two Parent Segments
+## Three Parent Segments (v1.1 · aligned with `client-segmentation/`)
 
-| Segment | Channel | Tone Calibration |
-|---|---|---|
-| **DFW in-person training clients** | Email + SMS | High-context, personal, references the athlete by first name and session specifics |
-| **STL cohort / remote-evaluation parents** | Email primary | Slightly more formal, references curriculum module or evaluation specifics rather than in-person session detail |
+The two DFW/remote split from v1 was operationally useful but incomplete. Per `client-segmentation/`, the three-segment frame the whole operating brain reads against is:
 
-A third implicit audience exists adjacent to this skill — **families of CBH apex-tier athletes** considering the premium personal-access tier. That audience's comms lean more heavily on Margin's direct credibility and the advocacy-call value; draft those with extra care and a lower auto-approval threshold (`config.md` → `approval_gates.cbh_content: margin_required_always`).
+| Segment | Channel | Tone Calibration | Lifecycle sequences |
+|---|---|---|---|
+| **Youth / HS parent** (in-person or cohort) | Email + SMS | High-context, personal, references the athlete by first name and session specifics | `onboarding-sequence/` Youth track · `post-session-recap-agent/` parent-first framing · `package-renewal-tracking/` parent-facing reminders |
+| **College-Bound parent** (co-signer) | Email primary, SMS on scheduling only | Slightly more formal, references recruiting delta rather than in-person detail; athlete leads the conversation, parent CC'd | `onboarding-sequence/` College-Bound track · `post-session-recap-agent/` athlete-first w/ parent CC (per intake) |
+| **CBH apex family** (premium personal access) | Direct-to-Margin default; agent-drafted only when Margin okays | Higher stakes, references Margin's direct credibility + advocacy-call value; extra care and lowest auto-approval threshold | Manual · not auto-fired · agent drafts for Margin review only |
+| **Alumni/Pro-Track family** | Almost never — the athlete is the relationship | N/A — Margin's call | Never automated · see `client-segmentation/` |
+
+CBH content approval remains `config.md → approval_gates.cbh_content: margin_required_always`.
 
 ---
 
@@ -60,4 +68,19 @@ A third implicit audience exists adjacent to this skill — **families of CBH ap
 
 ---
 
-*The transcript and the advocacy log are the proof. Parent comms reference them; they don't replace them with enthusiasm.*
+## Cross-Skill Integration (v1.1)
+
+- **`client-segmentation/`** — determines which parent segment applies (Youth/HS · College-Bound · CBH · Alumni)
+- **`margin-voice/`** — sibling voice guardrail · fires on every generated message
+- **`outcomes-based-communication/`** — sibling voice guardrail · every message leads with what changes for the athlete
+- **`onboarding-sequence/`** — parent-facing welcome + intake + first-session messages use this skill's register
+- **`post-session-recap-agent/`** — recap-to-parent register per this skill; Youth/HS parent-first framing
+- **`package-renewal-tracking/`** — 30/14/7 renewal reminders + missed-payment recovery register
+- **`session-booking-no-show/`** — parent-facing reminder + no-show recovery messages
+- **`athlete-referral-program/`** — parent-triggered referrals get a special-recognition register (personal, low-pressure)
+- **`account-health-agent/`** — when Margin's dashboard flags a Youth/HS account, the intervention message uses this skill's register
+- **`sales-qualification-agent/`** — parent-side inbound DMs handled via this register
+
+---
+
+*The transcript and the advocacy log are the proof. Parent comms reference them; they don't replace them with enthusiasm. v1.1: every lifecycle automation the Growth Plan absorption shipped runs its parent-facing messages through this skill's register.*

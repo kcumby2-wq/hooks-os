@@ -1,6 +1,10 @@
 # Subject Media Coordination — Skill
 
+**Version:** v1.1 (2026-07-25 · aligned with STL Growth Plan absorption)
+
 How the agent works WITH Subject Media (and the SubjectSkillz creator team) without doing creator work itself. **This skill is a boundary rule as much as a workflow.** The agent orchestrates briefs, quality-checks output, and coordinates cadence — it does NOT produce final assets. Creators produce final assets.
+
+**v1.1 note:** the Growth Plan absorption formalized the flagship weekly content series — **Release Room Friday** — as its own skill (`release-room-friday/`). Subject Media Coordination is the production-orchestration layer that runs the RRF weekly cycle (and every other content brief). See "Release Room Friday integration" section below.
 
 This is Margin-specific because Margin has Subject Media as a built-out content arm. Other clients in the network may not have a creator team yet, in which case this skill's structure adapts (the agent does more drafting; humans approve before posting). For Margin, the production capacity exists; the coordination is the value-add.
 
@@ -105,13 +109,34 @@ Each template is a fillable skeleton. Pre-loaded with the right audience tags, v
 
 ---
 
-## Cross-Skill Integration
+## Release Room Friday integration (v1.1)
 
-- **Voice skills** — every brief references the voice anchor (`margin-voice` for Margin-voiced; `[athlete]/brand-identity` for athlete-voiced; CBH-register or STL-register sub-spec where Margin's voice differentiates).
-- **Athlete brand pipeline** — managed-athlete content briefs are produced from this skill but the strategic content plan comes from `skills/athlete-brand-pipeline/SKILL.md`.
-- **Trainer Blueprint** — sales/marketing content for the Trainer Blueprint product is briefed from this skill, with productization specs from `skills/trainer-blueprint/SKILL.md`.
-- **CBH advocacy** — advocacy events that turn into content go through both this skill (briefing) and `skills/cbh-advocacy/SKILL.md` (the source moment + the consent / compliance check).
-- **Engagement monitoring** — post-performance feeds this skill's brief-writing improvement loop.
+The Growth Plan absorption formalized RRF as its own skill · `release-room-friday/`. This coordination skill runs the production pipeline for the weekly RRF cycle:
+
+**Weekly rhythm handled here:**
+- **Monday:** brief for the week's featured athlete written from `release-room-friday/` template (four-beat structure · one athlete story · one drill · one measurable result · one takeaway)
+- **Tuesday-Wednesday:** shoot or footage-pull coordination · creator team executes
+- **Thursday:** QC pass · voice check per `margin-voice/` + `outcomes-based-communication/` · Margin approves
+- **Friday:** distribution across all platforms in one block (Reel · Feed · Stories · X · TikTok · YT Shorts · YT long-form · newsletter feature)
+- **Weekend:** engagement scrape feeds `engagement-monitoring/` Monday review
+
+**Never skip a Friday.** The compounding is in the consistency. Pre-shot library exists in `data/rrf-library/` to pull from when Margin's on the road.
+
+**RRF brief template:** `output/content-briefs/_templates/release-room-friday.yaml` (new · encodes the four-beat structure + segment weighting per quarter).
+
+---
+
+## Cross-Skill Integration (v1.1)
+
+- **`release-room-friday/`** — weekly production cycle orchestrated here · shipped through the coordination layer
+- **Voice skills** — every brief references voice anchors (`margin-voice/` · `outcomes-based-communication/` sibling · `[athlete]/brand-identity` for athlete-voiced)
+- **`athlete-brand-pipeline/`** — managed-athlete content briefs produced here · strategic plan from that skill
+- **`trainer-blueprint/`** — sales/marketing content briefed here · productization specs from that skill
+- **`cbh-advocacy/`** — advocacy-source moments briefed here · consent/compliance check from that skill
+- **`engagement-monitoring/`** — post-performance feeds this skill's brief-writing improvement loop
+- **`athlete-referral-program/`** — spotlighted athletes trigger real-moment referral asks · coordinated here with the featured-athlete's family
+- **`sales-qualification-agent/`** — content-driven inbounds (from RRF or other pieces) route through this agent
+- **`outcomes-based-communication/`** — every brief's copy skeleton runs the feature-vs-outcome check
 
 ---
 
