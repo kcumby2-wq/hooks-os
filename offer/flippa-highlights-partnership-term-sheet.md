@@ -31,20 +31,52 @@ Subject Media films + edits (retainer)  →  asset listed on Flippa Highlights
 - **Edits + assets** are priced and sold on Flippa.
 - **Turnaround:** **48 hours** on a **24-hour request buffer.**
 
-## 3. Revenue split (proposed — set with counsel + Flippa)
+## 3. Revenue split — per asset sale on Flippa Highlights
 
-Per asset sale on Flippa Highlights:
+Named parties, from gross sale price:
 
-| Party | Share | Notes |
-|---|---|---|
-| **Flippa** (marketplace) | `[REVIEW]%` platform fee | the storefront + delivery infra |
-| **Creator** | **50%** of the net **if signed to Hooks** | freelancers are paid a daily rate instead — no back-end (see the creator agreement) |
-| **TOJ/Hooks** (production + operation) | `[REVIEW]%` of the net | producing, curating, listing, operating |
-| **Athlete / family (NIL)** | `[REVIEW]` | **required if the asset features the athlete's likeness — this is the athlete's NIL.** See §5. |
+| Party | Share | Role |
+|---|---:|---|
+| **Flippa Highlights** | **25%** | marketplace · storefront · download delivery |
+| **Subject Medias** | **15%** | production — the capture and the edit |
+| **Coached by Hooks / TOJ** | **10%** | operation — curating, listing, business layer |
+| **Named parties subtotal** | **50%** | |
+| **Remaining 50% — see §3a** | **50%** | *(athlete NIL share + / or creator split — needs one decision, see below)* |
 
-The split must reconcile to 100% of net after Flippa's fee. **The athlete's NIL share
-is not optional where an asset features a minor** — it is the piece that keeps this
-compliant, and counsel sizes it.
+### 3a. The remaining 50% — the one decision to make
+
+The three named parties are **50%** in total. What the other **50%** is for is the
+call to make now — because it changes both the athlete's NIL position and the
+signed-creator's pay math from the earlier draft:
+
+**Option A · All to athlete/family NIL (the clean version).**
+The athlete keeps **50%** of every asset sale that features their likeness. This is
+the strongest NIL position you can offer a family and the cleanest way to stay clear
+of athlete-agent law — the athlete gets the largest single share of their own
+likeness. **Signed creators** are then paid from **Subject Medias' 15%** production
+share (e.g., 50% of that = 7.5% to the creator), not from a fourth top-line share.
+
+**Option B · Split between athlete + creator.**
+Cut the 50% into an athlete share (e.g., **35–40%**) and a creator share (e.g.,
+**10–15%** for signed creators). Simpler on the creator side, smaller NIL share to
+the athlete. Attorney should size the minimum athlete NIL share that keeps the
+program compliant with state NIL/eligibility.
+
+**Option C · Hybrid tiers.**
+Different splits by athlete tier (Foundation/Build/Season/Elite) or by asset type.
+More flexible, more complex.
+
+> **Default until you confirm:** Option A — 50% to athlete/family NIL, creator paid
+> from Subject Medias' share. It matches the "athlete owns the upside" line and
+> keeps TOJ out of agency.
+
+### 3b. What "50%" of the earlier creator draft becomes
+
+The prior draft said signed creators get **50%** — that number was of an undefined
+"net." With these splits, that language needs to say **50% of *which* pool.**
+Under Option A, it's **50% of Subject Medias' 15%**. Under Option B, it's a defined
+creator share out of the remaining 50%. The creator content agreement gets updated
+to match once §3a is chosen.
 
 ## 4. Which assets / which athletes (tiers)
 
