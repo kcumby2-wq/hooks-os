@@ -66,6 +66,14 @@ What this adds to the machine:
 - **A cleaner offer to families** — "we don't just film him, we turn it into something
   he owns and can distribute."
 
+**How edits + assets flow:** every edit and digital asset is **priced and sold on
+[Flippa Highlights](https://www.flippahighlights.com)** — that storefront is the source
+of truth for what an edit or asset costs. **3–5 creators** are assigned, scaled to the
+roster's needs. A creator is paid one of two ways:
+- **Freelance** — a **daily rate** for film + upload. Work for hire.
+- **Signed to Hooks** — a **50% revenue split** on the assets they create that sell
+  through Flippa Highlights.
+
 *(Consent gate applies: for minors, the highlight only becomes a public/tradable asset
 with guardian consent — same `c3`/`c4` rules the recruiting funnel enforces. Flippa
 Highlights sits behind that gate, never around it.)*
@@ -122,6 +130,38 @@ Three decisions turn this from "running" to "complete":
 | Own the brand, roster, relationships, athlete data. | Own the methodology; share 10% on roster revenue. |
 
 **The system carries the scale; you never have to.**
+
+---
+
+## The engagement terms (this deal)
+
+The media-coverage + asset engagement that rides on top of the operating-brain
+Master Operating Agreement. *(Proposed — final numbers set at signing.)*
+
+| Term | Value |
+|---|---|
+| **Monthly retainer** | **$3,000–5,000 / month** (Subject Media coverage) |
+| **Roster covered** | **50–100 athletes** |
+| **Session coverage** | **3 days / week** |
+| **Term length** | **24 months** |
+| **Turnaround** | **48 hours**, on a **24-hour request buffer** — request today → covered → delivered within 48h of the buffer |
+| **Creators assigned** | **3–5**, scaled to roster need |
+| **Edits + assets** | priced and sold on **Flippa Highlights** |
+| **Creator pay** | freelance **daily rate** (film + upload) · or **50% rev-split** if signed to Hooks |
+
+**Athlete data + evaluation (per athlete).** Each athlete either **buys their own**
+PlayerData set, Prospect Edge evaluation, and College Directory access — or **Margin
+purchases it** for athletes signed to his management company. Same model across all
+three: **PlayerData · Prospect Edge · College Directory.**
+
+**The revenue stack, in one view:**
+1. Operating-brain rev-share — **10%** on roster referrals (Master Operating Agreement).
+2. Coverage retainer — **$3–5K/mo** for 3-day/week media coverage of the roster.
+3. Edits + digital assets — sold on **Flippa Highlights** (creators paid daily-rate or 50% split).
+4. Per-athlete tools — PlayerData / Prospect Edge / College Directory (athlete-buys or Margin-buys).
+
+*Detail: [`flippa-highlights-partnership-term-sheet.md`](flippa-highlights-partnership-term-sheet.md)
+· [`../contracts/creator-content-agreement.md`](../contracts/creator-content-agreement.md).*
 
 ---
 
