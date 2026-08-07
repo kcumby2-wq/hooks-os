@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>The Coached by Hooks Operating System — TOJ Offer</title>
+<style>
+  :root{
+    --ink:#0a0c10; --panel:#12161d; --panel2:#1a1f28; --line:#252c37;
+    --paper:#0e1116; --text:#e8ecf2; --muted:#9aa6b6; --faint:#6b7686;
+    --acc:#37e0a6; --acc2:#22b789; --gold:#e0b452; --red:#ff6b5e; --blue:#5aa2ff;
+    --sans:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --disp:'Arial Black','Segoe UI',sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+  h1,h2,h3{margin:0;letter-spacing:-.01em;font-weight:800}
+  .eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--acc);font-weight:800}
+  section{padding:70px 0;border-top:1px solid var(--line)}
+  h2{font-size:30px;line-height:1.12;margin:8px 0 14px}
+  p{margin:0 0 14px} .muted{color:var(--muted)} .lead{font-size:19px;color:#c7d0dc;max-width:660px}
+  .acc{color:var(--acc)}
+  /* cover */
+  .cover{background:radial-gradient(900px 420px at 78% -10%,#123a2d,transparent),linear-gradient(180deg,#0a0c10,#0c0f14);padding:92px 0 78px;border-top:0}
+  .cover h1{font-family:var(--disp);font-size:58px;line-height:.98;text-transform:uppercase;letter-spacing:-.02em}
+  .cover h1 span{color:var(--acc)}
+  .cover .sub{color:#c7d0dc;font-size:20px;max-width:640px;margin-top:18px}
+  .cover .from{margin-top:26px;font-size:13px;color:var(--faint);letter-spacing:.06em;text-transform:uppercase}
+  /* pieces grid */
+  .grid{display:grid;gap:16px;margin-top:26px}
+  .g5{grid-template-columns:repeat(5,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:1fr 1fr}
+  @media(max-width:900px){.g5,.g4{grid-template-columns:1fr 1fr}} @media(max-width:560px){.g5,.g4,.g2{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card .n{font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--faint)}
+  .card h3{font-size:16px;margin:6px 0 6px}
+  .card p{font-size:13.5px;color:var(--muted);margin:0}
+  .stat{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;margin-top:12px}
+  .live{background:rgba(55,224,166,.14);color:var(--acc)} .new{background:rgba(224,180,82,.16);color:var(--gold)} .soon{background:rgba(90,162,255,.15);color:var(--blue)}
+  /* flywheel */
+  .flow{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:20px;font-family:ui-monospace,monospace;font-size:13px;color:#bfe9d7;white-space:pre-wrap;overflow-x:auto}
+  /* terms table */
+  table{width:100%;border-collapse:collapse;margin-top:18px}
+  td,th{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:14.5px;vertical-align:top}
+  th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  td b,.big{color:var(--text)} .val{font-weight:800;color:var(--acc);white-space:nowrap}
+  /* revenue stack */
+  .stack{display:grid;gap:12px;margin-top:20px}
+  .rev{display:flex;gap:16px;align-items:baseline;background:var(--panel);border-left:3px solid var(--acc);border-radius:0 10px 10px 0;padding:14px 18px}
+  .rev .num{font-family:var(--disp);font-size:20px;color:var(--acc);min-width:26px}
+  .rev .amt{margin-left:auto;font-weight:800;color:var(--text);white-space:nowrap}
+  /* flippa */
+  .flippa{background:linear-gradient(160deg,#14110a,#1c1710);border:1px solid #3a2f18;border-radius:16px;padding:28px}
+  .flippa h2{color:#fff} .flippa .badge{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#1a1206;background:var(--gold);padding:4px 11px;border-radius:99px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}@media(max-width:560px){.two{grid-template-columns:1fr}}
+  .paybox{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .paybox h3{font-size:15px;margin:0 0 6px;color:var(--gold)}
+  /* gate note */
+  .gate{background:rgba(255,107,94,.08);border:1px solid rgba(255,107,94,.32);border-radius:12px;padding:18px 20px;font-size:14px;color:#f2cfca;margin-top:18px}
+  .gate b{color:var(--red)}
+  /* do vs toj */
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:20px}
+  @media(max-width:560px){.vs{grid-template-columns:1fr}}
+  .vs .col{padding:20px 22px} .vs .col:first-child{border-right:1px solid var(--line);background:var(--panel)}
+  .vs h3{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+  .vs .col:first-child h3{color:var(--gold)}
+  .vs ul{list-style:none;padding:0;margin:0} .vs li{padding:6px 0 6px 18px;position:relative;font-size:14px}
+  .vs li::before{content:"▸";position:absolute;left:0;color:var(--faint)}
+  /* greenlights */
+  .green{display:grid;gap:12px;margin-top:20px}
+  .gl{display:flex;gap:16px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .gl .c{font-family:var(--disp);font-size:22px;color:var(--acc);min-width:30px}
+  .cta{background:linear-gradient(180deg,#0e1116,#0a1f18);text-align:center}
+  .btn{display:inline-block;background:var(--acc);color:#052018;font-weight:800;padding:15px 30px;border-radius:9px;font-size:15px;text-decoration:none}
+  footer{background:var(--panel);color:var(--faint);font-size:12px;padding:28px 0;text-align:center;border-top:1px solid var(--line)}
+</style>
+
+<!-- COVER -->
+<header class="cover"><div class="wrap">
+  <div class="eyebrow">Trail of Joy · Offer to Margin Hooks</div>
+  <h1>The Coached by Hooks<br><span>Operating System</span></h1>
+  <p class="sub">You built the authority — the record, the roster, the credential. TOJ built the system that turns it into recurring, tracked, high-retention revenue, running whether or not you're on your phone at midnight.</p>
+  <div class="from">The whole machine · one operator · one deal</div>
+</div></header>
+
+<!-- FIVE PIECES -->
+<section><div class="wrap">
+  <div class="eyebrow">The system</div>
+  <h2>Five interlocking pieces.</h2>
+  <p class="muted">Three already running. Two new in this offer.</p>
+  <div class="grid g5">
+    <div class="card"><div class="n">01</div><h3>Operating Brain</h3><p>CRM, lifecycles, recaps, account-health, rev-share tracking — the hooks-agents.</p><span class="stat live">Live</span></div>
+    <div class="card"><div class="n">02</div><h3>Recruiting Funnel</h3><p>The STL v3 site — captures leads, gates the film room, routes to the right offer.</p><span class="stat soon">Backend going live</span></div>
+    <div class="card"><div class="n">03</div><h3>Diagnostic Engine</h3><p>The AI Tools Assessment — keeps finding hours to give back; a Blueprint resell product.</p><span class="stat live">Live</span></div>
+    <div class="card"><div class="n">04</div><h3>Digital Asset Layer</h3><p>Flippa Highlights — highlights become owned, monetizable assets.</p><span class="stat new">New partner</span></div>
+    <div class="card"><div class="n">05</div><h3>Commercial Frame</h3><p>The Master Operating Agreement — 10% roster rev-share, clean ownership boundary.</p><span class="stat live">Drafted</span></div>
+  </div>
+</div></section>
+
+<!-- FLYWHEEL -->
+<section><div class="wrap">
+  <div class="eyebrow">Why it's a system, not five tools</div>
+  <h2>Each piece feeds the next.</h2>
+  <div class="flow">Recruiting Funnel captures a lead                          (2)
+   → Operating Brain works it to a paying client, tracked    (1)
+      → Subject Media films the athlete
+         → Flippa Highlights turns the highlight into an owned, sellable asset   (4)
+            → the asset + the results become the funnel's next proof   → (2)
+   ↑ Diagnostic Engine keeps finding the next hour to automate   (3)
+   ↑ Commercial Frame tracks + shares the revenue the loop produces   (5)</div>
+  <p class="muted" style="margin-top:16px">The machine gets more valuable every turn — and the same coaching authority powers all of it.</p>
+</div></section>
+
+<!-- ENGAGEMENT TERMS -->
+<section><div class="wrap">
+  <div class="eyebrow">The deal</div>
+  <h2>Engagement terms.</h2>
+  <p class="muted">The media-coverage + asset engagement on top of the operating-brain agreement. <span class="muted">Proposed — final numbers set at signing.</span></p>
+  <table>
+    <tr><td>Monthly retainer <span class="muted">(Subject Media coverage)</span></td><td class="val">$3,000–5,000 / mo</td></tr>
+    <tr><td>Roster covered</td><td class="val">50–100 athletes</td></tr>
+    <tr><td>Session coverage</td><td class="val">3 days / week</td></tr>
+    <tr><td>Term length</td><td class="val">24 months</td></tr>
+    <tr><td>Turnaround</td><td class="val">48 hours · 24h request buffer</td></tr>
+    <tr><td>Creators assigned</td><td class="val">3–5 (scaled to need)</td></tr>
+    <tr><td>Edits + assets</td><td class="val">priced + sold on Flippa</td></tr>
+  </table>
+  <p class="muted" style="margin-top:16px"><b class="big">Per-athlete tools:</b> each athlete buys their own — or Margin buys for signed athletes — <b class="big">PlayerData · Prospect Edge · College Directory.</b> Same model across all three.</p>
+</div></section>
+
+<!-- REVENUE STACK -->
+<section><div class="wrap">
+  <div class="eyebrow">Four streams</div>
+  <h2>The revenue stack.</h2>
+  <div class="stack">
+    <div class="rev"><span class="num">1</span><div><b class="big">Operating-brain rev-share</b><br><span class="muted">on roster referrals · Master Operating Agreement</span></div><span class="amt">10%</span></div>
+    <div class="rev"><span class="num">2</span><div><b class="big">Coverage retainer</b><br><span class="muted">3-day/week media coverage of the roster</span></div><span class="amt">$3–5K/mo</span></div>
+    <div class="rev"><span class="num">3</span><div><b class="big">Edits + digital assets</b><br><span class="muted">sold on Flippa · creators paid daily-rate or 50% split</span></div><span class="amt">Flippa</span></div>
+    <div class="rev"><span class="num">4</span><div><b class="big">Per-athlete tools</b><br><span class="muted">PlayerData · Prospect Edge · College Directory</span></div><span class="amt">athlete / Margin buys</span></div>
+  </div>
+</div></section>
+
+<!-- FLIPPA -->
+<section><div class="wrap">
+  <div class="flippa">
+    <span class="badge">New · Digital Asset Partner</span>
+    <h2 style="margin-top:14px">Flippa Highlights.</h2>
+    <p class="lead" style="color:#e8dcc0">A highlight stops being a post that scrolls away and becomes an <b style="color:#fff">owned, sellable digital asset</b> — priced and sold on a marketplace, delivered by download. The same capture Subject Media already does now has a monetization path.</p>
+    <div class="two">
+      <div class="paybox"><h3>Freelance creator</h3><p class="muted" style="margin:0;font-size:14px">A <b class="big">daily rate</b> for film + upload. Work for hire, no back-end.</p></div>
+      <div class="paybox"><h3>Signed to Hooks</h3><p class="muted" style="margin:0;font-size:14px">A <b class="big">50% revenue split</b> on the assets they create that sell through Flippa.</p></div>
+    </div>
+    <div class="gate">
+      <b>The gate that keeps it clean:</b> a minor's highlight becomes a public/sellable asset only with <b>guardian consent</b> (the c4 gate). Monetizing a minor's likeness is their NIL — it follows state NIL + eligibility rules, and TOJ/Hooks stays out of agency. Attorney clears minor-athlete monetization before any minor's asset is listed. Flippa sits <b>behind</b> the consent gate, never around it.
+    </div>
+  </div>
+</div></section>
+
+<!-- YOU VS TOJ -->
+<section><div class="wrap">
+  <div class="eyebrow">The boundary</div>
+  <h2>You coach. The system carries the scale.</h2>
+  <div class="vs">
+    <div class="col"><h3>You (Margin)</h3><ul>
+      <li>Coach — the craft, drills, grading standard</li>
+      <li>Be the on-camera authority + the advocacy call</li>
+      <li>Vet the Trainer Blueprint relationships</li>
+      <li>Own the brand, roster, relationships, athlete data</li>
+    </ul></div>
+    <div class="col"><h3>TOJ</h3><ul>
+      <li>Run the operating brain + funnel + assets</li>
+      <li>Produce, distribute, automate, track</li>
+      <li>Package the Blueprint + AI assessment as products</li>
+      <li>Own the methodology · share 10% on roster revenue</li>
+    </ul></div>
+  </div>
+</div></section>
+
+<!-- GREENLIGHTS -->
+<section><div class="wrap">
+  <div class="eyebrow">To go from "running" to "complete"</div>
+  <h2>Three greenlights.</h2>
+  <div class="green">
+    <div class="gl"><span class="c">1</span><div><b class="big">Build the STL v3 backend.</b> <span class="muted">Take the finished funnel live — lead capture → payment → film gate, consent-enforced. Handoff is written; needs your go.</span></div></div>
+    <div class="gl"><span class="c">2</span><div><b class="big">Sign the Flippa Highlights partnership.</b> <span class="muted">Add the digital-asset layer. Terms in the term sheet; minor-NIL gate cleared with counsel.</span></div></div>
+    <div class="gl"><span class="c">3</span><div><b class="big">Execute the Master Operating Agreement.</b> <span class="muted">Attorney review, fill the 12 open items, sign. The paper under everything.</span></div></div>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<section class="cta"><div class="wrap">
+  <h2>The system's built. Let's turn it on.</h2>
+  <p class="lead" style="margin:0 auto 22px">30 minutes to walk it, greenlight the backend, set the Flippa terms, and get the agreement to your attorney.</p>
+  <a class="btn" href="mailto:Kyron.Cumby.1@icloud.com?subject=Coached%20by%20Hooks%20Operating%20System">Walk the offer</a>
+</div></section>
+
+<footer><div class="wrap">
+  The Coached by Hooks Operating System · Trail of Joy Player Management Group, LLC<br>
+  Proposed terms · agreements are drafts pending attorney review · every athlete-facing piece runs behind guardian-consent + minor-safety rules.
+</div></footer>
+</body>
+</html>
