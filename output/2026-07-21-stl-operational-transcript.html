@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOJ Operational Transcript&trade; — Sky's The Limit WR &times; Coached by Hooks</title>
+  <meta name="description" content="A TOJ Operational Transcript for Sky's The Limit WR and Coached by Hooks. Five pillars scored, evidenced, and gapped — with the one move that locks the ladder and ships the storefront before pre-season." />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="theme-color" content="#F5F1EA" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%231E3A5F"/><text x="50" y="66" font-family="Georgia" font-size="52" font-weight="600" fill="%23D4A853" text-anchor="middle">T</text></svg>' />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --parchment: #F5F1EA; --parchment-2: #EBE4D6; --paper: #FFFFFF;
+      --ink: #1A1613; --ink-soft: #3B3530; --ink-mute: #6E655C;
+      --rule: rgba(26,22,19,0.12);
+      --navy: #1E3A5F; --gold: #D4A853; --gold-soft: rgba(212,168,83,0.16);
+      --green: #2F5D4E; --crimson: #9B3D2E;
+      --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    }
+    body { font-family: 'Inter', -apple-system, sans-serif; background: var(--parchment); color: var(--ink); line-height: 1.62; -webkit-font-smoothing: antialiased; }
+    h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
+    a { color: var(--navy); }
+
+    .doc-wrap { max-width: 920px; margin: 0 auto; padding: clamp(1.75rem, 5vw, 4rem) clamp(1.15rem, 3vw, 3rem); background: var(--paper); box-shadow: 0 40px 90px -55px rgba(26,22,19,0.35); min-height: 100vh; border-left: 6px solid var(--navy); }
+
+    .masthead { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; padding-bottom: 0.9rem; border-bottom: 2px solid var(--ink); }
+    .mast-brand { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); display: inline-flex; align-items: center; gap: 0.5rem; }
+    .mast-brand .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--crimson); display: inline-block; }
+    .mast-brand .tm { color: var(--ink-mute); font-weight: 500; }
+    .mast-meta { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.12em; color: var(--ink-mute); text-align: right; text-transform: uppercase; line-height: 1.7; }
+    .mast-delivery { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-mute); margin-top: 0.5rem; }
+    .mast-delivery span { color: var(--gold); font-weight: 700; }
+
+    .title-block { padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--rule); }
+    .eyebrow { font-family: var(--mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .title-block h1 { font-size: clamp(2.2rem, 6.5vw, 4.2rem); line-height: 0.98; letter-spacing: -0.02em; }
+    .title-block .lede { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.05rem, 2.4vw, 1.3rem); font-weight: 400; color: var(--ink-soft); line-height: 1.45; margin-top: 1.15rem; max-width: 48ch; }
+    .subject-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); }
+    .subject-row b { color: var(--ink); font-weight: 700; }
+
+    .scoping { background: var(--gold-soft); border-left: 3px solid var(--gold); padding: 0.85rem 1.1rem; margin: 1.75rem 0 0; font-size: 0.82rem; color: var(--ink-soft); border-radius: 4px; }
+    .scoping strong { color: var(--ink); }
+
+    section { padding: 2.6rem 0; border-bottom: 1px solid var(--rule); }
+    section:last-of-type { border-bottom: 0; }
+    .sec-num { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 0.5rem; }
+    .sec-num b { color: var(--gold); font-weight: 700; }
+    section > h2 { font-size: clamp(1.6rem, 3.6vw, 2.2rem); line-height: 1.05; margin-bottom: 1.1rem; }
+    section p { color: var(--ink-soft); margin-bottom: 1rem; font-size: 0.96rem; }
+    section p:last-child { margin-bottom: 0; }
+    p b, section strong { color: var(--ink); }
+    .quote-inline { font-style: italic; color: var(--navy); }
+
+    .exec { background: var(--parchment-2); border-radius: 8px; padding: 1.5rem 1.5rem; margin-bottom: 1.25rem; }
+    .exec p { font-family: 'Fraunces', Georgia, serif; font-size: 1.05rem; color: var(--ink); line-height: 1.5; }
+    .exec .big { color: var(--gold); font-weight: 600; }
+    .decision-box { border: 1.5px solid var(--gold); background: var(--paper); border-radius: 8px; padding: 1.15rem 1.35rem; margin-top: 1.25rem; }
+    .decision-box .tag { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; display: block; margin-bottom: 0.5rem; }
+    .decision-box p { color: var(--ink-soft); font-size: 0.92rem; }
+    .decision-box p:last-child { margin-bottom: 0; }
+    .decision-box .first-fix { color: var(--crimson); font-weight: 600; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.7rem; margin: 1.5rem 0 0; }
+    .stat { background: var(--parchment-2); padding: 0.85rem 1rem; border-radius: 6px; border-left: 3px solid var(--gold); }
+    .stat .n { display: block; font-family: 'Fraunces', serif; font-size: 1.4rem; font-weight: 600; color: var(--ink); line-height: 1.05; }
+    .stat .l { display: block; font-family: var(--mono); font-size: 0.58rem; color: var(--ink-mute); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.3rem; }
+
+    .radar-wrap { display: grid; grid-template-columns: 1fr 1.05fr; gap: 2rem; align-items: center; margin: 1.5rem 0 0; }
+    @media (max-width: 720px) { .radar-wrap { grid-template-columns: 1fr; } }
+    .radar-svg { width: 100%; max-width: 330px; margin: 0 auto; display: block; }
+    .radar-legend { display: flex; flex-direction: column; gap: 0.5rem; }
+    .radar-legend .row { display: grid; grid-template-columns: 1.4rem 1fr auto auto; gap: 0.7rem; align-items: center; padding: 0.5rem 0.75rem; background: var(--parchment-2); border-radius: 6px; font-size: 0.86rem; }
+    .radar-legend .row.weakest { background: rgba(155,61,46,0.1); border: 1px solid rgba(155,61,46,0.3); }
+    .radar-legend .row .pn { font-family: var(--mono); font-size: 0.66rem; color: var(--ink-mute); }
+    .radar-legend .row .name { font-weight: 600; color: var(--ink); }
+    .radar-legend .row .score { font-family: var(--mono); color: var(--navy); font-weight: 700; font-size: 0.8rem; }
+    .radar-legend .row.weakest .score { color: var(--crimson); }
+    .radar-legend .row .grade { font-family: 'Fraunces', serif; font-weight: 700; font-size: 0.9rem; }
+    .radar-legend .row .grade.b { color: var(--green); }
+    .radar-legend .row .grade.c { color: var(--gold); }
+    .radar-legend .row .grade.d { color: var(--crimson); }
+    .total-row { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); text-align: right; margin-top: 0.75rem; }
+    .total-row b { color: var(--ink); }
+
+    .pillar { border: 1px solid var(--rule); border-radius: 10px; padding: 1.35rem 1.4rem; margin-top: 1.5rem; background: var(--paper); }
+    .pillar.weakest { border-color: rgba(155,61,46,0.4); border-left: 5px solid var(--crimson); background: linear-gradient(180deg, rgba(155,61,46,0.035), var(--paper)); }
+    .pillar-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; border-bottom: 1px solid var(--rule); padding-bottom: 0.75rem; margin-bottom: 1rem; }
+    .pillar-head .ph-left { display: flex; flex-direction: column; }
+    .pillar-head .ph-num { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); }
+    .pillar-head h3 { font-size: 1.35rem; line-height: 1.05; }
+    .pillar-head .ph-score { font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600; color: var(--navy); line-height: 0.9; }
+    .pillar.weakest .ph-score { color: var(--crimson); }
+    .pillar-head .ph-score small { font-family: var(--mono); font-size: 0.62rem; font-weight: 500; color: var(--ink-mute); letter-spacing: 0.08em; display: block; text-align: right; }
+    .weakest-flag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson); font-weight: 700; margin-top: 0.2rem; }
+    .eg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    @media (max-width: 640px) { .eg-grid { grid-template-columns: 1fr; gap: 0.9rem; } }
+    .eg-col h4 { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .eg-col.ev h4 { color: var(--green); }
+    .eg-col.gap h4 { color: var(--crimson); }
+    .eg-col ul { list-style: none; }
+    .eg-col li { font-size: 0.85rem; color: var(--ink-soft); padding-left: 0.95rem; position: relative; margin-bottom: 0.55rem; line-height: 1.45; }
+    .eg-col li::before { content: '—'; position: absolute; left: 0; color: var(--ink-mute); }
+    .move { margin-top: 1.1rem; padding: 0.85rem 1rem; background: var(--parchment); border-radius: 6px; border-left: 3px solid var(--gold); }
+    .move .mtag { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8a6a2b; font-weight: 700; }
+    .move p { font-size: 0.85rem; margin: 0.35rem 0 0; color: var(--ink-soft); }
+    .move .signal { display: block; margin-top: 0.5rem; font-size: 0.8rem; color: var(--ink-mute); }
+    .move .signal b { color: var(--green); font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .dd-block { margin-top: 1.25rem; }
+    .dd-block h4 { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.4rem; }
+    .dd-block h4.miss { color: var(--crimson); }
+
+    .prod { border: 1px solid var(--rule); border-left: 4px solid var(--navy); border-radius: 8px; padding: 1.1rem 1.25rem; margin-top: 1rem; }
+    .prod .pnum { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; color: #8a6a2b; font-weight: 700; }
+    .prod h3 { font-size: 1.2rem; margin: 0.15rem 0 0.4rem; }
+    .prod p { font-size: 0.88rem; margin-bottom: 0.6rem; }
+    .prod .fixes { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); font-weight: 500; }
+    .separator-note { margin-top: 1.5rem; padding: 1.1rem 1.25rem; background: var(--navy); color: #EBE4D6; border-radius: 8px; }
+    .separator-note h4 { color: var(--paper); font-family: 'Fraunces', serif; font-size: 1.05rem; margin-bottom: 0.5rem; text-transform: none; letter-spacing: -0.01em; }
+    .separator-note p { color: rgba(235,228,214,0.85); font-size: 0.88rem; margin-bottom: 0; }
+    .separator-note .diff { font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; display: block; margin-top: 0.75rem; }
+
+    .ship-intro { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 1.25rem; }
+    .ship { display: grid; grid-template-columns: 2.2rem 1fr; gap: 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+    .ship:last-child { border-bottom: 0; }
+    .ship .snum { font-family: 'Fraunces', serif; font-size: 1.75rem; font-weight: 600; color: var(--gold); line-height: 1; }
+    .ship .sbody strong { color: var(--ink); font-size: 0.98rem; }
+    .ship .sbody p { font-size: 0.85rem; color: var(--ink-mute); margin: 0.3rem 0 0.6rem; }
+    .ship .smeta { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .ship .chip { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em; padding: 0.28rem 0.55rem; border-radius: 4px; background: var(--parchment-2); color: var(--ink-soft); }
+    .ship .chip.owner { border: 1px solid var(--rule); }
+    .ship .chip.done { background: var(--gold-soft); color: #7a5620; font-weight: 500; }
+
+    .tr-table { width: 100%; border-collapse: collapse; margin-top: 1.25rem; font-size: 0.86rem; }
+    .tr-table th { text-align: left; background: var(--parchment-2); padding: 0.65rem 0.85rem; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); font-weight: 700; border-bottom: 1px solid var(--rule); }
+    .tr-table td { padding: 0.75rem 0.85rem; color: var(--ink-soft); border-bottom: 1px solid var(--rule); vertical-align: top; }
+    .tr-table td.wk { font-family: var(--mono); font-weight: 700; color: #8a6a2b; font-size: 0.8rem; white-space: nowrap; }
+    .tr-table td.pl { font-weight: 600; color: var(--ink); white-space: nowrap; }
+    .tr-table tr.milestone td { background: rgba(30,58,95,0.06); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.04em; color: var(--navy); font-weight: 600; text-align: center; padding: 0.55rem; }
+    @media (max-width: 640px) { .tr-table td.pl { white-space: normal; } }
+
+    .close-box { margin-top: 1.5rem; }
+    .close-box .first-fix { border-left: 4px solid var(--crimson); padding: 0.75rem 1rem; background: rgba(155,61,46,0.05); border-radius: 4px; margin-bottom: 1rem; }
+    .close-box .worked { border-left: 4px solid var(--green); padding: 0.75rem 1rem; background: rgba(47,93,78,0.06); border-radius: 4px; }
+    .close-box h4 { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .close-box .first-fix h4 { color: var(--crimson); }
+    .close-box .worked h4 { color: var(--green); }
+    .kicker { font-family: 'Fraunces', serif; font-size: 1.35rem; font-weight: 600; color: var(--ink); text-align: center; margin: 2rem 0 0; line-height: 1.25; }
+
+    .doc-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 2px solid var(--ink); font-size: 0.72rem; color: var(--ink-mute); line-height: 1.6; }
+    .doc-footer .fnote { font-style: italic; margin-top: 0.5rem; }
+
+    @media print {
+      body { background: #fff; }
+      .doc-wrap { box-shadow: none; border-left: 4px solid var(--navy); max-width: 100%; }
+      .pillar, .prod, .ship { break-inside: avoid; }
+      section { break-inside: avoid-page; }
+    }
+  </style>
+</head>
+<body>
+  <article class="doc-wrap">
+
+    <header class="masthead">
+      <div class="mast-brand"><span class="dot"></span>TOJ <span class="tm">Operational Transcript&trade;</span></div>
+      <div class="mast-meta">
+        <div>Report ID · OT-SB-0721</div>
+        <div>Vertical · Personal Brand — Coach</div>
+        <div>Issued · 2026-07-21 · Pre-season sprint</div>
+      </div>
+    </header>
+    <div class="mast-delivery">Delivered <span>within 72 business hours</span> of intake &middot; Prepared by Kyron Cumby &middot; Trail of Joy Management Group, LLC</div>
+
+    <div class="title-block">
+      <div class="eyebrow">Diagnostic to Decision &middot; Q3 2026</div>
+      <h1>Sky&rsquo;s The Limit WR &times; Coached by Hooks.</h1>
+      <p class="lede">A pillar-by-pillar read of the two-brand system with roughly two and a half weeks left before pre-season, the one move that fixes the ladder and the storefront at once, and the ship list that closes the August 10 gap.</p>
+      <div class="subject-row">
+        <span>Subject &middot; <b>Margin Hooks</b></span>
+        <span>Coached by Hooks + Sky&rsquo;s The Limit WR</span>
+        <span>skysthelimitwr.com</span>
+      </div>
+      <div class="scoping">
+        <strong>Scoping note.</strong> This environment's network policy blocked a direct fetch of skysthelimitwr.com, so this transcript is built entirely from the client's own operating-brain repo (<code>hooks-os</code>) &mdash; brand docs, the Readiness Plan, the Platform Build Plan, the Site Rebuild Plan, <code>config.md</code>, and the goals file. That repo includes the client's own documented assessment of the live site, which is internal evidence, not external. Full intake would refine each pillar by roughly &plusmn;10 points.
+      </div>
+    </div>
+
+    <!-- 01 -->
+    <section>
+      <div class="sec-num">Section <b>01</b> &middot; Executive summary</div>
+      <h2>One page. One decision.</h2>
+      <div class="exec">
+        <p>Margin Hooks owns the deepest credibility receipt of any trainer in the TOJ network. <span class="big">26 NFL players. 160+ Division I athletes. 1 Pro Bowler.</span> A signed roster of 6 NFL + 30+ Power 4 athletes. No trainer in the network can produce that stack of receipts.</p>
+      </div>
+      <p>None of it is visible where a family actually arrives. Per the client's own build documentation, the live site today is <span class="quote-inline">&ldquo;a 2022 Typedream 3-pager. No intake, no gated content, no dashboard, no data. Every visitor today is a data leak.&rdquo;</span> The two-brand architecture &mdash; Coached by Hooks (apex, in-person, Margin's time) and Sky's The Limit (platform, scaled, the system's time) &mdash; is fully designed on paper. It isn't expressed at the URL a parent actually types in.</p>
+      <div class="decision-box">
+        <span class="tag">The move &middot; Now through the August 10 walkthrough</span>
+        <p><b>Lock the ladder, ship the storefront, start the log.</b> Five product prices get locked to real numbers, Phase 1 of the site rebuild goes live so the storefront finally matches the two brands, and the CBH advocacy log &mdash; described internally as becoming the single most valuable sales asset Margin owns &mdash; gets its first real entries instead of waiting for the full platform.</p>
+        <p class="first-fix">The one thing to fix first: Revenue Architecture (39/100 &mdash; the weakest pillar). The ladder is well-designed. It isn't priced, and it isn't purchasable.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><span class="n">26</span><span class="l">NFL players trained</span></div>
+        <div class="stat"><span class="n">160+</span><span class="l">D1 athletes</span></div>
+        <div class="stat"><span class="n">1</span><span class="l">Pro Bowler</span></div>
+        <div class="stat"><span class="n">6 + 30+</span><span class="l">NFL / P4 signed</span></div>
+        <div class="stat"><span class="n">~56.5K</span><span class="l">Qualified audience</span></div>
+        <div class="stat"><span class="n">1 / 5</span><span class="l">Ladder rungs priced</span></div>
+      </div>
+    </section>
+
+    <!-- 02 -->
+    <section>
+      <div class="sec-num">Section <b>02</b> &middot; Foundation Score</div>
+      <h2>Five pillars. Scored, evidenced, gapped.</h2>
+      <p>Every pillar carries a 0&ndash;100 score. Every score above 40 carries retrievable evidence. Gap lines name what is missing to reach 80. Canonical order &mdash; never rearranged.</p>
+
+      <div class="radar-wrap">
+        <svg class="radar-svg" viewBox="-165 -170 330 340" role="img" aria-label="Five-pillar radar for Sky's The Limit WR / Coached by Hooks">
+          <polygon points="0,-120 114,-37 70,97 -70,97 -114,-37" fill="none" stroke="rgba(26,22,19,0.14)"/>
+          <polygon points="0,-90 86,-28 53,73 -53,73 -86,-28" fill="none" stroke="rgba(26,22,19,0.12)"/>
+          <polygon points="0,-60 57,-19 35,49 -35,49 -57,-19" fill="none" stroke="rgba(26,22,19,0.1)"/>
+          <polygon points="0,-30 28,-9 18,24 -18,24 -28,-9" fill="none" stroke="rgba(26,22,19,0.08)"/>
+          <line x1="0" y1="0" x2="0" y2="-120" stroke="rgba(26,22,19,0.18)"/>
+          <line x1="0" y1="0" x2="114" y2="-37" stroke="rgba(26,22,19,0.18)"/>
+          <line x1="0" y1="0" x2="70" y2="97" stroke="rgba(26,22,19,0.18)"/>
+          <line x1="0" y1="0" x2="-70" y2="97" stroke="rgba(26,22,19,0.18)"/>
+          <line x1="0" y1="0" x2="-114" y2="-37" stroke="rgba(26,22,19,0.18)"/>
+          <!-- data: BI 58, OH 44, CC 63, GR 47, RA 39 (r = score/100*120, exact per-axis unit vectors) -->
+          <polygon points="0,-69.6 50.22,-16.3 44.24,61.3 -33.0,45.73 -44.51,-14.45" fill="rgba(30,58,95,0.22)" stroke="var(--navy)" stroke-width="2"/>
+          <circle cx="0" cy="-69.6" r="4" fill="var(--navy)"/>
+          <circle cx="50.22" cy="-16.3" r="4" fill="var(--navy)"/>
+          <circle cx="44.24" cy="61.3" r="4" fill="var(--navy)"/>
+          <circle cx="-33.0" cy="45.73" r="4" fill="var(--navy)"/>
+          <circle cx="-44.51" cy="-14.45" r="5" fill="var(--crimson)"/>
+          <text x="0" y="-134" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1A1613">Brand Identity</text>
+          <text x="122" y="-32" text-anchor="start" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1A1613">Operational Health</text>
+          <text x="76" y="118" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1A1613">Content &amp; Cred.</text>
+          <text x="-76" y="118" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1A1613">Growth Readiness</text>
+          <text x="-122" y="-32" text-anchor="end" font-family="Inter,sans-serif" font-size="11" font-weight="700" fill="#9B3D2E">Revenue Arch.</text>
+        </svg>
+        <div class="radar-legend">
+          <div class="row"><span class="pn">01</span><span class="name">Brand Identity</span><span class="score">58 / 100</span><span class="grade c">C</span></div>
+          <div class="row"><span class="pn">02</span><span class="name">Operational Health</span><span class="score">44 / 100</span><span class="grade c">C&minus;</span></div>
+          <div class="row weakest"><span class="pn">03</span><span class="name">Revenue Architecture</span><span class="score">39 / 100</span><span class="grade d">D+</span></div>
+          <div class="row"><span class="pn">04</span><span class="name">Content &amp; Credibility</span><span class="score">63 / 100</span><span class="grade b">B&minus;</span></div>
+          <div class="row"><span class="pn">05</span><span class="name">Growth Readiness</span><span class="score">47 / 100</span><span class="grade c">C&minus;</span></div>
+        </div>
+      </div>
+      <div class="total-row">Total &middot; <b>251 / 500</b> &middot; the credential is the strongest asset; the ladder is the weakest</div>
+
+      <!-- Pillar 01 -->
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="ph-left"><span class="ph-num">Pillar 01 &middot; Positioning, voice, visual system</span><h3>Brand Identity</h3></div>
+          <div class="ph-score">58<small>/ 100</small></div>
+        </div>
+        <div class="eg-grid">
+          <div class="eg-col ev"><h4>Evidence</h4><ul>
+            <li>The CBH &times; STL brand document is finalized (v1.0) &mdash; the apex/platform split has a name, a rationale, and a working principle.</li>
+            <li>Credential stack is elite and specific: 26 NFL players, 160+ D1, 28 HS All-Americans, 11 College All-Americans, 6 Five-Stars, 1 Pro Bowler.</li>
+            <li>Visual identity is locked for the platform build: STL navy (#1E3A5F) + champagne gold (#D4A853), Fraunces serif + JetBrains Mono &mdash; &ldquo;locker-room seriousness, not tech-startup gradients.&rdquo;</li>
+          </ul></div>
+          <div class="eg-col gap"><h4>Gap to 80</h4><ul>
+            <li>The live site a family reaches is, per the client's own assessment, a 2022 Typedream 3-pager &mdash; none of the two-brand architecture or credential strip is expressed there yet.</li>
+            <li>Voice calibration is still pending &mdash; the voice skill is seeded from inference, not yet tightened against a real content corpus.</li>
+            <li>A stranger on skysthelimitwr.com today cannot tell CBH and STL are two different products at two different price points.</li>
+          </ul></div>
+        </div>
+        <div class="move"><span class="mtag">One-week move</span>
+          <p>Ship the hero + credibility strip slice of the site rebuild first, ahead of the full platform: one headline, the six-number credential stat line, one primary CTA. Ban &ldquo;elevate,&rdquo; &ldquo;unlock,&rdquo; and &ldquo;transform&rdquo; per the standing voice rule.</p>
+          <span class="signal"><b>Success signal</b> &mdash; a parent who has never heard of Margin can name both CBH and STL, and say which one costs what, after thirty seconds on the homepage.</span>
+        </div>
+      </div>
+
+      <!-- Pillar 02 -->
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="ph-left"><span class="ph-num">Pillar 02 &middot; Team structure, rhythm, workflow</span><h3>Operational Health</h3></div>
+          <div class="ph-score">44<small>/ 100</small></div>
+        </div>
+        <div class="eg-grid">
+          <div class="eg-col ev"><h4>Evidence</h4><ul>
+            <li><code>hooks-os</code> operating brain is built: CLAUDE.md, 12 skills, daily + weekly workflows, folder structure scaffolded for 36+ managed athletes.</li>
+            <li>CBH advocacy protocol is written &mdash; every call gets a pre-call brief and a log entry by design.</li>
+            <li>The Readiness Plan gives Margin a gradable checklist instead of a vibe &mdash; the clarity-forcing function the walkthrough runs on.</li>
+          </ul></div>
+          <div class="eg-col gap"><h4>Gap to 80</h4><ul>
+            <li><code>config.md</code> &mdash; the source of truth for how the business runs &mdash; has more unset fields than filled ones: invoicing mode, late-fee policy, rate caps, feedback channel, cohort pricing, Growth Autopilot loops.</li>
+            <li>None of the four required GHL pipelines (Player Mgmt, Cohort, Camps &amp; Events, Trainer Blueprint) are confirmed live.</li>
+            <li>Voice calibration, roster lockdown, and CBH pricing are each marked pending with roughly two and a half weeks left to the deadline.</li>
+          </ul></div>
+        </div>
+        <div class="move"><span class="mtag">One-week move</span>
+          <p>Populate every blank field in <code>config.md</code> in one sitting with Margin &mdash; even provisional answers. An unset field isn't neutral; it's a decision nobody has made yet.</p>
+          <span class="signal"><b>Success signal</b> &mdash; <code>config.md</code> has zero blank fields, and every GHL pipeline shows a real status mark instead of an empty cell.</span>
+        </div>
+      </div>
+
+      <!-- Pillar 03 - weakest -->
+      <div class="pillar weakest">
+        <div class="pillar-head">
+          <div class="ph-left"><span class="ph-num">Pillar 03 &middot; Money model, pricing, flywheel</span><h3>Revenue Architecture</h3><span class="weakest-flag">&#9679; Weakest pillar &mdash; fix first</span></div>
+          <div class="ph-score">39<small>/ 100</small></div>
+        </div>
+        <div class="eg-grid">
+          <div class="eg-col ev"><h4>Evidence</h4><ul>
+            <li>STL Membership is priced and real: $99/month, recurring &mdash; the only locked number on the ladder.</li>
+            <li>The five-tier ladder (Free &rarr; Member &rarr; Cohort &rarr; Evaluation &rarr; CBH, plus Trainer Blueprint) is fully designed with a self-financing story: the $30K platform build pays for itself at 25 sustained members.</li>
+            <li>The athlete-brand/NIL pipeline gives 36+ signed athletes a real, genuinely new revenue thesis.</li>
+          </ul></div>
+          <div class="eg-col gap"><h4>Gap to 80</h4><ul>
+            <li>Four of five ladder rungs have no locked price: Cohort ($499&ndash;999 proposed), Evaluation ($299&ndash;499 proposed), CBH deposit ($200 proposed), and CBH's own pricing, repeatedly flagged as &ldquo;Margin's call.&rdquo;</li>
+            <li>Trainer Blueprint sits in a $3,500&ndash;5,000 range, not a number &mdash; the highest-ticket item is the least resolved.</li>
+            <li>Stripe products aren't provisioned; three of six required price variables are explicitly blocking Phase 2 of the build.</li>
+            <li>The live site has no purchase flow today &mdash; nothing on the ladder is buyable at the URL a family actually visits.</li>
+          </ul></div>
+        </div>
+        <div class="move"><span class="mtag">One-week move</span>
+          <p>Get five numbers from Margin in one sitting, not five separate conversations: Cohort seat, Evaluation price, CBH deposit, CBH intensive block, CBH annual program. Write them into <code>config.md</code> and the Stripe product list the same day.</p>
+          <span class="signal"><b>Success signal</b> &mdash; all five ladder rungs have a real, written price. Zero &ldquo;TBD&rdquo; left in the pricing tables.</span>
+        </div>
+      </div>
+
+      <!-- Pillar 04 -->
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="ph-left"><span class="ph-num">Pillar 04 &middot; Receipts, media, story</span><h3>Content &amp; Credibility</h3></div>
+          <div class="ph-score">63<small>/ 100</small></div>
+        </div>
+        <div class="eg-grid">
+          <div class="eg-col ev"><h4>Evidence</h4><ul>
+            <li>The credential stack is the strongest asset in the business &mdash; 26 NFL, 160+ D1, 1 Pro Bowler &mdash; rare enough that &ldquo;the record is the reference&rdquo; can be the entire marketing claim.</li>
+            <li>An existing qualified audience of ~56,500 (24.8K X &middot; 27K IG &middot; 4.7K Threads) is already following.</li>
+            <li>The Study.com-style gated content model (shorts &rarr; free preview &rarr; membership &rarr; premium ladder) is fully specified, not improvised.</li>
+          </ul></div>
+          <div class="eg-col gap"><h4>Gap to 80</h4><ul>
+            <li>None of the six initial lessons are shot, gated, or published yet &mdash; the Film Room is a planned deliverable, not a live asset.</li>
+            <li>The CBH advocacy log &mdash; expected to become &ldquo;the single most valuable sales asset Margin owns&rdquo; &mdash; has zero entries logged as of this transcript.</li>
+            <li>No case-study library exists yet to support Trainer Blueprint sales or CBH advocacy claims with third-party proof.</li>
+          </ul></div>
+        </div>
+        <div class="move"><span class="mtag">One-week move</span>
+          <p>Log the next real CBH call the day it happens, using the pre-call-brief format already specified in the advocacy skill. Don't wait for the platform to exist before starting the ledger that becomes the receipt.</p>
+          <span class="signal"><b>Success signal</b> &mdash; at least one advocacy call is logged with outcome, and the weekly report to Margin includes it.</span>
+        </div>
+      </div>
+
+      <!-- Pillar 05 -->
+      <div class="pillar">
+        <div class="pillar-head">
+          <div class="ph-left"><span class="ph-num">Pillar 05 &middot; Market, playbook, expansion</span><h3>Growth Readiness</h3></div>
+          <div class="ph-score">47<small>/ 100</small></div>
+        </div>
+        <div class="eg-grid">
+          <div class="eg-col ev"><h4>Evidence</h4><ul>
+            <li>Three parallel funnels (athlete, trainer, athlete-brand/NIL) run out of one repo &mdash; the most structurally ambitious build in the TOJ trainer federation.</li>
+            <li>The athlete-brand/NIL pipeline is first-of-its-kind: 6 NFL + 30+ Power 4 signed athletes becoming a category no other TOJ repo runs yet.</li>
+            <li>Folder architecture already scales to the full 36+ athlete roster without a rebuild.</li>
+          </ul></div>
+          <div class="eg-col gap"><h4>Gap to 80</h4><ul>
+            <li>Athlete-management roster lockdown is still pending &mdash; folder ready, roster and consent not confirmed.</li>
+            <li>Subject Media's season content cadence isn't locked, and content production is flagged internally as the largest operational load during season.</li>
+            <li>The system races a fixed August deadline with roughly two and a half weeks left, and most Distribution- and Trainer-Network-layer rows on the Readiness Plan are still unmarked.</li>
+          </ul></div>
+        </div>
+        <div class="move"><span class="mtag">One-week move</span>
+          <p>Lock wave-one of the roster: name the specific athletes in the v1.0 brand-build cohort and get individual consent packages signed this week, not as a rolling background task.</p>
+          <span class="signal"><b>Success signal</b> &mdash; a named wave-one roster with signed consent, and at least one athlete's folder fully populated as the template for the rest.</span>
+        </div>
+        <div class="dd-block" style="margin-top:1rem;">
+          <h4 style="color:var(--ink-mute);">Beyond this transcript's horizon</h4>
+          <p style="font-size:0.85rem;">A Year 2+ asset is already named in the pre-season walkthrough materials: a 12-month arc that converts Margin's 20 years of coaching wisdom into a Personal LLM he owns as productizable IP &mdash; the same shape as the Trainer Blueprint, one tier up. It doesn't move this transcript's score; it isn't a pre-August-10 gap. It's the next Growth Readiness horizon once the ladder, the storefront, and the log are running.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 -->
+    <section>
+      <div class="sec-num">Section <b>03</b> &middot; Weakest pillar</div>
+      <h2>Revenue Architecture: 39/100.</h2>
+      <p>The pillar most limiting Margin's business heading into season is not the credential, the audience, or the ambition of the three-funnel design. It's that the product ladder everyone agrees on isn't priced, and nothing on it can be bought.</p>
+      <div class="dd-block"><h4>What's there</h4>
+        <p>A real five-tier ladder (Free &rarr; STL Membership &rarr; STL Cohort &rarr; Prospect Edge Evaluation &rarr; Coached by Hooks), plus Trainer Blueprint as a sixth, high-ticket sibling product. One locked, live price point: $99/month for STL Membership. A self-financing thesis for the $30K platform build (break-even at 25 sustained members) that the existing audience size makes plausible, not aspirational.</p>
+      </div>
+      <div class="dd-block"><h4 class="miss">What's missing</h4>
+        <p>Three things. First, four of five ladder rungs carry a price <i>range</i> instead of a price &mdash; Cohort, Evaluation, CBH deposit, and Trainer Blueprint are all still &ldquo;TBD&rdquo; or &ldquo;Margin's call&rdquo; in the source documents. Second, the transactional infrastructure behind the ladder doesn't exist yet: Stripe products aren't provisioned, and three of six required price variables are explicitly flagged as blocking Phase 2 of the build. Third &mdash; the one that costs the most, right now &mdash; the live site has zero purchase flow. A parent who wants to pay Margin today has no path to do it at the URL they'd actually visit.</p>
+      </div>
+      <div class="dd-block"><h4>Why this pillar is the one to fix first</h4>
+        <p>Brand Identity and Content &amp; Credibility both score higher because the <i>raw material</i> &mdash; the credentials, the audience, the two-brand story &mdash; already exists in abundance. Revenue Architecture is different: even a perfect storefront and a perfect voice calibration produce nothing until there are real numbers behind the ladder. Pricing is the one gap that blocks every other pillar's payoff from converting into revenue.</p>
+      </div>
+      <div class="dd-block"><h4>What fixes it</h4>
+        <p style="color:#8a6a2b;font-weight:600;">The ladder lock. Detailed in Section 04.</p>
+      </div>
+    </section>
+
+    <!-- 04 -->
+    <section>
+      <div class="sec-num">Section <b>04</b> &middot; Cross-pillar move</div>
+      <h2>Lock the ladder, ship the storefront, start the log.</h2>
+      <p>One coordinated move fixes three pillars at once: Revenue Architecture (Pillar 03) directly, and Brand Identity (Pillar 01) and Content &amp; Credibility (Pillar 04) as immediate second-order effects. It ships as three products under one push, sequenced to land before the August 10 deadline.</p>
+
+      <div class="prod">
+        <span class="pnum">1</span><h3>The Price Lock Memo</h3>
+        <p>A single sitting with Margin to close every open number on the ladder: STL Cohort seat, Prospect Edge Evaluation, CBH application deposit, CBH intensive block, CBH annual program, Trainer Blueprint. Written into <code>config.md</code> and the Stripe product list the same day &mdash; not proposed ranges, real numbers.</p>
+        <span class="fixes">Fixes &middot; Revenue Architecture</span>
+      </div>
+      <div class="prod">
+        <span class="pnum">2</span><h3>Storefront Phase 1 — Hero + Ladder + Intake</h3>
+        <p>Not the full $30K, 12-week platform &mdash; the smallest slice of Phase 1 that makes the two-brand architecture and the priced ladder visible and actionable at skysthelimitwr.com: the hero, the credibility strip, the five-rung ladder page, and the one intake modal that routes all five products through a single flow.</p>
+        <span class="fixes">Fixes &middot; Brand Identity &middot; Revenue Architecture</span>
+      </div>
+      <div class="prod">
+        <span class="pnum">3</span><h3>The Advocacy Log — First Entries</h3>
+        <p>Start logging CBH calls now, on paper if the platform isn't ready, using the format already specified in <code>skills/cbh-advocacy/SKILL.md</code>. The ledger compounds from week one instead of waiting for the dashboard to exist.</p>
+        <span class="fixes">Fixes &middot; Content &amp; Credibility &middot; Growth Readiness</span>
+      </div>
+
+      <div class="separator-note">
+        <h4>Why it separates Margin from every other trainer building a platform</h4>
+        <p>Most trainers building an online presence are solving a content problem. Margin's content and credibility are already the strongest asset in the network &mdash; 26 NFL alumni, 1 Pro Bowler, a signed roster most agencies would kill for. His gap is narrower and more fixable: the numbers aren't locked, and the storefront doesn't say what's already true. That's a two-and-a-half-week problem, not a rebuild-the-brand problem.</p>
+      </div>
+    </section>
+
+    <!-- 05 -->
+    <section>
+      <div class="sec-num">Section <b>05</b> &middot; Two-week ship list</div>
+      <h2>What closes before August 10.</h2>
+      <p class="ship-intro">Every item has a named owner and a numeric done-when threshold. No item is &ldquo;in progress&rdquo; &mdash; items are either shipped or not.</p>
+
+      <div class="ship"><div class="snum">01</div><div class="sbody">
+        <strong>Price Lock Memo</strong>
+        <p>Cohort, Evaluation, CBH deposit, CBH intensive, CBH annual, Trainer Blueprint all set to real numbers.</p>
+        <div class="smeta"><span class="chip owner">Owner &middot; Margin + Kyron</span><span class="chip done">6 / 6 prices set</span><span class="chip done">Written into config.md</span></div>
+      </div></div>
+      <div class="ship"><div class="snum">02</div><div class="sbody">
+        <strong>config.md field sweep</strong>
+        <p>Close every remaining blank field: invoicing mode, late-fee policy, DM rate caps, feedback channel, cohort pricing tiers, Growth Autopilot loops.</p>
+        <div class="smeta"><span class="chip owner">Owner &middot; Kyron</span><span class="chip done">0 blank fields</span></div>
+      </div></div>
+      <div class="ship"><div class="snum">03</div><div class="sbody">
+        <strong>Storefront Phase 1 slice</strong>
+        <p>Hero, credibility strip, five-rung ladder page, one intake modal live on skysthelimitwr.com.</p>
+        <div class="smeta"><span class="chip owner">Owner &middot; Kyron + dev</span><span class="chip done">Live with SSL</span><span class="chip done">1 real test intake</span></div>
+      </div></div>
+      <div class="ship"><div class="snum">04</div><div class="sbody">
+        <strong>Voice calibration pass</strong>
+        <p>Pull 30+ pieces of Margin's actual public content, tighten <code>margin-voice/SKILL.md</code> against it.</p>
+        <div class="smeta"><span class="chip owner">Owner &middot; Kyron</span><span class="chip done">Corpus pulled</span><span class="chip done">First 10 outputs clean</span></div>
+      </div></div>
+      <div class="ship"><div class="snum">05</div><div class="sbody">
+        <strong>Wave-one roster lockdown</strong>
+        <p>Name the v1.0 athlete-brand cohort, get individual consent packages signed.</p>
+        <div class="smeta"><span class="chip owner">Owner &middot; Kyron + Margin</span><span class="chip done">Roster named</span><span class="chip done">1 folder populated</span></div>
+      </div></div>
+      <div class="ship"><div class="snum">06</div><div class="sbody">
+        <strong>First advocacy-log entry</strong>
+        <p>Log the next real CBH call using the pre-call-brief format.</p>
+        <div class="smeta"><span class="chip owner">Owner &middot; Margin + Kyron</span><span class="chip done">1 call logged</span></div>
+      </div></div>
+    </section>
+
+    <!-- 06 -->
+    <section>
+      <div class="sec-num">Section <b>06</b> &middot; Six-week horizon</div>
+      <h2>The Foundation Playbook, adapted.</h2>
+      <p>The standard TOJ Six-Week Foundation Playbook re-shapes to the weakest pillars and to a hard external deadline. With roughly two and a half weeks left before August 10, this horizon spans the closing sprint and the first weeks of season &mdash; matching the pre-August goals (P1&ndash;P7) and season-operations goals (S1&ndash;S5) already defined in <code>goals/goals.md</code>.</p>
+      <table class="tr-table">
+        <thead><tr><th>Week</th><th>Pillar</th><th>The move</th></tr></thead>
+        <tbody>
+          <tr><td class="wk">Wk 1</td><td class="pl">Revenue Architecture</td><td>Price Lock Memo signed. config.md field sweep complete.</td></tr>
+          <tr><td class="wk">Wk 2</td><td class="pl">Brand Identity</td><td>Storefront Phase 1 slice live. Voice calibration pass complete.</td></tr>
+          <tr><td class="wk">Wk 3</td><td class="pl">Operational Health</td><td>GHL Pipeline 1 (Player Mgmt) + Pipeline 2 (Cohort) built and routing test traffic.</td></tr>
+          <tr class="milestone"><td colspan="3">August 10 &mdash; pre-season walkthrough delivered to Margin</td></tr>
+          <tr><td class="wk">Wk 4</td><td class="pl">Content &amp; Credibility</td><td>First 3 lessons shot, gated, and published. Advocacy log carries its first real week.</td></tr>
+          <tr><td class="wk">Wk 5</td><td class="pl">Growth Readiness</td><td>Wave-one athlete-brand cadence running live. Subject Media season cadence locked.</td></tr>
+          <tr><td class="wk">Wk 6</td><td class="pl">Measurement &amp; governance</td><td>Re-score the Foundation. Name the next weakest pillar. First quarterly transcript delivered.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="close-box">
+        <div class="first-fix"><h4>The one thing to fix first</h4><p style="margin:0;color:var(--ink-soft);font-size:0.9rem;">Revenue Architecture, through the ladder lock. It is the weakest pillar and the one blocking every other pillar's payoff from converting into revenue.</p></div>
+        <div class="worked"><h4>How you'll know it worked</h4><p style="margin:0;color:var(--ink-soft);font-size:0.9rem;">By the walkthrough: every ladder rung has a real price, the storefront reflects both brands, and the advocacy log has real entries instead of a specification. By week six: the system runs through season without competing for Margin's attention &mdash; the explicit contract this whole build is being paid for.</p></div>
+      </div>
+
+      <p class="kicker">Score the Foundation. Fix the weakest pillar.<br/>Everything else follows.</p>
+    </section>
+
+    <footer class="doc-footer">
+      &copy; 2026 Trail of Joy Management Group, LLC &middot; Prepared under the Coached by Hooks &times; Sky's The Limit engagement.
+      <div class="fnote">This transcript is a diagnostic instrument, not a representation or warranty of results. Scores reflect internal-repo evidence as of the issue date &mdash; a direct fetch of skysthelimitwr.com was blocked by this environment's network policy &mdash; and are subject to &plusmn;10-point refinement on full intake.</div>
+    </footer>
+
+  </article>
+</body>
+</html>
