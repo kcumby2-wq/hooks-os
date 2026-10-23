@@ -3,16 +3,17 @@
 **Between:** Coached by Hooks / Trail of Joy ("**Hooks/TOJ**") and the **Creator**
 named at signature.
 
-> ⚠️ **DRAFT · v0.1 · not legal advice.** Attorney review before use. Bracketed
+> ⚠️ **DRAFT · v0.2 · not legal advice.** Attorney review before use. Bracketed
 > `[REVIEW]` items need input. Two compensation modes — the Creator selects one at §3.
+> v0.2 (Oct 2026): SportsClippers replaced Flippa Highlights as the marketplace.
 
 ---
 
 ## 1. What the Creator does
 
 The Creator films sessions and games for the Coached by Hooks / STL roster, edits the
-footage, and uploads finished assets to **Flippa Highlights** per the shot-call and
-the Subject Media style standard.
+footage, and uploads finished assets to **Ground Floor Sports' storefront on
+SportsClippers** per the shot-call and the Subject Media style standard.
 
 - **Coverage:** as assigned — Hooks covers **3 days/week** across a **50–100 athlete**
   roster; the Creator is one of **3–5** assigned, scaled to need.
@@ -24,9 +25,10 @@ the Subject Media style standard.
 
 ## 2. Where assets go + how they're priced
 
-All finished edits and digital assets are uploaded to **Flippa Highlights**, which is
-the storefront and the **source of truth for pricing** — what an edit or asset costs
-appears there.
+All finished edits and digital assets are listed on **SportsClippers** through Ground
+Floor Sports' storefront. GFS sets each price within SportsClippers' license tiers, and the
+listing is the **source of truth for pricing** — what an edit or asset costs appears there.
+SportsClippers hosts the listing, takes the payment and delivers the file.
 
 ## 3. Compensation — the Creator selects ONE
 
@@ -34,14 +36,17 @@ appears there.
 - **Daily rate:** `$[REVIEW]` per covered day (film + upload).
 - Paid `[REVIEW: per-day / weekly / on delivery]`.
 - **No back-end.** The daily rate is full compensation; the Creator has no share of
-  asset sales on Flippa.
+  asset sales on SportsClippers.
 - Work product is **work-for-hire** — owned by Hooks/TOJ (§5).
 
 ### ☐ Mode B · Signed to Hooks (revenue split)
-- **50% revenue split** on the net proceeds of the assets the Creator produces that
-  **sell through Flippa Highlights** (net = after Flippa's platform fee and the
-  athlete's NIL share per the partnership term sheet).
-- Paid on a `[REVIEW: monthly]` statement tied to Flippa sales records.
+- **50% revenue split** of STL's share of the sales of the assets the Creator produces
+  that **sell through SportsClippers**. STL's share is two-thirds of what's left after
+  SportsClippers' 25% fee and the 10% edit reserve (STL Master Operating and Marketing
+  Agreement, SOW §6(c)) `[REVIEW: confirm this pool, and any athlete NIL share counsel
+  requires]`.
+- Paid on a `[REVIEW: monthly]` statement tied to SportsClippers' per-sale statements and
+  its monthly sales export by listing.
 - Signed Creators commit to `[REVIEW: minimum output / availability]` and represent
   Hooks under the brand standard.
 
@@ -65,7 +70,8 @@ Most athletes filmed are minors. The Creator agrees:
   asset a guardian has restricted.
 - **Athlete likeness:** owned by the athlete. Nothing in this Agreement transfers an
   athlete's NIL; monetization of a minor's likeness is governed by the guardian consent
-  + the Flippa partnership term sheet §5 (NIL/eligibility gate).
+  + counsel's state NIL/eligibility review, and SportsClippers applies its minor-protection
+  standards (Schedule A of GFS's SportsClippers agreement) to every listing.
 - **Brand:** the Subject Media / Hooks / STL marks remain Hooks/TOJ's.
 
 ## 6. Standard terms *(attorney to complete)*
@@ -91,5 +97,8 @@ Compensation mode selected: ☐ A · Freelance ☐ B · Signed (50% split)
 
 > **Attorney checklist:** daily-rate amount + cadence (§3A); split statement mechanics
 > + minimum output (§3B); worker-classification (contractor vs employee) under state
-> law; portfolio-license scope (§5); minor-NIL handling consistency with the Flippa
-> term sheet §5; term/termination; indemnity + insurance; governing law.
+> law; portfolio-license scope (§5); minor-NIL handling consistency with SportsClippers'
+> Schedule A and the STL Master Operating and Marketing Agreement; footage ownership
+> consistency with that agreement (§5 here says work-for-hire to Hooks/TOJ, while the STL
+> agreement gives STL its session footage and GFS its library footage); term/termination;
+> indemnity + insurance; governing law.
