@@ -1,4 +1,10 @@
-# Flippa Highlights — Partnership Term Sheet (DRAFT)
+# Flippa Highlights — Partnership Term Sheet (DRAFT) · SUPERSEDED
+
+> **Superseded, October 2026.** Ground Floor Sports moved its marketplace from Flippa
+> Highlights to SportsClippers, so this term sheet won't be signed. What replaced it is in
+> [`sportsclippers-marketplace.md`](sportsclippers-marketplace.md). This page stays as the
+> record of what was proposed in August, including the athlete-NIL options in §3a, which are
+> still open with counsel.
 
 **Between:** Trail of Joy / Coached by Hooks ("**TOJ/Hooks**") and **Flippa Highlights**
 ("**Flippa**") — the Digital Asset Partner.

@@ -4,6 +4,29 @@
 
 ---
 
+## 2026-10-23 · SportsClippers replaces Flippa Highlights in the Coached by Hooks offer
+
+**Feedback verbatim:** *"ok do that"* — Kyron, approving the update of every document that still named Flippa Highlights after GFS moved its marketplace to SportsClippers.
+
+### Shipped
+
+- **`offer/sportsclippers-marketplace.md`** (new) — how Coached by Hooks media sells on SportsClippers through GFS's storefront: who does what, the per-sale split, creators, SportsClippers' minor-protection standards, and where each open item from the Flippa term sheet stands.
+- **`offer/flippa-highlights-partnership-term-sheet.md`** — marked superseded and kept as the record of the August proposal.
+- **`offer/coached-by-hooks-operating-system.md`** and **`offer/coached-by-hooks-deck.html`** — the Digital Asset Layer is now SportsClippers; the deck's named-parties split is replaced by the per-sale split from the STL agreement.
+- **`contracts/creator-content-agreement.md`** → v0.2 — assets list on SportsClippers; the signed-creator split now runs off STL's share, flagged `[REVIEW]`.
+
+### The split, per $100 of net sales
+
+SportsClippers $25 at checkout · edit reserve $7.50 · STL $45 · GFS $22.50. STL and GFS keep the same dollars as the STL agreement's earlier split; the edit reserve absorbs SportsClippers' fee coming off the top (STL agreement redline, SOW §6(c), 23 Oct 2026).
+
+### Still open
+
+- The athlete NIL share: in neither draft. Counsel decides before any minor's asset sells.
+- Footage ownership: the creator agreement says work-for-hire to Hooks/TOJ; the STL agreement gives STL its session footage and GFS its library footage. Flagged in the attorney checklist.
+- Both agreements (GFS–SportsClippers v1.1, GFS–STL) are unsigned drafts.
+
+---
+
 ## 2026-07-25 · Move #3 · Drafted TOJ-Margin master operating agreement
 
 **Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (final move of the 3-move sequence)
