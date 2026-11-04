@@ -47,8 +47,8 @@ follow_up_required: yes/no
 follow_up_action: [what · who · by when]
 attribution_chain: |
   [How this call connects to prior touches — was this the 3rd call about
-   this athlete? Did the coach mention seeing SR transcript? PE evaluation
-   reference? Subject Media content reference?]
+   this athlete? Has the coach seen a CFR report the family approved?
+   Subject Media content reference?]
 outcome_pending: [open · offer expected · likely no · etc.]
 ```
 
@@ -91,8 +91,8 @@ When a parent asks "what does Margin's advocacy actually look like?" — the ans
 ### 2. Network proof (for Trainer Blueprint sales)
 Trainers buying the Blueprint want to know that the Margin-network-and-relationships are real. The attribution ledger demonstrates that Margin's calls move outcomes. The Blueprint buyer eventually gets the right to make smaller versions of those calls in their own region — but only because Margin's pattern exists to model on.
 
-### 3. Subject Report transcript credibility
-When SR transcripts go out to coaches, they land harder if the coach knows Margin will pick up the phone after they read it. The advocacy ledger reinforces that connection.
+### 3. CFR report credibility
+When a family sends a coach its CFR report, the report lands harder if the coach knows Margin will pick up the phone after reading it. The advocacy ledger reinforces that connection. Margin's own club grades are development notes and never go to a coach (`skills/prospect-edge-workflow/SKILL.md`).
 
 ---
 
@@ -108,7 +108,7 @@ When SR transcripts go out to coaches, they land harder if the coach knows Margi
 
 ## Cross-Skill Hand-offs
 
-- **→ `skills/prospect-edge-workflow/SKILL.md`** — every advocacy call references the athlete's most recent PE transcript. If the coach hasn't seen it, the agent ensures it's sent within 24 hours.
+- **→ `skills/prospect-edge-workflow/SKILL.md`** — an advocacy call can point a coach to the athlete's CFR report, and only through a link the family has approved. Margin's own club grades are development notes and never go to a coach. If the family wants a coach to see graded film and hasn't signed up for CFR, the agent drafts a note to the parent explaining CFR (through `skills/parent-comms/SKILL.md`). It never sends anything to the coach itself.
 - **→ `skills/subject-media-coordination/SKILL.md`** — advocacy moments worth documenting (with consent) become Subject Media content. The "Margin called X coach about [athlete]" content is gold for CBH brand-build.
 - **→ `skills/athlete-brand-pipeline/SKILL.md`** — when the athlete is also a TOJ-partnered brand-build client, the advocacy event feeds directly into their brand narrative + potential deal pipeline.
 - **→ `skills/cohort-design/SKILL.md`** — successful advocacy outcomes (offer received, commitment made) become teaching examples in the next cohort.
@@ -157,7 +157,7 @@ The first 90 days of logging set the system's baseline. Patterns that emerge:
 - **Call → outcome conversion rates** by coach, school, position, class year.
 - **Outbound vs inbound effectiveness** — does Margin's proactive call beat waiting?
 - **Content-pull from advocacy events** — what percentage of advocacy events produce shareable content moments?
-- **Cross-system effects** — does logging advocacy reduce the time-to-PE-share, increase SR transcript credibility, etc.?
+- **Cross-system effects** — does logging advocacy shorten the time from a family-approved CFR send to the coach's call, etc.?
 
 All push to `improvements.md` and the TOJ Operational Transcript per the standard cycle.
 

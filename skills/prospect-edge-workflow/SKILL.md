@@ -1,88 +1,114 @@
 # Prospect Edge Workflow — Skill
 
-How the agent runs STL/CBH athletes through the Prospect Edge evaluation platform under the TOJ × Optimum Grading affiliate. **Prospect Edge is the evaluation backbone for the entire TOJ network — this repo is where it runs at the highest volume**, given Margin's broad athlete base (training clients + 36+ managed athletes).
+How the agent runs Coached by Hooks and STL athletes through **Prospect Edge**, Optimum Grading's film-grading app.
+
+**Rewritten 2026-11-04** to match Kyron's update, "Prospect Edge: What It Is and How It Works" (Nov 4, 2026). It replaces the old Subject Report flow: trainer-graded transcripts, the nine-trait WR set, PDFs by email and the 4.0+ Athlete Certified flag.
 
 ---
 
-## The Evaluation Flow
+## Two Kinds of Grade
 
-```
-Athlete created in Subject Report  →  Film uploaded (End Zone / Sideline / Eagle Eye)
-                                  →  Play-by-play grading by position-specific traits
-                                  →  Grade distribution computed  →  Overall grade produced
-                                  →  Transcript delivered to family
-                                  →  4.0+ flagged for Athlete Certified consideration
-                                  →  Coach-shareable profile (consent gated)
-```
+| | Margin's own club (STL) | A CFR evaluation |
+|---|---|---|
+| Who grades | Margin, or staff he gives a seat | A CFR College Placement Specialist who has never trained the athlete |
+| What it is | **Development notes** | The independent evaluation colleges can see |
+| Who sees it | The athlete and the parent | Private until the parent shares it |
+| Can a college see it? | **No** | Only as a link the family approves |
 
----
-
-## Step 1 — Create the Prospect
-
-Required fields per the Subject Report Add Prospect form: name, email, jersey #, class/yr, height/weight, position, region, team/school affiliation, social handles, highlight video link, avatar (consent-gated for minors).
-
-Tag at creation: `SOURCE: STL` or `SOURCE: CBH` or `SOURCE: Athlete-Brand-Pipeline` depending on which funnel the athlete entered through. Saved to the appropriate folder — `data/athletes/_training-clients/[athlete]/` or `data/athletes/_management-clients/[athlete]/`.
+- Margin's club grades are development notes, not a CFR grade. They never go to a college or onto a public page. They are never called a transcript, a rating or an evaluation.
+- **When a family wants colleges to see graded film, the parent signs up through CollegeFootballRecruiting.com (CFR).** The agent can explain CFR and give the parent the sign-up link. It never signs a family up, and never moves an athlete's data into CFR.
 
 ---
 
-## Step 2 — Film Upload
+## Margin's Role in CFR
 
-Three angle slots: End Zone, Sideline, Eagle Eye. Play number detection defaults to **Extract from Filename** (preserves Hudl export conventions).
+This is per the draft Head of College Placement addendum (v1.0, not yet signed). Until it's signed, treat it as draft.
 
----
+- **Standard.** Margin sets the standard for how specialists critique plays and write reports.
+- **His seat.** He has a Lead seat: he reads and comments on reports in every Region. He can't change grades, export or share.
+- **He never grades.** He never changes, argues for or influences a released grade. Only the Standards and Safety Council's quarterly audit can change one.
+- **His own athletes are firewalled.** That means Hooks Management clients, STL trainees and players he coaches. CFR routes them to a specialist in another Region, and his seat can't open their files.
+- **He never messages an athlete under 18.** Contact goes through the parent.
 
-## Step 3 — Position-Specific Grading
+**Gap the update exposes:** in Prospect Edge a seat sees the whole club, because seats aren't tied to athletes. Only the View Report role limits a seat to the reports the admin picks. So "his seat can't open that file" needs one of two setups:
+- his seat is a View Report seat with his athletes' reports left out; or
+- his athletes sit in a club where he has no seat.
 
-**Margin's grading range is the broadest in the network** — primary WR specialization plus broad athlete-management experience across positions, given the scale of his signed roster (6 NFL + 30+ P4 spans more than one position group in practice, even though WR is the training specialty).
-
-- **WR (primary specialization):** Hands · Route Depth · Release · Separation · YAC · Body Control · Ball Tracking · Toughness · Football IQ
-- **Other positions on the managed roster:** graded by Margin directly where his expertise covers it, or routed to a qualified STL Certified Trainer / network grader where it doesn't. The agent flags any evaluation outside core WR specialization for explicit routing confirmation before assuming Margin grades it personally.
-
-The agent does NOT auto-grade. It prepares the platform, queues plays, surfaces context, and Margin (or the assigned grader) grades. The agent transcribes the grading rationale into the transcript narrative.
-
----
-
-## Step 4 — Grade Distribution + Overall
-
-**Never inflated, ever.** Mediocre evaluation reported as mediocre. This rule carries the most weight in this repo specifically — Margin's apex credential depends on every transcript being defensibly honest, since the advocacy calls (`skills/cbh-advocacy/SKILL.md`) reference these transcripts directly to coaches.
+Confirm which with CFR before the addendum is signed.
 
 ---
 
-## Step 5 — Transcript Delivery
+## Setting Up Margin's Club
 
-Auto-fires once grading is marked complete. Delivered via GHL email + Subject Report link. Saved to `data/athletes/[X]/transcripts/[YYYY-MM-DD]-transcript.pdf`. Cover note runs through `skills/parent-comms/SKILL.md` (training clients) or athlete-direct comms (managed adult athletes, per `skills/athlete-brand-pipeline/SKILL.md`).
+1. **Sign up** on the Prospect Edge sign-up page. Whoever signs up becomes the Club Admin: Margin, or the person he names to run operations.
+2. **Load the five CFR traits** at each position: Alignment, Assignment, Technique, Execution and Pursuit. A position's weights add up to 100%. Development notes then use the same words families hear from CFR, and CFR can walk the club through it.
+3. **Load the roster** from the Prospects template, one athlete at a time or as a file. For a minor, load only what grading needs: name, position, class, jersey number and team.
+   - Leave height, weight and social links blank unless the parent asks.
+   - Add a photo only with the consent flag on file.
+4. **Create an event** for each game, combine or training session. Load one clip per play from the End Zone, Sideline or Eagle Eye angle.
+5. **Grade every play.** Mark each trait plus, minus or not graded. Margin or the staff member grades; the agent never does.
+6. **Track progress** with Player Progression. That's the development story the family sees.
 
 ---
 
-## Step 6 — 4.0+ Flagging (Athlete Certified Routing)
+## Seats
 
-Overall grade ≥ 4.0 → auto-flag as Athlete Certified candidate. Notification to Kyron, GHL tag `AC-CANDIDATE`, draft outreach prepared. **Manual review by Kyron + Margin before any AC outreach is sent — no auto-mode for AC flags, network-wide rule.**
+- A club holds up to **20 seats and 2,500 athletes**.
+- There are six roles: Club Admin, Create & Grade Prospects, Create Prospects, Grade Prospects, View Only and View Report.
+- **A seat sees the whole roster.** Give one only to someone who should see every athlete in the club.
+- Don't give seats to creators or content crews.
+- If adult managed athletes are graded at all, keep them in a separate club from the training clients, who are minors.
 
 ---
 
-## Step 7 — Coach-Shareable Profile
+## Reports
 
-Consent-gated. Margin's advocacy calls (`skills/cbh-advocacy/SKILL.md`) often reference these transcripts directly — when a coach asks for film, the transcript link is usually already in hand because of this workflow.
+| Report | Use |
+|---|---|
+| Prospect Report | Share with the parent, or with the athlete if 18 or older |
+| Player Progression | Show the family how the grades move from game to game |
+| Comparison Report | **Internal only.** Calibration between graders |
+| Prospect Ranking | **Internal only.** It shows other athletes' names and grades |
+
+- Outside the club, quote the percentage, never the star label.
+- Printing and export stay internal. Share a report as its link, not as a PDF, and never save report files in this repo.
+
+---
+
+## Prospect List and the College Directory
+
+- The **College Directory** (893 programs) is fine for research and fit lists.
+- **Margin's club never sends a Prospect List to college coaches.** Development notes aren't an evaluation. Colleges see graded film only through CFR, as a link the family approves.
+- An advocacy call (`skills/cbh-advocacy/SKILL.md`) rests on what Margin has seen in person. It can point a coach to a family-approved CFR report, never to his own club's grades.
+
+---
+
+## What the Agent Does
+
+- Sets up events, loads film, queues plays and surfaces game context.
+- Writes up Margin's notes in his words for the family. Minors go through `skills/parent-comms/SKILL.md`; managed adults go through `skills/athlete-brand-pipeline/SKILL.md`.
+- Never grades, re-grades, inflates or invents a grade.
 
 ---
 
 ## What the Agent Tracks Per Athlete
 
 ```yaml
-athlete_id: hooks-roster-001
-name_internal: [first] [last]
+athlete_id: hooks-roster-001        # an ID only: no name, contact or film link in this file
 position: WR
 funnel_source: cbh | stl | athlete_brand_pipeline
-evaluations:
-  - date: 2026-W30
-    overall_grade: 4.3
-    star_tier: 5
-    ac_candidate: true
-    ac_outreach_sent: pending_review
-    transcript_delivered: yes
+club: stl_development               # Margin's club: development notes
+development:
+  - event: 2026-W30-game
+    graded_by: margin
+    plays_graded: 14
+    shared_with_family: yes         # Prospect Report link to the parent (or the athlete, 18+)
+cfr:
+  family_signed_up: no              # the parent signs up through CFR; the agent never does
+  firewall_confirmed: n/a           # yes once CFR confirms Margin can't open this athlete's file
 consent:
   parent_consent: yes
-  public_profile_consent: pending
+  photo_consent: pending
   film_use_consent: yes
 ```
 
@@ -90,12 +116,14 @@ consent:
 
 ## Hard Rules
 
-- Never invent a grade.
-- Never publish a profile without consent on file.
-- Never inflate — this rule is the foundation of the entire CBH advocacy credential.
-- Never share a transcript with a coach outside the consent-gated pipeline.
-- Never re-grade a play already graded without explicit instruction.
+- Never invent a grade. Never inflate. Never re-grade a play without explicit instruction.
+- Margin's club grades are development notes. They are never sent to a college, never on a public page, and never called a CFR grade, a transcript or a rating.
+- Margin never grades, reviews or discusses one of his own athletes in CFR, and never changes or argues a CFR grade.
+- A report reaches a college only as a CFR link the family approves.
+- Ranking and Comparison reports never leave the staff.
+- No promises about offers, rankings or scholarships. No pay moves with a grade or an outcome (NCAA Bylaw 12.3.3.1).
+- Minors: a consent flag comes before a photo or any public mention, and contact goes through the parent.
 
 ---
 
-*The transcript is the product across the whole network. In this repo specifically, the transcript is also the raw material for the advocacy ledger — protect the honesty of the grade and you protect the entire CBH credibility chain.*
+*Development notes help the athlete get better. The independent grade is what a college can trust. Keeping the two apart protects both, and protects Margin's credential.*
