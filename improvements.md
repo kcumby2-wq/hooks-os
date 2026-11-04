@@ -24,7 +24,7 @@
 - **`CLAUDE.md`:** one line under Business Context names the update. It says the funnel and the evaluation pricing ($249 / $1,500 / $5,000) predate it.
 
 **Open, for Kyron and Margin:**
-- **The funnel and pricing lines in `CLAUDE.md`.** "4.0+ flagged → SR transcript" and "Prospect Edge evaluations — tier-priced" are unchanged and need your call.
+- **The funnel, pricing and coach database lines in `CLAUDE.md`.** "4.0+ flagged → SR transcript", "Prospect Edge evaluations — tier-priced" and "Coach Database subscriptions" (college staffs pay to access verified athlete profiles) are unchanged and need your call. Under the update, the parent decides who sees an athlete's CFR account until 18, and a report reaches a college only as a link the family approves.
 - **The firewall.** Prospect Edge seats aren't tied to athletes; only the View Report role limits what a seat opens. So "his seat can't open that file" needs either a View Report seat, or Margin's athletes in a club where he has no seat. Confirm with CFR before the addendum is signed.
 
 ---
