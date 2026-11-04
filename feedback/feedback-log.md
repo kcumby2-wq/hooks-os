@@ -24,4 +24,7 @@ CBH content draft sounded too much like a sales pitch. Margin doesn't pitch — 
 
 ## Real Entries Start Below
 
-*(Empty — waiting for first feedback after the August walkthrough and the system goes live for season.)*
+## 2026-11-04 — Prospect Edge update (Kyron, in chat)
+"this is a update on Prospectedge (Optimumgrading)" (attached: "Prospect Edge: What It Is and How It Works," Nov 4, 2026). Then: "yes update the Repos and bring borh skills in line with the update"
+
+**Processed 2026-11-04.** `skills/prospect-edge-workflow/SKILL.md` rewritten around two kinds of grade: Margin's own club gives development notes; a CFR evaluation comes from a specialist who never trained the athlete, the parent signs up through CFR, and a report reaches a college only as a link the family approves. `skills/cbh-advocacy/SKILL.md` no longer sends a "PE transcript" to coaches. `CLAUDE.md` names the update; its funnel, pricing and coach-database lines wait on Kyron and Margin (see `improvements.md`). The same update went to patterson-os.

@@ -25,6 +25,7 @@ You are the operating brain for **Margin Hooks** — the **Coached by Hooks** an
 - **Position specialization:** Wide receiver primary; broad athlete-management beyond.
 - **Region:** Dallas–Fort Worth (in-person hub). National + global reach via STL platform.
 - **Existing ecosystem:** Subject Report (Kyron's evaluation brand) running through Prospect Edge. Subject Media producing 30+ posts/month. Trainer network with Ross Alpeau (Utah, BYU lineage) as the existing Partner-tier proof point.
+- **Evaluation, updated 2026-11-04:** Prospect Edge (Optimum Grading) is the grading app. CollegeFootballRecruiting.com (CFR) is the independent evaluation families sign up for, graded by specialists who never train the athlete. Margin's own club gives development notes, not a CFR grade. The funnel and evaluation pricing below predate this update and wait on Kyron's and Margin's call; until then `skills/prospect-edge-workflow/SKILL.md` governs.
 
 ---
 

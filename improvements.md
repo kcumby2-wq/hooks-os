@@ -4,6 +4,31 @@
 
 ---
 
+## 2026-11-04 · Prospect Edge update · evaluation skill rewritten
+
+**Feedback that drove it:** Kyron's update, "Prospect Edge: What It Is and How It Works" (Nov 4, 2026). It reviews every screen of Optimum Grading's app and sets out how CollegeFootballRecruiting.com (CFR) sits on top of it.
+
+**What changed:**
+- **`skills/prospect-edge-workflow/SKILL.md`** is rewritten around two kinds of grade.
+  - Margin's own club gives **development notes**. They go to the family only, never to a college or a public page, and are never called a CFR grade or a transcript.
+  - A **CFR evaluation** is graded by a specialist who has never trained the athlete. The parent signs up through CFR, and a report reaches a college only as a link the family approves.
+- **Retired:** Subject Report as the platform, trainer-graded "transcripts", the nine-trait WR set, PDFs by email, and the 4.0+ Athlete Certified flag.
+- **New:**
+  - the five CFR traits;
+  - the club limits (20 seats, 2,500 athletes);
+  - the rule that a seat sees the whole roster;
+  - Ranking and Comparison reports kept internal;
+  - the percentage quoted, never the star label;
+  - Margin's role and firewall in CFR, per the draft Head of College Placement addendum v1.0.
+- **`skills/cbh-advocacy/SKILL.md`:** advocacy calls now point a coach to a family-approved CFR report. The old rule sent the athlete's "PE transcript" to the coach within 24 hours.
+- **`CLAUDE.md`:** one line under Business Context names the update. It says the funnel and the evaluation pricing ($249 / $1,500 / $5,000) predate it.
+
+**Open, for Kyron and Margin:**
+- **The funnel, pricing and coach database lines in `CLAUDE.md`.** "4.0+ flagged → SR transcript", "Prospect Edge evaluations — tier-priced" and "Coach Database subscriptions" (college staffs pay to access verified athlete profiles) are unchanged and need your call. Under the update, the parent decides who sees an athlete's CFR account until 18, and a report reaches a college only as a link the family approves.
+- **The firewall.** Prospect Edge seats aren't tied to athletes; only the View Report role limits what a seat opens. So "his seat can't open that file" needs either a View Report seat, or Margin's athletes in a club where he has no seat. Confirm with CFR before the addendum is signed.
+
+---
+
 ## 2026-07-25 · Move #3 · Drafted TOJ-Margin master operating agreement
 
 **Feedback verbatim:** *"Ok lets start with 1 then go to the 2nd one and last lets do the 3rd."* — Kyron (final move of the 3-move sequence)
